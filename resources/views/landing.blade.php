@@ -10,7 +10,11 @@
 
 </head>
 <body>
-    <h1 class="font-headers text-4xl">Hello</h1>
-    
+    <div class="flex gap-2 items-end">
+
+        <h1 class="text-">Hello</h1>
+        <p>Hello</p>
+        <small>Hello</small>
+    </div>
 </body>
 </html>

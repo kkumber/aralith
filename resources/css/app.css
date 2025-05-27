@@ -65,12 +65,12 @@
 
     /* Light mode Colors */
     --color-light-brackground: #f9fafb;
-    --color-primary-green: #84ae92;
-    --color-primary-dark: #5a827e;
-    --color-secondary-green: #b9d4aa;
+    --color-primary-green: #5a827e;
+    --color-secondary-green: #84ae92;
+    --color-third-green: #b9d4aa;
     --color-text-primary: #1f2937;
     --color-text-secondary: #4b5563;
-    --color-border: #e5e7eb;
+    --color-light-border: #e5e7eb;
 
     /* Dark mode colors */
     --color-dark-background: #1e1e1e;
@@ -176,7 +176,31 @@
         @apply border-border;
     }
 
-    body {
+    paragraph {
         @apply bg-background text-foreground;
+    }
+
+    h1 {
+        @apply font-headers text-text-primary dark:text-dark-text-primary text-4xl font-bold;
+    }
+
+    h2 {
+        @apply font-headers text-text-primary dark:text-dark-text-primary text-3xl font-semibold;
+    }
+
+    h3 {
+        @apply font-headers text-text-primary dark:text-dark-text-primary text-2xl font-medium;
+    }
+
+    p {
+        @apply font-paragraph text-text-secondary dark:text-dark-text-secondary text-lg font-normal;
+    }
+
+    small {
+        @apply font-paragraph text-text-secondary dark:text-dark-text-secondary text-sm font-normal;
+    }
+
+    .footnote {
+        @apply font-paragraph text-text-secondary dark:text-dark-text-secondary text-sm font-light;
     }
 }
