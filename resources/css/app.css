@@ -157,3 +157,42 @@
         @apply bg-background text-foreground;
     }
 }
+
+
+h1 {
+  @apply text-4xl font-heading font-semibold text-text-primary dark:text-dark-text-primary;
+}
+h2 {
+  @apply text-3xl font-heading font-semibold text-text-primary dark:text-dark-text-primary;
+}
+
+/* Paragraphs */
+p {
+  @apply font-body text-base text-text-secondary dark:text-dark-text-secondary;
+}
+
+/* Buttons */
+.btn-primary {
+  @apply font-body bg-primary text-white px-4 py-2 rounded-md hover:bg-primary-dark transition;
+}
+.btn-secondary {
+  @apply font-body bg-secondary-green text-text-primary px-4 py-2 rounded-md hover:bg-primary-dark;
+}
+
+/* Input fields */
+.input {
+  @apply bg-surface dark:bg-dark-surface text-text-primary dark:text-dark-text-primary border border-border dark:border-dark-border px-3 py-2 rounded-md w-full;
+}
+
+/* Card container */
+.card {
+  @apply bg-surface dark:bg-dark-surface text-text-primary dark:text-dark-text-primary rounded-xl p-6 shadow-sm;
+}
+
+/* Link hover */
+a:hover {
+  color: #5A827E; /* Light mode hover */
+}
+.dark a:hover {
+  color: #FAFFCA; /* Dark mode hover */
+}
