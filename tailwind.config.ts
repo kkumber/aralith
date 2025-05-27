@@ -1,4 +1,11 @@
-export default {
+module.exports = {
+  content: [
+    './resources/**/*.blade.php',
+    './resources/js/**/*.jsx',
+    './resources/js/**/*.js',
+    './resources/js/**/*.tsx',
+    './resources/js/**/*.ts',
+  ],
   darkMode: 'class',
   theme: {
     extend: {
