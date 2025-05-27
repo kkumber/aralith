@@ -60,7 +60,7 @@
     --color-sidebar-ring: var(--sidebar-ring);
 
     /* Custom Config */
-    --font-headers: 'Poppins', 'sans-serif';
+    --font-headers: 'Poppins';
     --font-paragraph: 'Inter', 'sans-serif';
 
     /* Light mode Colors */
@@ -193,11 +193,11 @@
     }
 
     p {
-        @apply font-paragraph text-text-secondary dark:text-dark-text-secondary text-lg font-normal;
+        @apply font-paragraph text-text-primary dark:text-dark-text-primary text-lg font-normal;
     }
 
     small {
-        @apply font-paragraph text-text-secondary dark:text-dark-text-secondary text-sm font-normal;
+        @apply font-paragraph text-text-primary dark:text-dark-text-primary text-sm font-normal;
     }
 
     .footnote {
