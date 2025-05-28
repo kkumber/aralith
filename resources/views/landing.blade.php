@@ -1,103 +1,178 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Aralith | AI Quiz Generator</title>
-    @vite(['resources/css/app.css'])
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+  <title>Aralith | AI Quiz Generator</title>
+  @vite(['resources/css/app.css'])
 
-
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body class="grid gap-20">
-    <header class="flex flex-col gap-4 items-center justify-center text-center">
-            <p class="text-secondary-green font-semibold">Aralith</p>
-            <h1>Optimize Learning with AI</h1>
-            <p>Built for learners and educators, Aralith is quick and easy to use to remove the fatigue in making quizzes or reviewers</p>
-            <button class="px-8 py-2 bg-primary-green text-white dark:text-black font-medium rounded-full w-max hover:bg-secondary-green hover:cursor-pointer transition-all duration-300 ease-out hover:shadow-lg">Get Started</button>
-    </header>
+<body class="grid gap-20 max-w-xl m-auto">
+  <header class="flex flex-col gap-4 items-center justify-center text-center">
+    <p class="text-secondary-green font-semibold">Aralith</p>
+    <h1>Optimize Learning with AI</h1>
+    <p>Built for learners and educators, Aralith is quick and easy to use to remove the fatigue in making quizzes or reviewers</p>
+    <button class="px-8 py-2 bg-primary-green text-white dark:text-black font-medium rounded-full w-max hover:bg-secondary-green hover:cursor-pointer transition-all duration-300 ease-out hover:shadow-lg">Get Started</button>
+  </header>
 
-    <main class="gap-20 grid">
-        <h2 class="text-center">Personalized Learning</h2>
+  <main class="gap-20 grid">
+    <h2 class="text-center">Personalized Learning</h2>
 
-        <div class="flex flex-col md:grid md:grid-cols-2 gap-4 items-center">
-            <div class="grid gap-4">
-                <div class="">
-                    <p class="text-secondary-green font-semibold">From Files to Quizzes - Instantly</p>
-                    <h2 class="">AI-Powered Quiz Generation</h2>
-                </div>
-                <p>Automatically turn lesson materials into tailored quizzes in seconds using AI</p>
-                <ul class="flex flex-col gap-4">
-                    <li>Generate quizzes from PDFs, DOCX, slides, images, and more</li>
-                    <li>YouTube/video analysis with auto-transcription</li>
-                    <li>Multiple question types (MCQ, T/F, Fill-in-the-blank, etc.)</li>
-                </ul>
-            </div>
-            <div class="">
-                <img src="" alt="Sample">
-            </div>
+    <!-- AI-Powered Quiz Generation -->
+    <div class="flex flex-col md:grid md:grid-cols-2 gap-4 items-center">
+      <div class="grid gap-8">
+        <div>
+          <p class="text-secondary-green font-semibold">From Files to Quizzes - Instantly</p>
+          <h2>AI-Powered Quiz Generation</h2>
         </div>
+        <p>Automatically turn lesson materials into tailored quizzes in seconds using AI</p>
+        <ul class="flex flex-col gap-4">
+          <li class="flex items-start gap-2">
+            <span data-lucide="file-text" class="w-10 text-primary-green"></span>
+            <div class="font-paragraph">
+              <strong>Generate quizzes from various file types:</strong> Upload PDFs, DOCX, slides, images, and more to instantly create customized quizzes that align with your study materials.
+            </div>
+          </li>
+          <li class="flex items-start gap-2">
+            <span data-lucide="video" class="w-10 text-primary-green"></span>
+            <div class="font-paragraph">
+              <strong>YouTube/video analysis with auto-transcription:</strong> Input video links or files, and Aralith will transcribe and analyze the content to generate relevant quiz questions.
+            </div>
+          </li>
+          <li class="flex items-start gap-2">
+            <span data-lucide="list" class="w-10 text-primary-green"></span>
+            <div class="font-paragraph">
+              <strong>Multiple question types:</strong> Create diverse quizzes featuring multiple-choice, true/false, fill-in-the-blank, and other question formats to enhance engagement and retention.
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <img src="" alt="Sample">
+      </div>
+    </div>
 
-        <div class="flex flex-col md:grid md:grid-cols-2 gap-4 items-center">
-            <div class="grid gap-4">
-                <div class="">
-                    <p class="text-secondary-green font-semibold">Personalized Study Aids</p>
-                    <h2 class="">Smart Study Tools</h2>
-                </div>
-                <p>Go beyond quizzes — Aralith enhances your study sessions with tools that adapt to your learning style.</p>
-                <ul class="flex flex-col gap-4">
-                    <li>Flashcard generator from uploaded content</li>
-                    <li>Lesson Summaries</li>
-                    <li>AI-generated feedback and explanations</li>
-                </ul>
-            </div>
-            <div class="">
-                <img src="" alt="Sample">
-            </div>
+    <!-- Smart Study Tools -->
+    <div class="flex flex-col md:grid md:grid-cols-2 gap-4 items-center">
+      <div class="grid gap-8">
+        <div>
+          <p class="text-secondary-green font-semibold">Personalized Study Aids</p>
+          <h2>Smart Study Tools</h2>
         </div>
+        <p>Go beyond quizzes — Aralith enhances your study sessions with tools that adapt to your learning style.</p>
+        <ul class="flex flex-col gap-4">
+          <li class="flex items-start gap-2">
+            <span data-lucide="book-open" class="w-10 text-primary-green"></span>
+            <div class="font-paragraph">
+              <strong>Flashcard generator from uploaded content:</strong> Automatically convert your study materials into flashcards to reinforce learning through active recall.
+            </div>
+          </li>
+          <li class="flex items-start gap-2">
+            <span data-lucide="file-text" class="w-10 text-primary-green"></span>
+            <div class="font-paragraph">
+              <strong>Lesson Summaries:</strong> Receive concise summaries of your materials, highlighting key points to streamline your revision process.
+            </div>
+          </li>
+          <li class="flex items-start gap-2">
+            <span data-lucide="message-circle" class="w-10 text-primary-green"></span>
+            <div class="font-paragraph">
+              <strong>AI-generated feedback and explanations:</strong> Gain insights into your performance with detailed feedback and explanations for each quiz question.
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <img src="" alt="Sample">
+      </div>
+    </div>
 
-        <div class="flex flex-col md:grid md:grid-cols-2 gap-4 items-center">
-            <div class="grid gap-4">
-                <div class="">
-                    <p class="text-secondary-green font-semibold">Data-Driven Insights</p>
-                    <h2 class="">Progress Tracking & Analytics</h2>
-                </div>
-                <p>Visualize performance, track improvements, and focus on areas that need attention.</p>
-                <ul class="flex flex-col gap-4">
-                    <li>Mastery tracking and skill breakdowns</li>
-                    <li>Feedback on strengths and weaknesses</li>
-                    <li>Quiz result history and trends</li>
-                </ul>
-            </div>
-            <div class="">
-                <img src="" alt="Sample">
-            </div>
+    <!-- Progress Tracking & Analytics -->
+    <div class="flex flex-col md:grid md:grid-cols-2 gap-4 items-center">
+      <div class="grid gap-8">
+        <div>
+          <p class="text-secondary-green font-semibold">Data-Driven Insights</p>
+          <h2>Progress Tracking & Analytics</h2>
         </div>
-
-
-        <h2 class="text-center">Who is it for?</h2>
-
-        <div class="flex flex-col md:grid md:grid-cols-3 gap-12">
-            <div class="">
-                <h3 class="font-semibold">Students</h3>
-                <p>Struggling to prepare for quizzes or exams? Aralith saves you hours by turning your class notes, PDFs, and even videos into personalized quizzes and flashcards — instantly. Focus on what matters most and retain more in less time.</p>
-                <a :href="route('login')" class="text-primary-green font-semibold">Get Started -></a>
+        <p>Visualize performance, track improvements, and focus on areas that need attention.</p>
+        <ul class="flex flex-col gap-4">
+          <li class="flex items-start gap-2">
+            <span data-lucide="bar-chart-2" class="w-10 text-primary-green"></span>
+            <div class="font-paragraph">
+              <strong>Mastery tracking and skill breakdowns:</strong> Monitor your understanding of different topics and identify areas that require further study.
             </div>
-            <div class="">
-                <h3 class="font-semibold">Educators</h3>
-                <p>Designing assessments takes time — Aralith gives it back to you. Whether you teach online or in person, generate high-quality quizzes from your materials in seconds, share them with students, and track learning outcomes effortlessly.</p>
-                <a :href="route('login')" class="text-primary-green font-semibold">Get Started -></a>
+          </li>
+          <li class="flex items-start gap-2">
+            <span data-lucide="trending-up" class="w-10 text-primary-green"></span>
+            <div class="font-paragraph">
+              <strong>Feedback on strengths and weaknesses:</strong> Receive personalized feedback highlighting your strong points and areas for improvement.
             </div>
-            <div class="">
-                <h3 class="font-semibold">Lifelong Learners</h3>
-                <p>Learning something new or reviewing for board exams? Upload any resource — books, videos, presentations — and Aralith will create engaging, memory-boosting quizzes and study aids tailored just for you.</p>
-                <a :href="route('login')" class="text-primary-green font-semibold">Get Started -></a>
+          </li>
+          <li class="flex items-start gap-2">
+            <span data-lucide="history" class="w-10 text-primary-green"></span>
+            <div class="font-paragraph">
+              <strong>Quiz result history and trends:</strong> Access a comprehensive history of your quiz performances to track progress over time.
             </div>
-        </div>
-    </main>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <img src="" alt="Sample">
+      </div>
+    </div>
 
-    <footer>
-        All Rights Reserved. Aralith.
-    </footer>
+    <h2 class="text-center">Who is it for?</h2>
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+  <!-- Students Card -->
+  <div class="flex flex-col justify-between p-6 bg-white rounded-lg shadow-lg border-[1px] border-light-border dark:border-dark-border">
+    <div class="flex items-center gap-3 mb-4">
+      <span data-lucide="graduation-cap" class="w-6 h-6 text-primary-green"></span>
+      <h3 class="text-lg font-semibold">Students</h3>
+    </div>
+    <p class="mb-6 text-gray-700">
+      Struggling to prepare for quizzes or exams? Aralith saves you hours by turning your class notes, PDFs, and even videos into personalized quizzes and flashcards — instantly. Focus on what matters most and retain more in less time.
+    </p>
+    <a href="/login" class="text-primary-green font-semibold">Get Started →</a>
+  </div>
+
+  <!-- Educators Card -->
+  <div class="flex flex-col justify-between p-6 bg-white rounded-lg shadow-lg border-[1px] border-light-border dark:border-dark-border">
+    <div class="flex items-center gap-3 mb-4">
+      <span data-lucide="chalkboard-teacher" class="w-6 h-6 text-primary-green"></span>
+      <h3 class="text-lg font-semibold">Educators</h3>
+    </div>
+    <p class="mb-6 text-gray-700">
+      Designing assessments takes time — Aralith gives it back to you. Whether you teach online or in person, generate high-quality quizzes from your materials in seconds, share them with students, and track learning outcomes effortlessly.
+    </p>
+    <a href="/login" class="text-primary-green font-semibold">Get Started →</a>
+  </div>
+
+  <!-- Lifelong Learners Card -->
+  <div class="flex flex-col justify-between p-6 bg-white rounded-lg shadow-lg border-[1px] border-light-border dark:border-dark-border">
+    <div class="flex items-center gap-3 mb-4">
+      <span data-lucide="book-open" class="w-6 h-6 text-primary-green"></span>
+      <h3 class="text-lg font-semibold">Lifelong Learners</h3>
+    </div>
+    <p class="mb-6 text-gray-700">
+      Learning something new or reviewing for board exams? Upload any resource — books, videos, presentations — and Aralith will create engaging, memory-boosting quizzes and study aids tailored just for you.
+    </p>
+    <a href="/login" class="text-primary-green font-semibold">Get Started →</a>
+  </div>
+</div>
+
+
+  </main>
+
+  <footer>
+    All Rights Reserved. Aralith.
+  </footer>
+
+
+  <script>
+    lucide.createIcons();
+  </script>
 </body>
 </html>

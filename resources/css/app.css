@@ -68,7 +68,7 @@
     --color-primary-green: #5a827e;
     --color-secondary-green: #84ae92;
     --color-third-green: #b9d4aa;
-    --color-text-primary: #1f2937;
+    --color-text-primary: #000000;
     --color-text-secondary: #4b5563;
     --color-light-border: #e5e7eb;
 
@@ -77,7 +77,7 @@
     --color-dark-surface: #273142;
     --color-dark-primary-hover: #faffca;
     --color-dark-secondary-green: #b9d4aa;
-    --color-dark-text-primary: #f3f4f6;
+    --color-dark-text-primary: #ffffff;
     --color-dark-text-secondary: #9ca3af;
     --color-dark-border: #374151;
 }
