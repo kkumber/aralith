@@ -18,7 +18,7 @@
     <p class="text-secondary-green font-semibold">Aralith</p>
     <h1 class="font-extrabold text-6xl">Optimize Learning with AI</h1>
     <p class="text-text-primary dark:text-dark-text-primary text-center">
-      Built for learners and educators, Aralith is quick and easy to use to remove the fatigue in making quizzes or reviewers
+      From PDFs to flashcards in a click—Aralith streamlines quiz creation so learners and educators can focus on what matters.
     </p>
     <button class="px-8 py-2 bg-primary-green text-white font-medium rounded-full w-max hover:bg-secondary-green hover:cursor-pointer transition-all duration-300 ease-out hover:shadow-lg flex items-center gap-2">
       Get Started
@@ -116,7 +116,7 @@
     </div>
 
     <!-- Progress Tracking & Analytics -->
-    <div class="flex flex-col md:grid md:grid-cols-2 gap-4 items-center">
+    <div class="flex flex-col md:grid md:grid-cols-2 gap-28 items-center">
       <div class="grid gap-8">
         <div>
           <p class="text-secondary-green font-semibold">Data-Driven Insights</p>
@@ -170,7 +170,7 @@
         <p class="mb-6">
           Struggling to prepare for quizzes or exams? Aralith saves you hours by turning your class notes, PDFs, and even videos into personalized quizzes and flashcards — instantly. Focus on what matters most and retain more in less time.
         </p>
-        <a href="/login" class="text-primary-green font-semibold flex items-center gap-1">
+        <a href="/login" class="text-primary-green hover:text-secondary-green font-semibold flex items-center gap-1">
           Get Started
           <i data-lucide="arrow-right" class="w-4 h-4"></i>
         </a>
@@ -185,7 +185,7 @@
         <p class="mb-6">
           Designing assessments takes time — Aralith gives it back to you. Whether you teach online or in person, generate high-quality quizzes from your materials in seconds, share them with students, and track learning outcomes effortlessly.
         </p>
-        <a href="/login" class="text-primary-green font-semibold flex items-center gap-1">
+        <a href="/login" class="text-primary-green hover:text-secondary-green font-semibold flex items-center gap-1">
           Get Started
           <i data-lucide="arrow-right" class="w-4 h-4"></i>
         </a>
@@ -200,7 +200,7 @@
         <p class="mb-6">
           Learning something new or reviewing for board exams? Upload any resource — books, videos, presentations — and Aralith will create engaging, memory-boosting quizzes and study aids tailored just for you.
         </p>
-        <a href="/login" class="text-primary-green font-semibold flex items-center gap-1">
+        <a href="/login" class="text-primary-green hover:text-secondary-green font-semibold flex items-center gap-1">
           Get Started
           <i data-lucide="arrow-right" class="w-4 h-4"></i>
         </a>
