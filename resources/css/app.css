@@ -68,8 +68,9 @@
     --color-primary-green: #5a827e;
     --color-secondary-green: #84ae92;
     --color-third-green: #b9d4aa;
-    --color-text-primary: #000000;
-    --color-text-secondary: #4b5563;
+    --color-text-primary: rgb(25, 28, 27);
+    --color-text-secondary: rgb(46, 49, 47);
+    --color-text-tertiary: rgb(68, 72, 70);
     --color-light-border: #e5e7eb;
 
     /* Dark mode colors */
@@ -77,8 +78,9 @@
     --color-dark-surface: #1e1e1e;
     --color-dark-primary-hover: #faffca;
     --color-dark-secondary-green: #b9d4aa;
-    --color-dark-text-primary: #ffffff;
-    --color-dark-text-secondary: #9ca3af;
+    --color-dark-text-primary: rgb(225, 227, 224);
+    --color-dark-text-secondary: rgb(196, 199, 196);
+    --color-dark-text-tertiary: rgb(169, 172, 169);
     --color-dark-border: #374151;
 }
 
@@ -193,11 +195,11 @@
     }
 
     p {
-        @apply font-paragraph text-text-primary dark:text-dark-text-primary text-lg font-normal;
+        @apply font-paragraph text-text-secondary dark:text-dark-text-secondary text-lg font-normal;
     }
 
     small {
-        @apply font-paragraph text-text-primary dark:text-dark-text-primary text-sm font-normal;
+        @apply font-paragraph text-text-secondary dark:text-dark-text-secondary text-sm font-normal;
     }
 
     .footnote {
