@@ -60,11 +60,11 @@
     --color-sidebar-ring: var(--sidebar-ring);
 
     /* Custom Config */
-    --font-headers: 'Poppins';
+    --font-headers: 'Poppins', 'sans-serif';
     --font-paragraph: 'Inter', 'sans-serif';
 
     /* Light mode Colors */
-    --color-light-brackground: #f9fafb;
+    --color-light-brackground: #ffffff;
     --color-primary-green: #5a827e;
     --color-secondary-green: #84ae92;
     --color-third-green: #b9d4aa;
@@ -73,8 +73,8 @@
     --color-light-border: #e5e7eb;
 
     /* Dark mode colors */
-    --color-dark-background: #1e1e1e;
-    --color-dark-surface: #273142;
+    --color-dark-background: #121212;
+    --color-dark-surface: #1e1e1e;
     --color-dark-primary-hover: #faffca;
     --color-dark-secondary-green: #b9d4aa;
     --color-dark-text-primary: #ffffff;
