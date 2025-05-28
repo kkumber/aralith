@@ -206,6 +206,54 @@
         </a>
       </div>
     </div>
+
+      <!-- FAQs Section -->
+  <section id="faqs" class="px-4 md:px-0">
+    <h2 class="text-center text-5xl mb-12">Frequently Asked Questions</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- FAQ Item -->
+      <div class="border-[1px] border-light-border dark:border-dark-border rounded-lg shadow-lg p-6">
+        <button class="w-full flex justify-between items-center hover:cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden'); this.querySelector('i[data-state]').dataset.state = this.querySelector('i[data-state]').dataset.state === 'open' ? 'closed' : 'open'">
+          <p class="font-semibold text-lg">How do I upload my files?</p>
+          <i data-lucide="chevron-down" data-state="closed" class="w-6 h-6 transition-transform duration-200 text-primary-green"></i>
+        </button>
+        <p class="mt-4 text-text-primary dark:text-dark-text-primary hidden">
+          Simply click “Get Started” → upload your PDF, DOCX, image, or video link → and let Aralith analyze it.
+        </p>
+      </div>
+      <!-- FAQ Item -->
+      <div class="border-[1px] border-light-border dark:border-dark-border rounded-lg shadow-lg p-6">
+        <button class="w-full flex justify-between items-center hover:cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden'); this.querySelector('i[data-state]').dataset.state = this.querySelector('i[data-state]').dataset.state === 'open' ? 'closed' : 'open'">
+          <p class="font-semibold text-lg">What question types are supported?</p>
+          <i data-lucide="chevron-down" data-state="closed" class="w-6 h-6 transition-transform duration-200 text-primary-green"></i>
+        </button>
+        <p class="mt-4 text-text-primary dark:text-dark-text-primary hidden">
+          Multiple-choice, true/false, fill-in-the-blank, and more—you decide which format best suits your needs.
+        </p>
+      </div>
+      <!-- FAQ Item -->
+      <div class="border-[1px] border-light-border dark:border-dark-border rounded-lg shadow-lg p-6">
+        <button class="w-full flex justify-between items-center hover:cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden'); this.querySelector('i[data-state]').dataset.state = this.querySelector('i[data-state]').dataset.state === 'open' ? 'closed' : 'open'">
+          <p class="font-semibold text-lg">Can I track quiz performance?</p>
+          <i data-lucide="chevron-down" data-state="closed" class="w-6 h-6 transition-transform duration-200 text-primary-green"></i>
+        </button>
+        <p class="mt-4 text-text-primary dark:text-dark-text-primary hidden">
+          Yes—after each quiz, Aralith provides detailed analytics on mastery, strengths, and areas for improvement.
+        </p>
+      </div>
+      <!-- FAQ Item -->
+      <div class="border-[1px] border-light-border dark:border-dark-border rounded-lg shadow-lg p-6">
+        <button class="w-full flex justify-between items-center hover:cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden'); this.querySelector('i[data-state]').dataset.state = this.querySelector('i[data-state]').dataset.state === 'open' ? 'closed' : 'open'">
+          <p class="font-semibold text-lg">Is Aralith free?</p>
+          <i data-lucide="chevron-down" data-state="closed" class="w-6 h-6 transition-transform duration-200 text-primary-green "></i>
+        </button>
+        <p class="mt-4 text-text-primary dark:text-dark-text-primary hidden">
+          Yes. Aralith is free and will always be free.
+        </p>
+      </div>
+    </div>
+  </section>
+
   </main>
 
   <!-- Footer -->
