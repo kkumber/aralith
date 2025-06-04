@@ -14,7 +14,7 @@
 </head>
 
 <body class="grid gap-40 m-auto dark:bg-dark-background max-w-screen-lg w-full p-4">
-  <header class="flex flex-col gap-4 items-center justify-center text-center">
+  <header class="flex flex-col gap-4 items-center justify-center text-center md:p-28">
     <p class="text-secondary-green font-semibold">Aralith</p>
     <h1 class="font-extrabold text-6xl">Optimize Learning with AI</h1>
     <p class="text-text-primary dark:text-dark-text-primary text-center">
@@ -31,7 +31,7 @@
 
     <!-- AI-Powered Quiz Generation -->
     <div class="flex flex-col md:grid md:grid-cols-2 gap-28 items-center">
-      <div class="grid gap-8">
+      <div class="grid gap-8"> 
         <div>
           <p class="text-secondary-green font-semibold">From Files to Quizzes - Instantly</p>
           <h2>AI-Powered Quiz Generation</h2>
