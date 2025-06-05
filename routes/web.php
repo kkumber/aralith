@@ -6,7 +6,11 @@ use Inertia\Inertia;
 
 Route::get('/', function () {
     return view('landing');
-})->name('landing');
+})->name('home');
+
+Route::get('/welcome', function () {
+    return Inertia::render('welcome');
+});
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {

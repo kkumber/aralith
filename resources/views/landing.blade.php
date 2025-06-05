@@ -14,7 +14,25 @@
 </head>
 
 <body class="grid gap-40 m-auto dark:bg-dark-background max-w-screen-lg w-full p-4">
-  <header class="flex flex-col gap-4 items-center justify-center text-center md:p-28">
+  <header class="flex flex-col gap-4 items-center justify-center text-center md:p-20">
+    <div className="mb-6 w-full max-w-[335px] text-sm not-has-[nav]:hidden lg:max-w-4xl">
+      <nav class="flex items-center justify-end gap-4">
+        @guest
+            <a
+                href="{{ route('login') }}"
+                class="inline-block rounded-sm border border-transparent px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#19140035] dark:text-[#EDEDEC] dark:hover:border-[#3E3E3A]"
+            >
+                Log in
+            </a>
+            <a
+                href="{{ route('register') }}"
+                class="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
+            >
+                Register
+            </a>
+        @endguest
+      </nav>
+    </div>
     <p class="text-secondary-green font-semibold">Aralith</p>
     <h1 class="font-extrabold text-6xl">Optimize Learning with AI</h1>
     <p class="text-text-primary dark:text-dark-text-primary text-center">
