@@ -12,6 +12,10 @@ Route::get('/welcome', function () {
     return Inertia::render('welcome');
 });
 
+Route::get('/main', function () {
+    return Inertia::render('main')->name('main');
+});
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
