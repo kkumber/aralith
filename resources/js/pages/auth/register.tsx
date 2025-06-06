@@ -38,6 +38,7 @@ export default function Register() {
                 <div className="grid gap-6">
                     <div className="grid gap-2">
                         <Label htmlFor="name">Name</Label>
+                        <InputError message={errors.name} className="mt-2" />
                         <Input
                             id="name"
                             type="text"
@@ -50,11 +51,11 @@ export default function Register() {
                             disabled={processing}
                             placeholder="Full name"
                         />
-                        <InputError message={errors.name} className="mt-2" />
                     </div>
 
                     <div className="grid gap-2">
                         <Label htmlFor="email">Email address</Label>
+                        <InputError message={errors.email} />
                         <Input
                             id="email"
                             type="email"
@@ -66,11 +67,11 @@ export default function Register() {
                             disabled={processing}
                             placeholder="email@example.com"
                         />
-                        <InputError message={errors.email} />
                     </div>
 
                     <div className="grid gap-2">
                         <Label htmlFor="password">Password</Label>
+                        <InputError message={errors.password} />
                         <Input
                             id="password"
                             type="password"
@@ -82,11 +83,11 @@ export default function Register() {
                             disabled={processing}
                             placeholder="Password"
                         />
-                        <InputError message={errors.password} />
                     </div>
 
                     <div className="grid gap-2">
                         <Label htmlFor="password_confirmation">Confirm password</Label>
+                        <InputError message={errors.password_confirmation} />
                         <Input
                             id="password_confirmation"
                             type="password"
@@ -98,7 +99,6 @@ export default function Register() {
                             disabled={processing}
                             placeholder="Confirm password"
                         />
-                        <InputError message={errors.password_confirmation} />
                     </div>
 
                     <Button type="submit" className="mt-2 w-full" tabIndex={5} disabled={processing}>

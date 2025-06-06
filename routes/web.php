@@ -4,7 +4,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
+Route::get('/index', function () {
     return view('landing');
 })->name('home');
 
@@ -12,14 +12,15 @@ Route::get('/welcome', function () {
     return Inertia::render('welcome');
 });
 
-Route::get('/main', function () {
-    return Inertia::render('main')->name('main');
-});
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
+
+    Route::get('/', function () {
+        return Inertia::render('main');
+    })->name('main');
 });
 
 
