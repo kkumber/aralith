@@ -45,7 +45,7 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
                                 size="sm"
                                 variant="ghost"
                                 asChild
-                                className={cn('w-full justify-start', {
+                                className={cn('dark:text-dark-text-primary w-full justify-start', {
                                     'bg-muted': currentPath === item.href,
                                 })}
                             >
