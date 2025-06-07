@@ -12,7 +12,6 @@ Route::get('/welcome', function () {
     return Inertia::render('welcome');
 });
 
-
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');

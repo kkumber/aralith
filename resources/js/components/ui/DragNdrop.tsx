@@ -68,11 +68,11 @@ const DragNdrop = ({
                 if (!isDuplicate) {
                     validFiles.push(file);
                 }
-
-                if (validFiles.length > 0) {
+            };
+            
+            if (validFiles.length > 0) {
                     setFiles((prevFiles) => [...prevFiles, ...validFiles]);
-                }
-            }
+            };
         },
         [files, maxFileSize, validateFile],
     );
