@@ -1,5 +1,15 @@
+import DragNdrop from '@/components/ui/DragNdrop';
+import AppLayout from '@/layouts/app-layout';
+import { BreadcrumbItem } from '@/types';
+import { Head } from '@inertiajs/react';
 import { useState } from 'react';
-import DragNdrop from './DragNdrop';
+
+const breadcrumbs: BreadcrumbItem[] = [
+    {
+        title: 'Upload Lessons',
+        href: '/main',
+    },
+];
 
 const Main = () => {
     const [selectedFiles, setSelectedFiles] = useState<File[]>();
@@ -10,10 +20,12 @@ const Main = () => {
     };
 
     return (
-        <main className="">
-            <h1>Upload</h1>
-            <DragNdrop onFilesSelected={handleFilesSelected} />
-        </main>
+        <AppLayout breadcrumbs={breadcrumbs}>
+            <Head title="Upload Lessons" />
+            <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
+                <DragNdrop onFilesSelected={handleFilesSelected} />
+            </div>
+        </AppLayout>
     );
 };
 

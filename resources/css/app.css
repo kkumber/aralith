@@ -64,6 +64,7 @@
 
     /* Light mode Colors */
     --color-light-brackground: #ffffff;
+    --color-light-surface: #f5f5f5;
     --color-primary-green: #5a827e;
     --color-secondary-green: #84ae92;
     --color-third-green: #b9d4aa;
@@ -164,7 +165,7 @@
     --chart-5: oklch(0.645 0.246 16.439);
     --sidebar: oklch(0.205 0 0);
     --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.985 0 0);
+    --sidebar-primary: var(--color-primary-green);
     --sidebar-primary-foreground: oklch(0.985 0 0);
     --sidebar-accent: oklch(0.269 0 0);
     --sidebar-accent-foreground: oklch(0.985 0 0);

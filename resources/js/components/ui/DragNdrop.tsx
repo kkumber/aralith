@@ -136,7 +136,7 @@ const DragNdrop = ({
         <section className="space-y-4 rounded-xl border bg-transparent p-4 shadow-md dark:shadow-gray-950" style={{ width, height }}>
             <h2>Upload Lessons</h2>
             <div
-                className={`${isDragOver ? 'border-secondary-green scale-[1.02]' : files.length > 0 ? 'border-secondary-green bg-green-50 dark:bg-green-950' : ''} hover:border-secondary-green bg relative cursor-pointer rounded-xl border-2 p-8 transition-all duration-200`}
+                className={`${isDragOver ? 'border-secondary-green scale-[1.02]' : files.length > 0 ? 'border-secondary-green bg-green-50 dark:bg-green-950' : ''} hover:border-secondary-green relative cursor-pointer rounded-xl border-2 border-dashed p-8 transition-all duration-200`}
                 onDrop={handleDrop}
                 onDragLeave={handleDragLeave}
                 onDragOver={handleDragOver}
@@ -178,7 +178,7 @@ const DragNdrop = ({
             {files.length > 0 && (
                 <div className="space-y-4">
                     <div className="flex items-center justify-between">
-                        <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">Selected Items ({files.length})</h3>
+                        <small className="text-sm font-semibold text-gray-700 dark:text-gray-300">Selected Items ({files.length})</small>
                         <button
                             onClick={(e) => {
                                 e.stopPropagation();
