@@ -12,6 +12,40 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
+interface FileExtractionResult {
+    results: Results[];
+    total_files: number;
+    successful_files: number;
+    failed_files: number;
+}
+
+interface Results {
+    filename: string;
+    mime_type: string;
+    file_size: string;
+    status: ExtractionStatus;
+    extracted_texts: ExtractedTexts[];
+}
+
+interface ExtractedTexts {
+    chunk_id: number;
+    chunk: TextChunk;
+}
+
+interface TextChunk {
+    text: string;
+    word_count: number;
+}
+
+interface UsePost {
+    postData: () => void;
+    data: any;
+    error: string | null;
+    isLoading: boolean;
+}
+
+type ExtractionStatus = 'success' | 'failed' | 'processing' | 'pending' | 'error';
+
 const Main = () => {
     const { postData, data, error, isLoading } = usePost('http://127.0.0.1:8000/upload-document/');
     const [files, setFiles] = useState<File[]>();
@@ -31,7 +65,7 @@ const Main = () => {
 
         files.map((file) => formData.append('file', file));
 
-        const res = await postData(formData);
+        await postData(formData);
     };
     const extractedText = data?.results[0].extracted_texts[0].chunk.text;
     console.log(extractedText);
