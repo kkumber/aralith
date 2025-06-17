@@ -1,9 +1,11 @@
 import { formatFileSize } from '@/lib/utils';
 import { File, FileWarning, Upload, X } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { Button } from '@/components/ui/button';
 
 interface Props {
     onFilesSelected: (files: File[]) => void;
+    handleFilesSubmit: (e: React.FormEvent) => void;
     width?: string | number;
     height?: string | number;
     maxFileSize?: number; // in MB
@@ -13,11 +15,13 @@ interface Props {
 
 const DragNdrop = ({
     onFilesSelected,
+    handleFilesSubmit,
     width = '100%',
     height = 'auto',
-    maxFileSize = 15,
-    acceptedTypes = ['.pdf', '.docx', '.pptx', '.txt', '.xlsx'],
+    maxFileSize = 10,
+    acceptedTypes = ['.pdf', '.docx', '.pptx', '.png', '.jpg', '.jpeg', '.webp'],
     maxFiles = 10,
+
 }: Props) => {
     const [files, setFiles] = useState<File[]>([]); // files array
     const [error, setError] = useState<string>(''); // error messages
@@ -134,9 +138,8 @@ const DragNdrop = ({
 
     return (
         <section className="space-y-4 rounded-xl border bg-transparent p-4 shadow-md dark:shadow-gray-950" style={{ width, height }}>
-            <h2>Upload Lessons</h2>
             <div
-                className={`${isDragOver ? 'border-secondary-green scale-[1.02]' : files.length > 0 ? 'border-secondary-green bg-green-50 dark:bg-green-950' : ''} hover:border-secondary-green relative cursor-pointer rounded-xl border-2 border-dashed p-8 transition-all duration-200`}
+                className={`${isDragOver ? 'border-primary-green scale-[1.02]' : files.length > 0 ? 'border-primary-green bg-green-50 dark:bg-green-950' : ''} hover:border-secondary-green relative cursor-pointer rounded-xl border-2 border-dashed p-8 transition-all duration-200`}
                 onDrop={handleDrop}
                 onDragLeave={handleDragLeave}
                 onDragOver={handleDragOver}
@@ -179,15 +182,16 @@ const DragNdrop = ({
                 <div className="space-y-4">
                     <div className="flex items-center justify-between">
                         <small className="text-sm font-semibold text-gray-700 dark:text-gray-300">Selected Items ({files.length})</small>
-                        <button
-                            onClick={(e) => {
+                        <div className="flex justify-center items-center space-x-4">
+                        <Button className="max-w-max" onClick={handleFilesSubmit}>
+                        Upload
+                    </Button>
+                        <Button variant={'destructive'} onClick={(e) => {
                                 e.stopPropagation();
                                 handleClearAllFiles();
-                            }}
-                            className="text-sm font-medium text-red-600 hover:cursor-pointer hover:text-red-800"
-                        >
-                            Clear All
-                        </button>
+                            }}>Clear All</Button>
+
+                        </div>
                     </div>
 
                     <div className="max-h-48 space-y-2 overflow-auto">

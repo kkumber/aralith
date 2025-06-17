@@ -10,7 +10,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-primary text-primary-foreground shadow-xs hover:bg-primary/90",
+          "bg-primary-green text-primary shadow-xs hover:bg-secondary-green hover:shadow-md",
         destructive:
           "bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40",
         outline:
@@ -49,7 +49,7 @@ function Button({
   return (
     <Comp
       data-slot="button"
-      className={cn(buttonVariants({ variant, size, className }), 'hover:cursor-pointer')}
+      className={cn(buttonVariants({ variant, size, className }), 'hover:cursor-pointer transition-all duration-300 ease-out')}
       {...props}
     />
   )

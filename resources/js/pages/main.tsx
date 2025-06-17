@@ -12,18 +12,32 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 const Main = () => {
-    const [selectedFiles, setSelectedFiles] = useState<File[]>();
+    const [files, setFiles] = useState<File[]>();
 
     const handleFilesSelected = (files: File[]) => {
-        setSelectedFiles(files);
+        setFiles(files);
         console.log(`Files Selected: `, files);
+    };
+
+    const handleFilesSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        if (!files || files.length === 0) return;
+
+        const formData = new FormData();
+
+        files.map((file) => formData.append('file', file));
+
+        const res = await fetch('http://127.0.0.1:8000/upload-document/', { method: 'POST', body: formData });
+        const data = await res.json();
+        console.log(data);
     };
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Upload Lessons" />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
-                <DragNdrop onFilesSelected={handleFilesSelected} />
+                <DragNdrop onFilesSelected={handleFilesSelected} handleFilesSubmit={handleFilesSubmit} />
             </div>
         </AppLayout>
     );
