@@ -1,4 +1,5 @@
 import DragNdrop from '@/components/ui/DragNdrop';
+import usePost from '@/hooks/usePost';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
@@ -12,6 +13,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 const Main = () => {
+    const { postData, data, error, isLoading } = usePost('http://127.0.0.1:8000/upload-document/');
     const [files, setFiles] = useState<File[]>();
 
     const handleFilesSelected = (files: File[]) => {
@@ -23,21 +25,25 @@ const Main = () => {
         e.preventDefault();
 
         if (!files || files.length === 0) return;
+        // Might add some catch for file sizes and types
 
         const formData = new FormData();
 
         files.map((file) => formData.append('file', file));
 
-        const res = await fetch('http://127.0.0.1:8000/upload-document/', { method: 'POST', body: formData });
-        const data = await res.json();
-        console.log(data);
+        const res = await postData(formData);
     };
+    const extractedText = data?.results[0].extracted_texts[0].chunk.text;
+    console.log(extractedText);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Upload Lessons" />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 <DragNdrop onFilesSelected={handleFilesSelected} handleFilesSubmit={handleFilesSubmit} />
+                <textarea name="extracted_texts" id="" cols={20} rows={20}>
+                    <pre>{extractedText}</pre>
+                </textarea>
             </div>
         </AppLayout>
     );

@@ -182,16 +182,12 @@ const DragNdrop = ({
                 <div className="space-y-4">
                     <div className="flex items-center justify-between">
                         <small className="text-sm font-semibold text-gray-700 dark:text-gray-300">Selected Items ({files.length})</small>
-                        <div className="flex justify-center items-center space-x-4">
-                        <Button className="max-w-max" onClick={handleFilesSubmit}>
-                        Upload
-                    </Button>
-                        <Button variant={'destructive'} onClick={(e) => {
+                        
+                        <Button variant={'destructive'} size={'sm'} onClick={(e) => {
                                 e.stopPropagation();
                                 handleClearAllFiles();
                             }}>Clear All</Button>
 
-                        </div>
                     </div>
 
                     <div className="max-h-48 space-y-2 overflow-auto">
@@ -216,8 +212,12 @@ const DragNdrop = ({
                             </div>
                         ))}
                     </div>
-                </div>
+                    <Button className="w-full" onClick={handleFilesSubmit} size={`sm`}>
+                        Upload
+                    </Button>
+                </div>  
             )}
+            
         </section>
     );
 };
