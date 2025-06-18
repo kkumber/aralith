@@ -181,7 +181,7 @@ const DragNdrop = ({
             {files.length > 0 && (
                 <div className="space-y-4">
                     <div className="flex items-center justify-between">
-                        <small className="text-sm font-semibold text-gray-700 dark:text-gray-300">Selected Items ({files.length})</small>
+                        <small>Selected Items ({files.length})</small>
                         
                         <Button variant={'destructive'} size={'sm'} onClick={(e) => {
                                 e.stopPropagation();
