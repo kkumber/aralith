@@ -31,11 +31,9 @@ const Main = () => {
 
         files.map((file) => formData.append('file', file));
 
-        const res = await postData(formData);
+        await postData(formData);
     };
     const extractedText = data?.results[0].extracted_texts[0].chunk.text;
-    console.log(extractedText);
-
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Upload Lessons" />
