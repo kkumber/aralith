@@ -21,7 +21,7 @@ const Create = () => {
             <Head title="Upload Lessons" />
 
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
-                <Card className="shadow-md">
+                <Card className="p-6 shadow-md">
                     <CardHeader>
                         <CardTitle className="text-xl">Presets</CardTitle>
                         <div className="grid grid-cols-2 gap-4">
@@ -36,7 +36,17 @@ const Create = () => {
                             />
                         </div>
                     </CardHeader>
-                    <CardContent></CardContent>
+                    <hr />
+                    <CardContent>
+                        <CardTitle className="text-xl">Advance Configuration</CardTitle>
+                        <div className="flex flex-col">
+                            <div className="flex items-center justify-between">
+                                <p>Number of Questions</p>
+                                <p>10</p>
+                            </div>
+                            <div className="flex flex-wrap items-center justify-center gap-2">{/* Some Boxes */}</div>
+                        </div>
+                    </CardContent>
                 </Card>
             </div>
         </AppLayout>
