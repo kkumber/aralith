@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Upload Lessons',
-        href: '/main',
+        href: route('main'),
     },
 ];
 
@@ -91,7 +91,7 @@ const Main = () => {
                     ></textarea>
                     <CardFooter>
                         <Button asChild>
-                            <Link href={route('quiz.index')}>Configure Quiz</Link>
+                            <Link href={route('quiz.create')}>Configure Quiz</Link>
                         </Button>
                     </CardFooter>
                 </Card>

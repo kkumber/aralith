@@ -14,7 +14,7 @@ class QuizzesController extends Controller
      */
     public function index()
     {
-        return Inertia::render('configure-quiz');
+        //
     }
 
     /**
@@ -22,7 +22,7 @@ class QuizzesController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('quiz/create');
     }
 
     /**
