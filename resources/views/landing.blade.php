@@ -17,20 +17,18 @@
   <header class="flex flex-col gap-4 items-center justify-center text-center md:p-20">
     <div className="mb-6 w-full max-w-[335px] text-sm not-has-[nav]:hidden lg:max-w-4xl">
       <nav class="flex items-center justify-end gap-4">
-        @guest
             <a
-                href="{{ route('login') }}"
+                href="{{ route(auth()->guest() ? 'login' : 'main') }}"
                 class="inline-block rounded-sm border border-transparent px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-secondary-green dark:text-[#EDEDEC]"
             >
                 Log in
             </a>
             <a
-                href="{{ route('register') }}"
+                href="{{ route(auth()->guest() ? 'register' : 'main') }}"
                 class="inline-block rounded-sm px-5 py-1.5 text-sm leading-normal bg-primary-green text-[#EDEDEC] hover:bg-secondary-green transition-all duration-300 ease-out"
             >
                 Register
             </a>
-        @endguest
       </nav>
     </div>
     <p class="text-secondary-green font-semibold">Aralith</p>
@@ -38,7 +36,7 @@
     <p class="text-text-primary dark:text-dark-text-primary text-center">
       From PDFs to flashcards in a click—Aralith streamlines quiz creation so learners and educators can focus on what matters.
     </p>
-    <a href="{{ route('register') }}" class="px-8 py-2 bg-primary-green text-white font-medium rounded-full w-max hover:bg-secondary-green hover:cursor-pointer transition-all duration-300 ease-out hover:shadow-lg flex items-center gap-2">
+    <a href="{{ route(auth()->guest() ? 'register' : 'main') }}" class="px-8 py-2 bg-primary-green text-white font-medium rounded-full w-max hover:bg-secondary-green hover:cursor-pointer transition-all duration-300 ease-out hover:shadow-lg flex items-center gap-2">
       Get Started
       <i data-lucide="arrow-right" class="w-5 h-5"></i>
     </a>
@@ -188,7 +186,7 @@
         <p class="mb-6">
           Struggling to prepare for quizzes or exams? Aralith saves you hours by turning your class notes, PDFs, and even videos into personalized quizzes and flashcards — instantly. Focus on what matters most and retain more in less time.
         </p>
-        <a href="{{ route('register') }}" class="text-primary-green hover:text-secondary-green font-semibold flex items-center gap-1">
+        <a href="{{ route(auth()->guest() ? 'register' : 'main') }}" class="text-primary-green hover:text-secondary-green font-semibold flex items-center gap-1">
           Get Started
           <i data-lucide="arrow-right" class="w-4 h-4"></i>
         </a>
@@ -203,7 +201,7 @@
         <p class="mb-6">
           Designing assessments takes time — Aralith gives it back to you. Whether you teach online or in person, generate high-quality quizzes from your materials in seconds, share them with students, and track learning outcomes effortlessly.
         </p>
-        <a href="{{ route('register') }}" class="text-primary-green hover:text-secondary-green font-semibold flex items-center gap-1">
+        <a href="{{ route(auth()->guest() ? 'register' : 'main') }}" class="text-primary-green hover:text-secondary-green font-semibold flex items-center gap-1">
           Get Started
           <i data-lucide="arrow-right" class="w-4 h-4"></i>
         </a>
@@ -218,7 +216,7 @@
         <p class="mb-6">
           Learning something new or reviewing for board exams? Upload any resource — books, videos, presentations — and Aralith will create engaging, memory-boosting quizzes and study aids tailored just for you.
         </p>
-        <a href="{{ route('register') }}" class="text-primary-green hover:text-secondary-green font-semibold flex items-center gap-1">
+        <a href="{{ route(auth()->guest() ? 'register' : 'main') }}" class="text-primary-green hover:text-secondary-green font-semibold flex items-center gap-1">
           Get Started
           <i data-lucide="arrow-right" class="w-4 h-4"></i>
         </a>
