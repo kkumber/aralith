@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Quizzes;
 use App\Http\Requests\StoreQuizzesRequest;
 use App\Http\Requests\UpdateQuizzesRequest;
+use Inertia\Inertia;
 
 class QuizzesController extends Controller
 {
@@ -13,7 +14,7 @@ class QuizzesController extends Controller
      */
     public function index()
     {
-        //
+        return Inertia::render('configure-quiz');
     }
 
     /**

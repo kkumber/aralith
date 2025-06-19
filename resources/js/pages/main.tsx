@@ -91,7 +91,7 @@ const Main = () => {
                     ></textarea>
                     <CardFooter>
                         <Button asChild>
-                            <Link href={route('main')}>Configure Quiz</Link>
+                            <Link href={route('quiz.index')}>Configure Quiz</Link>
                         </Button>
                     </CardFooter>
                 </Card>

@@ -1,7 +1,7 @@
 import { UsePost } from '@/types';
 import { useCallback, useState } from 'react';
 
-const usePost = <TInput, TOutput>(url: string): UsePost<TInput, TOutput> => {
+const usePost = <TInput extends BodyInit, TOutput>(url: string): UsePost<TInput, TOutput> => {
     const [data, setData] = useState<TOutput | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);

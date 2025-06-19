@@ -1,5 +1,9 @@
 const ConfigureQuiz = () => {
-    return <div className="">Configure Quiz</div>;
+    return (
+        <div className="">
+            <h1>Configure Quiz</h1>
+        </div>
+    );
 };
 
 export default ConfigureQuiz;
