@@ -1,12 +1,13 @@
+import { UsePost } from '@/types';
 import { useCallback, useState } from 'react';
 
-const usePost = (url: string) => {
-    const [data, setData] = useState();
-    const [error, setError] = useState<string | null>();
-    const [isLoading, setIsLoading] = useState<boolean>();
+const usePost = <TInput, TOutput>(url: string): UsePost<TInput, TOutput> => {
+    const [data, setData] = useState<TOutput | null>(null);
+    const [error, setError] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const postData = useCallback(
-        async (payload: any) => {
+        async (payload: TInput): Promise<TOutput> => {
             setError(null);
             setIsLoading(true);
 

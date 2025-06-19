@@ -3,8 +3,8 @@ import { Card, CardDescription, CardFooter, CardHeader } from '@/components/ui/c
 import DragNdrop from '@/components/ui/DragNdrop';
 import usePost from '@/hooks/usePost';
 import AppLayout from '@/layouts/app-layout';
-import { BreadcrumbItem } from '@/types';
-import { Head } from '@inertiajs/react';
+import { BreadcrumbItem, UsePost } from '@/types';
+import { Head, Link } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -39,17 +39,10 @@ interface TextChunk {
     word_count: number;
 }
 
-interface UsePost {
-    postData: () => void;
-    data: any;
-    error: string | null;
-    isLoading: boolean;
-}
-
 type ExtractionStatus = 'success' | 'failed' | 'processing' | 'pending' | 'error';
 
 const Main = () => {
-    const { postData, data, error, isLoading } = usePost('http://127.0.0.1:8000/upload-document/');
+    const { postData, data, error, isLoading }: UsePost<FormData, FileExtractionResult> = usePost('http://127.0.0.1:8000/upload-document/');
     const [files, setFiles] = useState<File[]>();
     const [lessonContent, setLessonContent] = useState<string>();
 
@@ -97,7 +90,9 @@ const Main = () => {
                         onChange={(e) => setLessonContent(e.target.value)}
                     ></textarea>
                     <CardFooter>
-                        <Button>Generate Quiz</Button>
+                        <Button asChild>
+                            <Link href={route('main')}>Configure Quiz</Link>
+                        </Button>
                     </CardFooter>
                 </Card>
             </div>
