@@ -1,5 +1,5 @@
-@import 'tailwindcss';
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import 'tailwindcss';
 
 @plugin 'tailwindcss-animate';
 
@@ -183,19 +183,19 @@
     }
 
     h1 {
-        @apply font-headers text-text-primary dark:text-dark-text-primary text-4xl font-bold;
+        @apply font-headers text-text-primary dark:text-dark-text-primary text-3xl font-bold;
     }
 
     h2 {
-        @apply font-headers text-text-primary dark:text-dark-text-primary text-3xl font-semibold;
+        @apply font-headers text-text-primary dark:text-dark-text-primary text-2xl font-semibold;
     }
 
     h3 {
-        @apply font-headers text-text-primary dark:text-dark-text-primary text-2xl font-medium;
+        @apply font-headers text-text-primary dark:text-dark-text-primary text-xl font-medium;
     }
 
     p {
-        @apply font-paragraph text-text-secondary dark:text-dark-text-secondary text-lg font-normal;
+        @apply font-paragraph text-text-secondary dark:text-dark-text-secondary text-base font-normal;
     }
 
     small {
