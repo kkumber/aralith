@@ -10,9 +10,12 @@ type SubCardProps = React.ComponentProps<"div"> & {
 }
 
 export function SubCard({ title, content, description, className, ...props }: SubCardProps) {
+  const [isClicked, setIsClicked] = React.useState<boolean>(false);
+
   return (
     <div
-      className={cn("bg-light-surface dark:bg-dark-surface text-card-foreground border flex flex-col gap-2 rounded-sm p-4", className)}
+      className={cn(`text-card-foreground border flex flex-col gap-2 rounded-sm p-4 hover:cursor-pointer hover:border-primary-green ${isClicked ? 'bg-primary-green' : 'bg-light-surface dark:bg-dark-surface'}`, className)}
+      onClick={() => setIsClicked(!isClicked)}
       {...props}
     >
         {title && <p className="leading-none font-semibold text-text-primary dark:text-dark-text-primary">{title}</p>}
