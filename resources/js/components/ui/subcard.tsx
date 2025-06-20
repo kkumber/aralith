@@ -12,7 +12,7 @@ type SubCardProps = React.ComponentProps<"div"> & {
 export function SubCard({ title, content, description, className, ...props }: SubCardProps) {
   return (
     <div
-      className={cn("bg-light-surface dark:bg-dark-surface text-card-foreground flex flex-col gap-2 rounded-sm p-4", className)}
+      className={cn("bg-light-surface dark:bg-dark-surface text-card-foreground border flex flex-col gap-2 rounded-sm p-4", className)}
       {...props}
     >
         {title && <p className="leading-none font-semibold text-text-primary dark:text-dark-text-primary">{title}</p>}
