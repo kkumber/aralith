@@ -20,17 +20,25 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-const questionTypes: string[] = ['Multiple Choice', 'True/False', 'Multiple Answers', 'Identification', 'Fill in the blank', 'Mixed Questions'];
-const difficultyLevels = ['Easy', 'Medium', 'Hard'];
+interface Configuration {
+    question_types: string[];
+    difficulty: string;
+    total_number_of_questions: number;
+    random_order: boolean;
+}
+
+type Difficulty = 'Easy' | 'Medium' | 'Hard';
+
+const difficultyLevels: string[] = ['Easy', 'Medium', 'Hard'];
 
 const presets = [
-    { type: 'mcq', selected: false, title: 'Vocabulary Drill', description: 'Multiple choice · 10 questions', numOfQuestions: 10 },
-    { type: 't/f', selected: false, title: 'True/False Review', description: 'True/False · 12 questions', numOfQuestions: 12 },
-    { type: 'multiple_answers', selected: false, title: 'Concept Check', description: 'Multiple Answers · 6 questions', numOfQuestions: 6 },
-    { type: 'identification', selected: false, title: 'What is it?', description: 'Identification · 10 questions', numOfQuestions: 10 },
-    { type: 'fitb', selected: false, title: 'Quick Recall', description: 'Fill in the blank · 10 questions', numOfQuestions: 10 },
+    { type: 'Multiple Choice', selected: false, title: 'Vocabulary Drill', description: 'Multiple choice · 10 questions', numOfQuestions: 10 },
+    { type: 'True/False', selected: false, title: 'True/False Review', description: 'True/False · 12 questions', numOfQuestions: 12 },
+    { type: 'Multiple Answers', selected: false, title: 'Concept Check', description: 'Multiple Answers · 6 questions', numOfQuestions: 6 },
+    { type: 'Identification', selected: false, title: 'What is it?', description: 'Identification · 10 questions', numOfQuestions: 10 },
+    { type: 'Fill in the blank', selected: false, title: 'Quick Recall', description: 'Fill in the blank · 10 questions', numOfQuestions: 10 },
     {
-        type: 'mixed',
+        type: 'Mixed',
         selected: false,
         title: 'Mixed Practice',
         description: 'MCQ, True/False, Multiple Answers, Identification, Fill in the blank · 25 questions',
@@ -38,54 +46,43 @@ const presets = [
     },
 ];
 
+const questionTypes: string[] = presets.map((p) => p.type);
+
 const Create = () => {
-    const [numOfQuestions, setNumOfQuestions] = useState<number[]>([10]);
-    const [isCLicked, setIsclicked] = useState<boolean>(false);
-    const [preset, setPreset] = useState({ type: '', numOfQuestions: 0 });
+    const [numOfQuestions, setNumOfQuestions] = useState<number>(10);
+    const [difficulty, setDifficulty] = useState<Difficulty>('Medium');
+    const [randomOrder, setRandomOrder] = useState<boolean>(true);
+    const [preset, setPreset] = useState();
+    const [currentPreset, setCurrentPreset] = useState<string>('');
 
-    const [advanceConfiguration, setAdvanceConfiguration] = useState({
-        questions: [
-            {
-                type: 'mcq',
-                selected: false,
-            },
-            {
-                type: 't/f',
-                selected: false,
-            },
-            {
-                type: 'multiple_answers',
-                selected: false,
-            },
-            {
-                type: 'identification',
-                selected: false,
-            },
-            {
-                type: 'fitb',
-                selected: false,
-            },
-            {
-                type: 'mixed',
-                selected: false,
-            },
-        ],
-        difficulty: '',
-        number_of_questions: numOfQuestions,
-        random_order: false,
-    });
+    // The default quiz config. Can be changed.
+    const configuration: Configuration = {
+        question_types: [],
+        difficulty: difficulty,
+        total_number_of_questions: numOfQuestions,
+        random_order: randomOrder,
+    };
 
-    const handlePreset = (type: string) => {
+    // When a preset is clicked, it changes the configuration
+    const handlePreset = (type: string, numOfQuestions: number) => {
         if (!type) return;
-        setPreset({ type, numOfQuestions: 10 });
+        if (!questionTypes.includes(type)) return;
+
+        const configQuestionTypes = configuration.question_types;
+
+        // Clear the array if there are existing presets
+        if (configQuestionTypes && configQuestionTypes.length > 0) {
+            configQuestionTypes.length = 0;
+        }
+
+        configQuestionTypes.push(type);
+        setCurrentPreset(type);
+        setNumOfQuestions(numOfQuestions);
     };
 
     const handleGenerateQuiz = () => {
-        if (preset) {
-            // Submit
-        }
+        // Submit the config
     };
-    console.log(preset);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -96,32 +93,15 @@ const Create = () => {
                     <CardHeader className="space-y-4">
                         <CardTitle className="text-xl">Presets</CardTitle>
                         <div className="flex flex-1 flex-wrap gap-4">
-                            <SubCard
-                                title="Vocabulary Drill"
-                                description="Multiple choice · 10 questions"
-                                onClick={() => handlePreset(questionTypes[0])}
-                            />
-                            <SubCard
-                                title="True/False Review"
-                                description="True/False · 12 questions"
-                                onClick={() => handlePreset(questionTypes[1])}
-                            />
-                            <SubCard
-                                title="Concept Check"
-                                description="Multiple Answers · 6 questions"
-                                onClick={() => handlePreset(questionTypes[2])}
-                            />
-                            <SubCard title="What is it?" description="Identification · 10 questions" onClick={() => handlePreset(questionTypes[3])} />
-                            <SubCard
-                                title="Quick Recall"
-                                description="Fill in the blank · 10 questions"
-                                onClick={() => handlePreset(questionTypes[4])}
-                            />
-                            <SubCard
-                                title="Mixed Practice"
-                                description="MCQ, True/False, Multiple Answers, Identification, Fill in the blank · 25 questions"
-                                onClick={() => handlePreset(questionTypes[5])}
-                            />
+                            {presets.map((p) => (
+                                <SubCard
+                                    title={p.title}
+                                    description={p.description}
+                                    key={p.type}
+                                    onClick={() => handlePreset(p.type, p.numOfQuestions)}
+                                    className={`${currentPreset === p.type ? 'bg-primary-green' : 'bg-light-surface dark:bg-dark-surface'}`}
+                                />
+                            ))}
                         </div>
                     </CardHeader>
                     <hr />
@@ -133,18 +113,18 @@ const Create = () => {
                                 <p>{numOfQuestions}</p>
                             </div>
                             <Slider
-                                defaultValue={numOfQuestions}
-                                value={numOfQuestions}
+                                defaultValue={[numOfQuestions]}
+                                value={[numOfQuestions]}
                                 step={1}
-                                max={100}
+                                max={50}
                                 min={1}
-                                onValueChange={setNumOfQuestions}
+                                onValueChange={(val: number[]) => setNumOfQuestions(val[0] ?? 10)}
                             />
                             <div className="flex flex-col justify-center gap-2">
                                 <p>Question Types</p>
                                 <div className="flex flex-wrap gap-2">
-                                    {questionTypes.map((type, index) => (
-                                        <BlockBox item={type} key={index} />
+                                    {presets.map((p, index) => (
+                                        <BlockBox item={p.type} key={index} />
                                     ))}
                                 </div>
                             </div>
