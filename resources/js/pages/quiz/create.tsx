@@ -96,9 +96,9 @@ const Create = () => {
     const handleGenerateQuiz = () => {
         // Submit the config
 
-        // The default quiz config. Can be changed.
+        // The finalized quiz config.
         const configuration: Configuration = {
-            question_types: [],
+            question_types: selectedTypes,
             difficulty: difficulty,
             total_number_of_questions: numOfQuestions,
             random_order: randomOrder,
@@ -107,7 +107,8 @@ const Create = () => {
 
     useEffect(() => {
         console.log(selectedTypes);
-    }, [selectedTypes]);
+        console.log(randomOrder);
+    }, [selectedTypes, randomOrder]);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -162,7 +163,7 @@ const Create = () => {
                                 </div>
                             </div>
                             <div className="flex items-center space-x-2">
-                                <Checkbox />
+                                <Checkbox onClick={() => setRandomOrder(!randomOrder)} defaultChecked />
                                 <p>Randomize Question Order</p>
                             </div>
                         </div>
