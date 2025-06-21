@@ -68,6 +68,7 @@ const Main = () => {
         // Cache ddata then go to options page
     };
 
+    // Refactor this so it only has one source of truth state
     useEffect(() => {
         if (data) {
             setLessonContent(data?.results[0].extracted_texts[0].chunk.text);

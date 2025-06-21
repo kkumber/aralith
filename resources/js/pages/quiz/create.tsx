@@ -29,7 +29,7 @@ interface Configuration {
 
 type Difficulty = 'Easy' | 'Medium' | 'Hard';
 
-const difficultyLevels: string[] = ['Easy', 'Medium', 'Hard'];
+const difficultyLevels: Difficulty[] = ['Easy', 'Medium', 'Hard'];
 
 const presets = [
     { type: 'Multiple Choice', selected: false, title: 'Vocabulary Drill', description: 'Multiple choice · 10 questions', numOfQuestions: 10 },
@@ -52,7 +52,6 @@ const Create = () => {
     const [numOfQuestions, setNumOfQuestions] = useState<number>(10);
     const [difficulty, setDifficulty] = useState<Difficulty>('Medium');
     const [randomOrder, setRandomOrder] = useState<boolean>(true);
-    const [preset, setPreset] = useState();
     const [currentPreset, setCurrentPreset] = useState<string>('');
 
     // The default quiz config. Can be changed.
@@ -78,6 +77,31 @@ const Create = () => {
         configQuestionTypes.push(type);
         setCurrentPreset(type);
         setNumOfQuestions(numOfQuestions);
+    };
+
+    // In advance configuration, users can set multiple question types
+    const handleAdvanceConfig = (type: string) => {
+        if (!type) return;
+        if (!questionTypes.includes(type)) return;
+
+        let configQuestionTypes = configuration.question_types;
+
+        // If chosen type is mixed, remove all existing types and replace with mixed
+        if (type === 'Mixed') {
+            configQuestionTypes.length = 0;
+            return configQuestionTypes.push(type);
+        }
+
+        // If there is a Mixed type, remove it
+        if (configQuestionTypes.includes('Mixed')) {
+            configQuestionTypes.pop();
+        }
+
+        if (configQuestionTypes.includes(type)) {
+            const filteredConfig = configQuestionTypes.filter((existingType) => existingType !== type);
+            return console.log((configQuestionTypes = filteredConfig));
+        }
+        configQuestionTypes.push(type);
     };
 
     const handleGenerateQuiz = () => {
@@ -124,7 +148,7 @@ const Create = () => {
                                 <p>Question Types</p>
                                 <div className="flex flex-wrap gap-2">
                                     {presets.map((p, index) => (
-                                        <BlockBox item={p.type} key={index} />
+                                        <BlockBox item={p.type} key={index} onClick={() => handleAdvanceConfig(p.type)} />
                                     ))}
                                 </div>
                             </div>
