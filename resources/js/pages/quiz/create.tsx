@@ -7,7 +7,7 @@ import { SubCard } from '@/components/ui/subcard';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -28,6 +28,7 @@ interface Configuration {
 }
 
 type Difficulty = 'Easy' | 'Medium' | 'Hard';
+type QuestionType = 'Multiple Choice' | 'True/False' | 'Multiple Answers' | 'Identification' | 'Fill in the blank' | 'Mixed' | string;
 
 const difficultyLevels: Difficulty[] = ['Easy', 'Medium', 'Hard'];
 
@@ -49,64 +50,64 @@ const presets = [
 const questionTypes: string[] = presets.map((p) => p.type);
 
 const Create = () => {
+    const [selectedTypes, setSelectedTypes] = useState<QuestionType[]>([]);
     const [numOfQuestions, setNumOfQuestions] = useState<number>(10);
     const [difficulty, setDifficulty] = useState<Difficulty>('Medium');
     const [randomOrder, setRandomOrder] = useState<boolean>(true);
     const [currentPreset, setCurrentPreset] = useState<string>('');
 
-    // The default quiz config. Can be changed.
-    const configuration: Configuration = {
-        question_types: [],
-        difficulty: difficulty,
-        total_number_of_questions: numOfQuestions,
-        random_order: randomOrder,
-    };
-
     // When a preset is clicked, it changes the configuration
-    const handlePreset = (type: string, numOfQuestions: number) => {
+    const handlePreset = (type: QuestionType, numOfQuestions: number) => {
         if (!type) return;
         if (!questionTypes.includes(type)) return;
 
-        const configQuestionTypes = configuration.question_types;
-
-        // Clear the array if there are existing presets
-        if (configQuestionTypes && configQuestionTypes.length > 0) {
-            configQuestionTypes.length = 0;
-        }
-
-        configQuestionTypes.push(type);
+        setSelectedTypes([type]);
         setCurrentPreset(type);
         setNumOfQuestions(numOfQuestions);
     };
 
     // In advance configuration, users can set multiple question types
-    const handleAdvanceConfig = (type: string) => {
+    const handleAdvanceConfig = (type: QuestionType) => {
         if (!type) return;
         if (!questionTypes.includes(type)) return;
 
-        let configQuestionTypes = configuration.question_types;
-
         // If chosen type is mixed, remove all existing types and replace with mixed
         if (type === 'Mixed') {
-            configQuestionTypes.length = 0;
-            return configQuestionTypes.push(type);
+            setSelectedTypes([type]);
+            return;
         }
 
         // If there is a Mixed type, remove it
-        if (configQuestionTypes.includes('Mixed')) {
-            configQuestionTypes.pop();
+        if (selectedTypes.includes('Mixed')) {
+            const removeMixed = selectedTypes.filter((currentType) => currentType !== 'Mixed');
+            setSelectedTypes([...removeMixed, type]);
+            return;
         }
 
-        if (configQuestionTypes.includes(type)) {
-            const filteredConfig = configQuestionTypes.filter((existingType) => existingType !== type);
-            return console.log((configQuestionTypes = filteredConfig));
+        // If already included, remove it
+        if (selectedTypes.includes(type)) {
+            setSelectedTypes(selectedTypes.filter((currentType) => currentType !== type));
+            return;
         }
-        configQuestionTypes.push(type);
+
+        setSelectedTypes([...selectedTypes, type]);
     };
 
     const handleGenerateQuiz = () => {
         // Submit the config
+
+        // The default quiz config. Can be changed.
+        const configuration: Configuration = {
+            question_types: [],
+            difficulty: difficulty,
+            total_number_of_questions: numOfQuestions,
+            random_order: randomOrder,
+        };
     };
+
+    useEffect(() => {
+        console.log(selectedTypes);
+    }, [selectedTypes]);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
