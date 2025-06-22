@@ -22,7 +22,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 interface Configuration {
     question_types: string[];
-    difficulty: string;
+    difficulty: Difficulty;
     total_number_of_questions: number;
     random_order: boolean;
 }
