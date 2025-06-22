@@ -8,6 +8,7 @@ import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
 import { useState } from 'react';
+import { Configuration, Difficulty, difficultyLevels, presets, QuestionType, questionTypes } from './config/config';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -19,35 +20,6 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: route('quiz.create'),
     },
 ];
-
-interface Configuration {
-    question_types: string[];
-    difficulty: string;
-    total_number_of_questions: number;
-    random_order: boolean;
-}
-
-type Difficulty = 'Easy' | 'Medium' | 'Hard';
-type QuestionType = 'Multiple Choice' | 'True/False' | 'Multiple Answers' | 'Identification' | 'Fill in the blank' | 'Mixed' | string;
-
-const difficultyLevels: Difficulty[] = ['Easy', 'Medium', 'Hard'];
-
-const presets = [
-    { type: 'Multiple Choice', selected: false, title: 'Vocabulary Drill', description: 'Multiple choice · 10 questions', numOfQuestions: 10 },
-    { type: 'True/False', selected: false, title: 'True/False Review', description: 'True/False · 12 questions', numOfQuestions: 12 },
-    { type: 'Multiple Answers', selected: false, title: 'Concept Check', description: 'Multiple Answers · 6 questions', numOfQuestions: 6 },
-    { type: 'Identification', selected: false, title: 'What is it?', description: 'Identification · 10 questions', numOfQuestions: 10 },
-    { type: 'Fill in the blank', selected: false, title: 'Quick Recall', description: 'Fill in the blank · 10 questions', numOfQuestions: 10 },
-    {
-        type: 'Mixed',
-        selected: false,
-        title: 'Mixed Practice',
-        description: 'MCQ, True/False, Multiple Answers, Identification, Fill in the blank · 25 questions',
-        numOfQuestions: 25,
-    },
-];
-
-const questionTypes: string[] = presets.map((p) => p.type);
 
 const Create = () => {
     const [selectedTypes, setSelectedTypes] = useState<QuestionType[]>([]);
