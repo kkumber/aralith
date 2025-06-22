@@ -5,7 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Configuration, Difficulty, QuestionType, questionTypes } from './config/config';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -68,6 +68,21 @@ const Create = () => {
         setSelectedTypes([...selectedTypes, type]);
     };
 
+    const handleNumOfQuestions = useCallback(
+        (num: number) => {
+            setNumOfQuestions(num);
+        },
+        [numOfQuestions],
+    );
+
+    const handleDifficulty = useCallback((difficulty: Difficulty) => {
+        setDifficulty(difficulty);
+    }, []);
+
+    const handleRandomOrder = useCallback((randomOrder: boolean) => {
+        setRandomOrder(randomOrder);
+    }, []);
+
     const handleGenerateQuiz = () => {
         // Submit the config
 
@@ -91,13 +106,13 @@ const Create = () => {
                     <CardContent className="space-y-4">
                         <AdvancedConfig
                             numOfQuestions={numOfQuestions}
-                            onQuestionChange={setNumOfQuestions}
+                            handleNumOfQuestions={handleNumOfQuestions}
                             selectedTypes={selectedTypes}
-                            onTypeChange={handleAdvanceConfig}
+                            handleAdvanceConfig={handleAdvanceConfig}
                             difficulty={difficulty}
-                            onDifficultyChange={setDifficulty}
+                            handleDifficulty={handleDifficulty}
                             randomOrder={randomOrder}
-                            setRandomOrder={setRandomOrder}
+                            handleRandomOrder={handleRandomOrder}
                         />
 
                         <Button className="w-full">Generate Quiz</Button>
