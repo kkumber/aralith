@@ -1,12 +1,14 @@
+import QuizPreset from '@/components/quiz-preset';
 import BlockBox from '@/components/ui/block-box';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Slider } from '@/components/ui/slider';
-import { SubCard } from '@/components/ui/subcard';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
+import { Info } from 'lucide-react';
 import { useState } from 'react';
 import { Configuration, Difficulty, difficultyLevels, presets, QuestionType, questionTypes } from './config/config';
 
@@ -88,26 +90,24 @@ const Create = () => {
 
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 <Card className="p-6 shadow-md">
-                    <CardHeader className="space-y-4">
-                        <CardTitle className="text-xl">Presets</CardTitle>
-                        <div className="flex flex-1 flex-wrap gap-4">
-                            {presets.map((p) => (
-                                <SubCard
-                                    title={p.title}
-                                    description={p.description}
-                                    key={p.type}
-                                    onClick={() => handlePreset(p.type, p.numOfQuestions)}
-                                    className={`${currentPreset === p.type ? 'bg-primary-green' : 'bg-light-surface dark:bg-dark-surface'}`}
-                                />
-                            ))}
-                        </div>
-                    </CardHeader>
+                    <QuizPreset handlePreset={handlePreset} currentPreset={currentPreset} />
                     <hr />
                     <CardContent className="space-y-4">
                         <CardTitle className="text-xl">Advance Configuration</CardTitle>
                         <div className="flex flex-col gap-4">
                             <div className="flex items-center justify-between">
-                                <p>Number of Questions (need icon when hover shows tooltip that divides num of questions equal to the total types)</p>
+                                <div className="flex items-center space-x-2">
+                                    <p>Number of Questions</p>
+                                    <Tooltip>
+                                        <TooltipTrigger asChild>
+                                            <Info size={15} />
+                                        </TooltipTrigger>
+                                        <TooltipContent>
+                                            Calculated by dividing the total number of questions by the number of question types.
+                                        </TooltipContent>
+                                    </Tooltip>
+                                </div>
+
                                 <p>{numOfQuestions}</p>
                             </div>
                             <Slider
