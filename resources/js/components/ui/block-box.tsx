@@ -8,7 +8,7 @@ type Props = React.ComponentProps<'div'> & {
 
 const BlockBox = ({className, item, ...props}: Props) => {
     return ( 
-        <div className={cn("p-3 rounded-md border hover:border-black dark:hover:border-white hover:cursor-pointer", className)} {...props}>
+        <div className={cn("p-3 rounded-md border hover:border-primary-green hover:cursor-pointer", className)} {...props}>
             <p>{item}</p>
         </div>
      );
