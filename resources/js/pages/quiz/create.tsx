@@ -7,7 +7,7 @@ import { SubCard } from '@/components/ui/subcard';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -71,6 +71,11 @@ const Create = () => {
         if (!type) return;
         if (!questionTypes.includes(type)) return;
 
+        // Clear preset
+        if (currentPreset) {
+            setCurrentPreset('');
+        }
+
         // If chosen type is mixed, remove all existing types and replace with mixed
         if (type === 'Mixed') {
             setSelectedTypes([type]);
@@ -104,11 +109,6 @@ const Create = () => {
             random_order: randomOrder,
         };
     };
-
-    useEffect(() => {
-        console.log(selectedTypes);
-        console.log(randomOrder);
-    }, [selectedTypes, randomOrder]);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -150,7 +150,12 @@ const Create = () => {
                                 <p>Question Types</p>
                                 <div className="flex flex-wrap gap-2">
                                     {presets.map((p, index) => (
-                                        <BlockBox item={p.type} key={index} onClick={() => handleAdvanceConfig(p.type)} />
+                                        <BlockBox
+                                            item={p.type}
+                                            key={index}
+                                            onClick={() => handleAdvanceConfig(p.type)}
+                                            className={selectedTypes.includes(p.type) ? 'bg-primary-green' : ''}
+                                        />
                                     ))}
                                 </div>
                             </div>
@@ -158,7 +163,12 @@ const Create = () => {
                                 <p>Difficulty Level</p>
                                 <div className="flex flex-wrap gap-2">
                                     {difficultyLevels.map((level, index) => (
-                                        <BlockBox item={level} key={index} />
+                                        <BlockBox
+                                            item={level}
+                                            key={index}
+                                            className={difficulty === level ? 'bg-primary-green' : ''}
+                                            onClick={() => setDifficulty(level)}
+                                        />
                                     ))}
                                 </div>
                             </div>
