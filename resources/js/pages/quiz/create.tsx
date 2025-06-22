@@ -1,16 +1,12 @@
-import QuizPreset from '@/components/quiz-preset';
-import BlockBox from '@/components/ui/block-box';
+import AdvancedConfig from '@/components/quiz/advanced-config';
+import QuizPreset from '@/components/quiz/quiz-preset';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardTitle } from '@/components/ui/card';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Slider } from '@/components/ui/slider';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { Card, CardContent } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
-import { Info } from 'lucide-react';
 import { useState } from 'react';
-import { Configuration, Difficulty, difficultyLevels, presets, QuestionType, questionTypes } from './config/config';
+import { Configuration, Difficulty, QuestionType, questionTypes } from './config/config';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -93,62 +89,17 @@ const Create = () => {
                     <QuizPreset handlePreset={handlePreset} currentPreset={currentPreset} />
                     <hr />
                     <CardContent className="space-y-4">
-                        <CardTitle className="text-xl">Advance Configuration</CardTitle>
-                        <div className="flex flex-col gap-4">
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center space-x-2">
-                                    <p>Number of Questions</p>
-                                    <Tooltip>
-                                        <TooltipTrigger asChild>
-                                            <Info size={15} />
-                                        </TooltipTrigger>
-                                        <TooltipContent>
-                                            Calculated by dividing the total number of questions by the number of question types.
-                                        </TooltipContent>
-                                    </Tooltip>
-                                </div>
+                        <AdvancedConfig
+                            numOfQuestions={numOfQuestions}
+                            onQuestionChange={setNumOfQuestions}
+                            selectedTypes={selectedTypes}
+                            onTypeChange={handleAdvanceConfig}
+                            difficulty={difficulty}
+                            onDifficultyChange={setDifficulty}
+                            randomOrder={randomOrder}
+                            setRandomOrder={setRandomOrder}
+                        />
 
-                                <p>{numOfQuestions}</p>
-                            </div>
-                            <Slider
-                                defaultValue={[numOfQuestions]}
-                                value={[numOfQuestions]}
-                                step={1}
-                                max={50}
-                                min={1}
-                                onValueChange={(val: number[]) => setNumOfQuestions(val[0] ?? 10)}
-                            />
-                            <div className="flex flex-col justify-center gap-2">
-                                <p>Question Types</p>
-                                <div className="flex flex-wrap gap-2">
-                                    {presets.map((p, index) => (
-                                        <BlockBox
-                                            item={p.type}
-                                            key={index}
-                                            onClick={() => handleAdvanceConfig(p.type)}
-                                            className={selectedTypes.includes(p.type) ? 'bg-primary-green' : ''}
-                                        />
-                                    ))}
-                                </div>
-                            </div>
-                            <div className="flex flex-col justify-center gap-2">
-                                <p>Difficulty Level</p>
-                                <div className="flex flex-wrap gap-2">
-                                    {difficultyLevels.map((level, index) => (
-                                        <BlockBox
-                                            item={level}
-                                            key={index}
-                                            className={difficulty === level ? 'bg-primary-green' : ''}
-                                            onClick={() => setDifficulty(level)}
-                                        />
-                                    ))}
-                                </div>
-                            </div>
-                            <div className="flex items-center space-x-2">
-                                <Checkbox onClick={() => setRandomOrder(!randomOrder)} defaultChecked />
-                                <p>Randomize Question Order</p>
-                            </div>
-                        </div>
                         <Button className="w-full">Generate Quiz</Button>
                     </CardContent>
                 </Card>

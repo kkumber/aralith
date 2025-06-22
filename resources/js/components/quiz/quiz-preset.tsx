@@ -1,6 +1,6 @@
 import { presets, QuestionType } from '@/pages/quiz/config/config';
-import { CardHeader, CardTitle } from './ui/card';
-import { SubCard } from './ui/subcard';
+import { CardHeader, CardTitle } from '../ui/card';
+import { SubCard } from '../ui/subcard';
 
 interface Props {
     handlePreset: (arg1: string, arg2: number) => void;
