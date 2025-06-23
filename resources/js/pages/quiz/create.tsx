@@ -5,7 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { Configuration, Difficulty, QuestionType, questionTypes } from './config/config';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -68,20 +68,17 @@ const Create = () => {
         setSelectedTypes([...selectedTypes, type]);
     };
 
-    const handleNumOfQuestions = useCallback(
-        (num: number) => {
-            setNumOfQuestions(num);
-        },
-        [numOfQuestions],
-    );
+    const handleNumOfQuestions = (num: number) => {
+        setNumOfQuestions(num);
+    };
 
-    const handleDifficulty = useCallback((difficulty: Difficulty) => {
+    const handleDifficulty = (difficulty: Difficulty) => {
         setDifficulty(difficulty);
-    }, []);
+    };
 
-    const handleRandomOrder = useCallback((randomOrder: boolean) => {
+    const handleRandomOrder = (randomOrder: boolean) => {
         setRandomOrder(randomOrder);
-    }, []);
+    };
 
     const handleGenerateQuiz = () => {
         // Submit the config
@@ -93,6 +90,8 @@ const Create = () => {
             total_number_of_questions: numOfQuestions,
             random_order: randomOrder,
         };
+
+        console.log(configuration);
     };
 
     return (
@@ -115,7 +114,9 @@ const Create = () => {
                             handleRandomOrder={handleRandomOrder}
                         />
 
-                        <Button className="w-full">Generate Quiz</Button>
+                        <Button className="w-full" onClick={handleGenerateQuiz}>
+                            Generate Quiz
+                        </Button>
                     </CardContent>
                 </Card>
             </div>

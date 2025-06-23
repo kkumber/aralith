@@ -2,6 +2,8 @@ import { formatFileSize } from '@/lib/utils';
 import { File, FileWarning, Upload, X } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
+import useFileValidate from '@/hooks/useFileValidate';
+import { isValidFileSize, isValidFileType } from '@/lib/utils';
 
 interface Props {
     onFilesSelected: (files: File[]) => void;
@@ -20,65 +22,52 @@ const DragNdrop = ({
     height = 'auto',
     maxFileSize = 10,
     acceptedTypes = ['.pdf', '.docx', '.pptx', '.png', '.jpg', '.jpeg', '.webp'],
-    maxFiles = 10,
+    maxFiles = 5,
 
 }: Props) => {
-    const [files, setFiles] = useState<File[]>([]); // files array
-    const [error, setError] = useState<string>(''); // error messages
-    const [isDragOver, setIsDragOver] = useState<boolean>(false); // flag
-    const fileInputRef = useRef<HTMLInputElement>(null); // input ref value
-
-    const validateFile = useCallback(
-        (file: File): boolean => {
-            // check file size -> output error
-            if (file.size > maxFileSize * 1024 * 1024) {
-                setError(`File ${file.name} exceeds ${maxFileSize}MB limit`);
-                return false;
-            }
-
-            // check file type -> output error
-            const fileExtension = '.' + file.name.split('.').pop()?.toLocaleLowerCase();
-            if (!acceptedTypes.includes(fileExtension)) {
-                setError(`File type "${fileExtension}" is not supported`);
-                return false;
-            }
-            return true;
-        },
-        [maxFileSize, acceptedTypes],
-    );
+    const [files, setFiles] = useState<File[]>([]); 
+    const [isDragOver, setIsDragOver] = useState<boolean>(false); 
+    const fileInputRef = useRef<HTMLInputElement>(null); 
+    const [error, setError] = useState<string | null>(null);
 
     // Main File Handler
     const handleFiles = useCallback(
         (newFiles: FileList | File[]) => {
+            if (!newFiles || newFiles.length === 0) return;
             setError('');
             const filesArrayTemp = Array.from(newFiles); // Create new array to handle multiple files
             const validFiles: File[] = []; // copy to save valid files
 
-            // Check if the current files being uploaded are gonna exceed the maximum file limit
-            if (files.length + filesArrayTemp.length > maxFiles) {
-                setError(`Maximum ${maxFiles} files allowed`);
-                return;
-            }
-
             // Check each file in the array
             for (const file of filesArrayTemp) {
-                // isValid?
-                if (!validateFile(file)) {
+                if (files.length + filesArrayTemp.length > maxFiles) {
+                    setError(`Maximum of ${maxFiles} files per upload allowed`);
                     return;
                 }
 
-                // has duplicate?
-                const isDuplicate = files.some((existingFile) => existingFile.name === file.name && existingFile.size === file.size);
-                if (!isDuplicate) {
-                    validFiles.push(file);
+                if (!isValidFileSize(file, maxFileSize)) {
+                    setError(`File ${file.name} exceeds ${maxFileSize}MB limit`);
+                    return;
                 }
+
+                if (!isValidFileType(file, acceptedTypes)) {
+                    setError('Unsupported File');
+                    return;
+                }
+
+                if (files.some((existingFile) => existingFile.name === file.name && existingFile.size === file.size)) {
+                    setError(`File ${file.name} already exists`);
+                    return;
+                }
+
+                validFiles.push(file);
             };
             
             if (validFiles.length > 0) {
-                    setFiles((prevFiles) => [...prevFiles, ...validFiles]);
+                setFiles((prevFiles) => [...prevFiles, ...validFiles]);
             };
         },
-        [files, maxFileSize, validateFile],
+        [files, maxFileSize],
     );
 
     // For Browse File Button
@@ -120,7 +109,6 @@ const DragNdrop = ({
     // Remove Files based on index
     const handleRemoveFile = (index: number) => {
         setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
-        setError('');
     };
 
     // helper function
