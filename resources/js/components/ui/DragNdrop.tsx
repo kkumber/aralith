@@ -2,8 +2,8 @@ import { formatFileSize } from '@/lib/utils';
 import { File, FileWarning, Upload, X } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import useFileValidate from '@/hooks/useFileValidate';
 import { isValidFileSize, isValidFileType } from '@/lib/utils';
+import DropZone from '../DragAndDrop/DropZone';
 
 interface Props {
     onFilesSelected: (files: File[]) => void;
@@ -26,8 +26,6 @@ const DragNdrop = ({
 
 }: Props) => {
     const [files, setFiles] = useState<File[]>([]); 
-    const [isDragOver, setIsDragOver] = useState<boolean>(false); 
-    const fileInputRef = useRef<HTMLInputElement>(null); 
     const [error, setError] = useState<string | null>(null);
 
     // Main File Handler
@@ -70,42 +68,6 @@ const DragNdrop = ({
         [files, maxFileSize],
     );
 
-    // For Browse File Button
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        e.preventDefault();
-        const selectedFile = e.target.files;
-
-        if (selectedFile && selectedFile.length > 0) {
-            handleFiles(selectedFile);
-        }
-
-        if (fileInputRef.current) {
-            fileInputRef.current.value = '';
-        }
-    };
-
-    // when the dragged item is dropped
-    const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        setIsDragOver(false);
-        const droppedFiles = e.dataTransfer.files;
-        if (droppedFiles && droppedFiles.length > 0) {
-            handleFiles(droppedFiles);
-        }
-    };
-
-    // When the dragged item enters the div
-    const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        setIsDragOver(true);
-    };
-
-    // When the dragged item leaves the div
-    const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        setIsDragOver(false);
-    };
-
     // Remove Files based on index
     const handleRemoveFile = (index: number) => {
         setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
@@ -126,46 +88,16 @@ const DragNdrop = ({
 
     return (
         <section className="space-y-4 rounded-xl border bg-transparent p-4 shadow-md dark:shadow-gray-950" style={{ width, height }}>
-            <div
-                className={`${isDragOver ? 'border-primary-green scale-[1.02]' : files.length > 0 ? 'border-primary-green bg-green-50 dark:bg-green-950' : ''} hover:border-secondary-green relative cursor-pointer rounded-xl border-2 border-dashed p-8 transition-all duration-200`}
-                onDrop={handleDrop}
-                onDragLeave={handleDragLeave}
-                onDragOver={handleDragOver}
-                onClick={() => fileInputRef.current?.click()}
-            >
-                {/* Upload Info */}
-                <div className="flex flex-col items-center justify-center gap-4">
-                    <div className="flex flex-col items-center gap-4">
-                        <Upload
-                            className={`h-12 w-12 transition-colors ${isDragOver ? 'text-secondary-green' : 'text-text-primary dark:text-dark-text-primary'}`}
-                        />
-
-                        <div className="space-y-1 text-center">
-                            <p className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-                                {isDragOver ? 'Drop files here' : 'Drag and drop your files here'}
-                            </p>
-                            <small>
-                                Limit {maxFileSize}MB per file • Supported Files: {acceptedTypes.join(', ')}
-                            </small>
-                        </div>
-                    </div>
-                    <input
-                        ref={fileInputRef}
-                        type="file"
-                        className="hidden"
-                        onChange={handleFileChange}
-                        accept={acceptedTypes.join(',')}
-                        multiple
-                    />{' '}
-                </div>
-                {/* Error Message */}
+            {/* DropZone */}
+            <DropZone handleFiles={handleFiles} hasFiles={files.length > 0} config={{maxFileSize, acceptedTypes}}/>
+                
+            {/* Error Message */}
                 {error && (
                     <div className="mt-4 flex items-center justify-center gap-1 rounded-lg p-3 text-center">
                         <FileWarning className="text-red-600" />
                         <p className="text-sm font-medium text-red-600">{error}</p>
                     </div>
-                )}
-            </div>
+            )}
             {files.length > 0 && (
                 <div className="space-y-4">
                     <div className="flex items-center justify-between">
@@ -175,7 +107,6 @@ const DragNdrop = ({
                                 e.stopPropagation();
                                 handleClearAllFiles();
                             }}>Clear All</Button>
-
                     </div>
 
                     <div className="max-h-48 space-y-2 overflow-auto">
@@ -201,7 +132,7 @@ const DragNdrop = ({
                         ))}
                     </div>
                     <Button className="w-full" onClick={handleFilesSubmit} size={`sm`}>
-                        Upload
+                        Extract Lessons
                     </Button>
                 </div>  
             )}

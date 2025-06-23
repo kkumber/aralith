@@ -63,12 +63,10 @@ const Main = () => {
         await postData(formData);
     };
 
-    const handleLessonContentSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
+    const handleLessonContentSubmit = () => {
         // Cache ddata then go to options page
     };
 
-    // Refactor this so it only has one source of truth state
     useEffect(() => {
         if (data) {
             setLessonContent(data?.results[0].extracted_texts[0].chunk.text);
@@ -80,6 +78,7 @@ const Main = () => {
             <Head title="Upload Lessons" />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 <DragNdrop onFilesSelected={handleFilesSelected} handleFilesSubmit={handleFilesSubmit} />
+                <h3 className="my-8 text-center">or copy and paste the text directly</h3>
                 <Card>
                     <CardHeader>Extracted Lesson</CardHeader>
                     <CardDescription>Please check the details before generating quizzes</CardDescription>
@@ -87,7 +86,8 @@ const Main = () => {
                         name="extracted_texts"
                         id="lessonContent"
                         value={lessonContent}
-                        className="h-80 w-full rounded-md focus:outline-0"
+                        className="h-80 w-full rounded-sm border p-3 focus:outline-0"
+                        placeholder="E=mc^2"
                         onChange={(e) => setLessonContent(e.target.value)}
                     ></textarea>
                     <CardFooter>

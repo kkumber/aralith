@@ -113,7 +113,6 @@ const Create = () => {
                             randomOrder={randomOrder}
                             handleRandomOrder={handleRandomOrder}
                         />
-
                         <Button className="w-full" onClick={handleGenerateQuiz}>
                             Generate Quiz
                         </Button>
