@@ -53,6 +53,7 @@ const Main = () => {
     const [lessonContent, setLessonContent] = useState<string>();
     const [uploadError, setUploadError] = useState<string | null>();
 
+    // Function to pass into child component to update files
     const handleFilesSelected = (files: File[]) => {
         setFiles(files);
     };
@@ -74,6 +75,7 @@ const Main = () => {
         // Cache ddata then go to options page or truncate first if over word limit
     };
 
+    // Parse the result from postData and validate against zod schema
     useEffect(() => {
         if (data) {
             const result = FileExtractionResultSchema.safeParse(data);
@@ -92,6 +94,7 @@ const Main = () => {
         }
     }, [data]);
 
+    // Sync error from postData to uploadError
     useEffect(() => {
         if (error) {
             const readableMsg = getFriendlyErrorMessage(error);
@@ -99,6 +102,7 @@ const Main = () => {
         }
     }, [error]);
 
+    // Clear error after 5 seconds
     useEffect(() => {
         if (uploadError) {
             const timeout = setTimeout(() => setUploadError(null), 5000);
