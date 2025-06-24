@@ -1,10 +1,9 @@
-import { formatFileSize } from '@/lib/utils';
-import { File, FileWarning, Upload, X } from 'lucide-react';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { Button } from '@/components/ui/button';
+import { FileWarning } from 'lucide-react';
+import { useCallback, useEffect, useState } from 'react';
 import { isValidFileSize, isValidFileType } from '@/lib/utils';
 import DropZone from '../DragAndDrop/DropZone';
 import FileList from '../DragAndDrop/FileList';
+
 
 interface DragAndDropProps {
     onFilesSelected: (files: File[]) => void;
