@@ -72,6 +72,18 @@ const Create = () => {
         setSelectedTypes([...selectedTypes, type]);
     };
 
+    const handleNumOfQuestions = (num: number) => {
+        setNumOfQuestions(num);
+    };
+
+    const handleDifficulty = (difficulty: Difficulty) => {
+        setDifficulty(difficulty);
+    };
+
+    const handleRandomOrder = (randomOrder: boolean) => {
+        setRandomOrder(randomOrder);
+    };
+
     const handleGenerateQuiz = () => {
         // Submit the config
 
@@ -82,6 +94,8 @@ const Create = () => {
             total_number_of_questions: numOfQuestions,
             random_order: randomOrder,
         };
+
+        console.log(configuration);
     };
 
     return (
@@ -95,16 +109,17 @@ const Create = () => {
                     <CardContent className="space-y-4">
                         <AdvancedConfig
                             numOfQuestions={numOfQuestions}
-                            onQuestionChange={setNumOfQuestions}
+                            handleNumOfQuestions={handleNumOfQuestions}
                             selectedTypes={selectedTypes}
-                            onTypeChange={handleAdvanceConfig}
+                            handleAdvanceConfig={handleAdvanceConfig}
                             difficulty={difficulty}
-                            onDifficultyChange={setDifficulty}
+                            handleDifficulty={handleDifficulty}
                             randomOrder={randomOrder}
-                            setRandomOrder={setRandomOrder}
+                            handleRandomOrder={handleRandomOrder}
                         />
-
-                        <Button className="w-full">Generate Quiz</Button>
+                        <Button className="w-full" onClick={handleGenerateQuiz}>
+                            Generate Quiz
+                        </Button>
                     </CardContent>
                 </Card>
             </div>

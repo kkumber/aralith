@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('quizzes_id')->constrained()->onDelete('cascade');
-            $table->enum('type', ['mcq', 'true_false', 'fill_in_blank', 'identification', 'definition']);
+            $table->enum('type', ['mcq', 'true_false', 'fill_in_blank', 'identification', 'multiple_answers', 'mixed']);
             $table->text('question_text');
             $table->text('explanation');
             $table->jsonb('options');
