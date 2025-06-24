@@ -36,10 +36,6 @@ const Create = () => {
         setNumOfQuestions(numOfQuestions);
     };
 
-    const handleNumOfQuestions = (num: number) => {
-        setNumOfQuestions(num);
-    };
-
     // In advance configuration, users can set multiple question types
     const handleAdvanceConfig = (type: QuestionType) => {
         if (!type) return;

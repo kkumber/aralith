@@ -50,7 +50,7 @@ const Main = () => {
     const { postData, data, error, isLoading }: UsePost<FormData, FileExtractionResult> = usePost('http://127.0.0.1:8000/upload-document/');
     const [files, setFiles] = useState<File[]>();
     const [lessonContent, setLessonContent] = useState<string>();
-    const [zodError, setZodError] = useState<string>();
+    const [uploadError, setUploadError] = useState<string | null>();
 
     const handleFilesSelected = (files: File[]) => {
         setFiles(files);
@@ -76,10 +76,10 @@ const Main = () => {
     useEffect(() => {
         if (data) {
             const result = FileExtractionResultSchema.safeParse(data);
-            setZodError('');
+            setUploadError('');
 
             if (!result.success) {
-                setZodError('Something went wrong while processing the data.');
+                setUploadError('Something went wrong while processing the data.');
                 return;
             }
             // Map through the text extraction result and set the lesson content
@@ -91,12 +91,25 @@ const Main = () => {
         }
     }, [data]);
 
+    useEffect(() => {
+        if (error) {
+            const readableMsg = getFriendlyErrorMessage(error);
+            setUploadError(readableMsg);
+        }
+    }, [error]);
+
+    useEffect(() => {
+        if (uploadError) {
+            const timeout = setTimeout(() => setUploadError(null), 5000);
+            return () => clearTimeout(timeout);
+        }
+    }, [uploadError]);
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Upload Lessons" />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
-                {error && <InputError message={getFriendlyErrorMessage(error)} />}
-                {zodError && <InputError message={zodError} />}
+                {uploadError && <InputError message={uploadError} />}
                 <DragNdrop onFilesSelected={handleFilesSelected} handleFilesSubmit={handleFilesSubmit} />
                 <h3 className="my-8 text-center">or copy and paste the text directly</h3>
                 <Card>

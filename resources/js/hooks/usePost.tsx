@@ -16,7 +16,7 @@ const usePost = <TInput extends BodyInit, TOutput>(url: string): UsePost<TInput,
 
                 if (!res.ok) {
                     const errorData = await res.json().catch(() => ({}));
-                    throw new Error(errorData.message || `HTTP error! status: ${res.status}`);
+                    throw new Error(errorData.message || `Bad request. Please try again.`);
                 }
                 const result = await res.json();
                 setData(result);
