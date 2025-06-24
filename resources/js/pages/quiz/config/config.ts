@@ -5,6 +5,8 @@ export interface Configuration {
     random_order: boolean;
 }
 
+export const wordCountLimit = 1000;
+
 export type Difficulty = 'Easy' | 'Medium' | 'Hard';
 export type QuestionType = 'Multiple Choice' | 'True/False' | 'Multiple Answers' | 'Identification' | 'Fill in the blank' | 'Mixed' | string;
 

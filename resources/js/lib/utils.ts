@@ -39,7 +39,7 @@ export function getFriendlyErrorMessage(error: string): string {
 }
 
 export function getWordCount(str: string) {
-    return str.trim().split(/\s+/).length;
+    return str?.trim().split(/\s+/).length || 0;
 }
 
 export function truncateStringByMaxCount(str: string, maxCount: number) {

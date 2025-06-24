@@ -4,11 +4,12 @@ import { Card, CardDescription, CardFooter, CardHeader } from '@/components/ui/c
 import DragNdrop from '@/components/ui/DragNdrop';
 import usePost from '@/hooks/usePost';
 import AppLayout from '@/layouts/app-layout';
-import { getFriendlyErrorMessage } from '@/lib/utils';
+import { getFriendlyErrorMessage, getWordCount, truncateStringByMaxCount } from '@/lib/utils';
 import { BreadcrumbItem, UsePost } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import * as z from 'zod/v4';
+import { wordCountLimit } from './quiz/config/config';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -70,7 +71,7 @@ const Main = () => {
     };
 
     const handleLessonContentSubmit = () => {
-        // Cache ddata then go to options page
+        // Cache ddata then go to options page or truncate first if over word limit
     };
 
     useEffect(() => {
@@ -86,8 +87,8 @@ const Main = () => {
             const extractedTexts = result.data.results.flatMap((a) => a.extracted_texts);
             const chunks = extractedTexts.map((a) => a.chunk.text);
             const texts = chunks.join('\n\n');
-
-            setLessonContent(texts);
+            const truncatedText = truncateStringByMaxCount(texts, wordCountLimit);
+            setLessonContent(truncatedText);
         }
     }, [data]);
 
@@ -114,15 +115,20 @@ const Main = () => {
                 <h3 className="my-8 text-center">or copy and paste the text directly</h3>
                 <Card>
                     <CardHeader>Extracted Lesson</CardHeader>
-                    <CardDescription>Please check the details before generating quizzes</CardDescription>
-                    <textarea
-                        name="extracted_texts"
-                        id="lessonContent"
-                        value={lessonContent}
-                        className="h-80 w-full rounded-sm border p-3 focus:outline-0"
-                        placeholder="E=mc^2"
-                        onChange={(e) => setLessonContent(e.target.value)}
-                    ></textarea>
+                    <div className="flex flex-col gap-1">
+                        <CardDescription>Please check the details before generating quizzes</CardDescription>
+                        <textarea
+                            name="extracted_texts"
+                            id="lessonContent"
+                            value={lessonContent}
+                            className="h-80 w-full rounded-sm border p-3 focus:outline-0"
+                            placeholder="E=mc^2"
+                            onChange={(e) => setLessonContent(e.target.value)}
+                        ></textarea>
+                        <small className="text-end">
+                            Word Limit: {lessonContent ? getWordCount(lessonContent) : 0}/{wordCountLimit}
+                        </small>
+                    </div>
                     <CardFooter>
                         <Button asChild disabled={!lessonContent || isLoading}>
                             <Link href={route('quiz.create')}>Configure Quiz</Link>
