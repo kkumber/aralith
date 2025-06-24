@@ -94,8 +94,8 @@ const DragNdrop = ({
             {/* Error Message */}
                 {error && (
                     <div className="mt-4 flex items-center justify-center gap-1 rounded-lg p-3 text-center">
-                        <FileWarning className="text-red-600" />
-                        <p className="text-sm font-medium text-red-600">{error}</p>
+                        <FileWarning className="text-red-600 dark:text-red-400" />
+                        <p className="text-sm font-medium text-red-600 dark:text-red-400">{error}</p>
                     </div>
             )}
 
