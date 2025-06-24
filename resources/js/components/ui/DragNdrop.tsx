@@ -26,7 +26,7 @@ const DragNdrop = ({
     maxFiles = 5,
 
 }: DragAndDropProps) => {
-    const [files, setFiles] = useState<File[]>([]); 
+    const [files, setFiles] = useState<File[]>([]); // fake copy
     const [error, setError] = useState<string | null>(null);
 
     // Main File Handler

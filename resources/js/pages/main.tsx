@@ -91,7 +91,7 @@ const Main = () => {
                         onChange={(e) => setLessonContent(e.target.value)}
                     ></textarea>
                     <CardFooter>
-                        <Button asChild>
+                        <Button asChild disabled={!lessonContent}>
                             <Link href={route('quiz.create')}>Configure Quiz</Link>
                         </Button>
                     </CardFooter>
