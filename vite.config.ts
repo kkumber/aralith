@@ -22,4 +22,9 @@ export default defineConfig({
             'ziggy-js': resolve(__dirname, 'vendor/tightenco/ziggy'),
         },
     },
+    test: {
+        globals: true,
+        environment: 'jsdom',
+        setupFiles: './tests/Frontend/setup.js',
+    },
 });
