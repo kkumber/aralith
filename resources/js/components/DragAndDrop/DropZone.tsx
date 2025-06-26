@@ -78,7 +78,12 @@ const DropZone = ({ handleFiles, hasFiles, config }: DragAndDropProps) => {
                         </small>
                     </div>
                 </div>
+                <label htmlFor="file-upload" className="sr-only">
+                    Upload files
+                </label>
                 <input
+                    name="file-upload"
+                    id="file-upload"
                     ref={fileInputRef}
                     type="file"
                     className="hidden"
