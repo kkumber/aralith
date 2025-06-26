@@ -45,6 +45,7 @@ const FileList = ({ files, handleClearAllFiles, handleRemoveFile, handleFilesSub
                                         handleRemoveFile(index);
                                     }}
                                     className="rounded-full p-1 text-gray-500 transition-colors hover:text-red-600"
+                                    aria-label="Remove file"
                                 >
                                     <X className="h-4 w-4 hover:cursor-pointer" />
                                 </button>

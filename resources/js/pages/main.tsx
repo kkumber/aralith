@@ -59,9 +59,7 @@ const Main = () => {
     };
 
     // Submit the files to microservice API for text extraction
-    const handleFilesSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-
+    const handleFilesSubmit = async () => {
         if (!files || files.length === 0) return;
 
         const formData = new FormData();
