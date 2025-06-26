@@ -1,9 +1,8 @@
+import { isValidFileSize, isValidFileType } from '@/lib/utils';
 import { FileWarning } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
-import { isValidFileSize, isValidFileType } from '@/lib/utils';
-import DropZone from '../DragAndDrop/DropZone';
-import FileList from '../DragAndDrop/FileList';
-
+import DropZone from './DropZone';
+import FileList from './FileList';
 
 interface DragAndDropProps {
     onFilesSelected: (files: File[]) => void;
@@ -23,7 +22,6 @@ const DragNdrop = ({
     maxFileSize = 10,
     acceptedTypes = ['.pdf', '.docx', '.pptx', '.png', '.jpg', '.jpeg', '.webp'],
     maxFiles = 5,
-
 }: DragAndDropProps) => {
     const [files, setFiles] = useState<File[]>([]); // fake copy
     const [error, setError] = useState<string | null>(null);
@@ -59,11 +57,11 @@ const DragNdrop = ({
                 }
 
                 validFiles.push(file);
-            };
-            
+            }
+
             if (validFiles.length > 0) {
                 setFiles((prevFiles) => [...prevFiles, ...validFiles]);
-            };
+            }
         },
         [files, maxFileSize],
     );
@@ -89,19 +87,23 @@ const DragNdrop = ({
     return (
         <section className="space-y-4 rounded-xl border bg-transparent p-4 shadow-md dark:shadow-gray-950" style={{ width, height }}>
             {/* DropZone */}
-            <DropZone handleFiles={handleFiles} hasFiles={files.length > 0} config={{maxFileSize, acceptedTypes}}/>
+            <DropZone handleFiles={handleFiles} hasFiles={files.length > 0} config={{ maxFileSize, acceptedTypes }} />
 
             {/* Error Message */}
-                {error && (
-                    <div className="mt-4 flex items-center justify-center gap-1 rounded-lg p-3 text-center">
-                        <FileWarning className="text-red-600 dark:text-red-400" />
-                        <p className="text-sm font-medium text-red-600 dark:text-red-400">{error}</p>
-                    </div>
+            {error && (
+                <div className="mt-4 flex items-center justify-center gap-1 rounded-lg p-3 text-center">
+                    <FileWarning className="text-red-600 dark:text-red-400" />
+                    <p className="text-sm font-medium text-red-600 dark:text-red-400">{error}</p>
+                </div>
             )}
 
             {/* File List */}
-            <FileList files={files} handleClearAllFiles={handleClearAllFiles} handleRemoveFile={handleRemoveFile} handleFilesSubmit={handleFilesSubmit} />
-            
+            <FileList
+                files={files}
+                handleClearAllFiles={handleClearAllFiles}
+                handleRemoveFile={handleRemoveFile}
+                handleFilesSubmit={handleFilesSubmit}
+            />
         </section>
     );
 };

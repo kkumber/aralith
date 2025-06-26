@@ -1,7 +1,7 @@
+import DragNdrop from '@/components/DragAndDrop/DragNdrop';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Card, CardDescription, CardFooter, CardHeader } from '@/components/ui/card';
-import DragNdrop from '@/components/ui/DragNdrop';
 import usePost from '@/hooks/usePost';
 import AppLayout from '@/layouts/app-layout';
 import { getFriendlyErrorMessage, getWordCount, truncateStringByMaxCount } from '@/lib/utils';

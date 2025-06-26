@@ -13,9 +13,9 @@ const FileList = ({ files, handleClearAllFiles, handleRemoveFile, handleFilesSub
     return (
         <>
             {files.length > 0 && (
-                <div className="space-y-4">
+                <div className="space-y-4" role="container" aria-label="file list">
                     <div className="flex items-center justify-between">
-                        <small>Selected Items ({files.length})</small>
+                        <small>Selected Files ({files.length})</small>
                         <Button
                             variant={'destructive'}
                             size={'sm'}
