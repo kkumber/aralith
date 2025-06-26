@@ -2,7 +2,7 @@ import '@testing-library/jest-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { afterEach } from 'node:test';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import DragnDrop from '../../../../resources/js/components/DragAndDrop/DragNdrop';
+import DragAndDrop from '../../../../resources/js/components/DragAndDrop/DragAndDrop';
 import FileList from '../../../../resources/js/components/DragAndDrop/FileList';
 
 describe('File List', () => {
@@ -22,7 +22,7 @@ describe('File List', () => {
     });
 
     it('show file list when a file is dropped or selected', async () => {
-        render(<DragnDrop onFilesSelected={mockFn} handleFilesSubmit={emptyFn} />);
+        render(<DragAndDrop onFilesSelected={mockFn} handleFilesSubmit={emptyFn} />);
 
         const dropZone = screen.getByRole('region', { name: 'file dropzone' });
 

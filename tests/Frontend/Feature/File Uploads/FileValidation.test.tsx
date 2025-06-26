@@ -1,12 +1,12 @@
 import '@testing-library/jest-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
-import DragNDrop from '../../../../resources/js/components/DragAndDrop/DragNdrop';
+import DragAndDrop from '../../../../resources/js/components/DragAndDrop/DragAndDrop';
 
 describe('File validation', () => {
     it('shows error when the maximum allowed files is reached', async () => {
         const emptyFn = () => {};
-        render(<DragNDrop onFilesSelected={emptyFn} handleFilesSubmit={emptyFn} maxFiles={5} />);
+        render(<DragAndDrop onFilesSelected={emptyFn} handleFilesSubmit={emptyFn} maxFiles={5} />);
 
         const fileInput = screen.getByLabelText(/upload files/i);
         const excessFiles = [

@@ -14,7 +14,7 @@ interface DragAndDropProps {
     maxFiles?: number;
 }
 
-const DragNdrop = ({
+const DragAndDrop = ({
     onFilesSelected,
     handleFilesSubmit,
     width = '100%',
@@ -108,4 +108,4 @@ const DragNdrop = ({
     );
 };
 
-export default DragNdrop;
+export default DragAndDrop;
