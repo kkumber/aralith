@@ -1,7 +1,6 @@
 import '@testing-library/jest-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { afterEach } from 'node:test';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import DragnDrop from '../../../../resources/js/components/DragAndDrop/DragNdrop';
 import FileList from '../../../../resources/js/components/DragAndDrop/FileList';
 
