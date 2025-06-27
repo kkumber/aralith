@@ -1,12 +1,14 @@
 import '@testing-library/jest-dom';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
-import DragNDrop from '../../../../resources/js/components/DragAndDrop/DragNdrop';
+import DragAndDrop from '../../../../resources/js/components/DragAndDrop/DragAndDrop';
 
 describe('File validation', () => {
     it('shows error when the maximum allowed files is reached', async () => {
+        const user = userEvent.setup();
         const emptyFn = () => {};
-        render(<DragNDrop onFilesSelected={emptyFn} handleFilesSubmit={emptyFn} maxFiles={5} />);
+        render(<DragAndDrop onFilesSelected={emptyFn} handleFilesSubmit={emptyFn} maxFiles={5} />);
 
         const fileInput = screen.getByLabelText(/upload files/i);
         const excessFiles = [
@@ -18,7 +20,7 @@ describe('File validation', () => {
             new File(['Hello World5'], 'hello5.png', { type: 'image/png' }),
         ];
 
-        fireEvent.input(fileInput, { target: { files: excessFiles } });
+        await user.upload(fileInput, excessFiles);
 
         expect(await screen.findByText(/Maximum of 5 files per upload allowed/i)).toBeInTheDocument();
         screen.debug();

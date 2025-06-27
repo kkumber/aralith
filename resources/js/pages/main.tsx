@@ -1,4 +1,3 @@
-import DragNdrop from '@/components/DragAndDrop/DragNdrop';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Card, CardDescription, CardFooter, CardHeader } from '@/components/ui/card';
@@ -9,6 +8,7 @@ import { BreadcrumbItem, UsePost } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import * as z from 'zod/v4';
+import DragAndDrop from '../components/DragAndDrop/DragAndDrop';
 import { wordCountLimit } from './quiz/config/config';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -59,9 +59,7 @@ const Main = () => {
     };
 
     // Submit the files to microservice API for text extraction
-    const handleFilesSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-
+    const handleFilesSubmit = async () => {
         if (!files || files.length === 0) return;
 
         const formData = new FormData();
@@ -115,7 +113,7 @@ const Main = () => {
             <Head title="Upload Lessons" />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 {uploadError && <InputError message={uploadError} />}
-                <DragNdrop onFilesSelected={handleFilesSelected} handleFilesSubmit={handleFilesSubmit} />
+                <DragAndDrop onFilesSelected={handleFilesSelected} handleFilesSubmit={handleFilesSubmit} />
                 <h3 className="my-8 text-center">or copy and paste the text directly</h3>
                 <Card>
                     <CardHeader>Extracted Lesson</CardHeader>

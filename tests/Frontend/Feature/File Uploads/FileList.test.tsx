@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import DragnDrop from '../../../../resources/js/components/DragAndDrop/DragNdrop';
+import DragAndDrop from '../../../../resources/js/components/DragAndDrop/DragAndDrop';
 import FileList from '../../../../resources/js/components/DragAndDrop/FileList';
 
 describe('File List', () => {
@@ -21,7 +21,7 @@ describe('File List', () => {
     });
 
     it('show file list when a file is dropped or selected', async () => {
-        render(<DragnDrop onFilesSelected={mockFn} handleFilesSubmit={emptyFn} />);
+        render(<DragAndDrop onFilesSelected={mockFn} handleFilesSubmit={emptyFn} />);
 
         const dropZone = screen.getByRole('region', { name: 'file dropzone' });
 
@@ -39,12 +39,35 @@ describe('File List', () => {
             },
         });
         expect(mockFn).toHaveBeenCalledWith(files);
-
         // Must await findByText since the UI appears after a state change
         const fileList = await screen.findByText(/selected files/i);
         expect(fileList).toBeInTheDocument();
+
+        // Also verify the UI shows the correct files
+        expect(screen.getByText('hello.png')).toBeInTheDocument();
+        expect(screen.getByText('notes.pdf')).toBeInTheDocument();
     });
 
+    it('renders list of files', async () => {
+        render(<FileList files={files} handleFilesSubmit={mockFn} handleClearAllFiles={emptyFn} handleRemoveFile={emptyFn} />);
+        const fileList = await screen.findByText(/selected files/i);
+        expect(fileList).toBeInTheDocument();
+
+        // Also verify the UI shows the correct files
+        expect(screen.getByText('hello.png')).toBeInTheDocument();
+        expect(screen.getByText('notes.pdf')).toBeInTheDocument();
+    });
+
+    it('calls handleRemoveFile when remove button is clicked', () => {
+        render(<FileList files={files} handleFilesSubmit={emptyFn} handleClearAllFiles={emptyFn} handleRemoveFile={mockFn} />);
+        const file = screen.getByText('hello.png');
+        const removeBtn = screen.getByLabelText('Remove file');
+
+        fireEvent.click(removeBtn);
+
+        expect(mockFn).toHaveBeenCalledWith(file);
+        expect(mockFn).toHaveBeenCalledTimes(2);
+    });
     it('submits the files in the list', () => {
         render(<FileList files={files} handleFilesSubmit={mockFn} handleClearAllFiles={emptyFn} handleRemoveFile={emptyFn} />);
 
@@ -53,5 +76,6 @@ describe('File List', () => {
         fireEvent.click(submitBtn);
 
         expect(mockFn).toHaveBeenCalledWith(files);
+        expect(mockFn).toHaveBeenCalledTimes(3); // 3 because of event bubbling and nested child prop for the function
     });
 });
