@@ -1,4 +1,5 @@
 import { isValidFileSize, isValidFileType } from '@/lib/utils';
+import { defaultAcceptedTypes, defaultMaxFiles } from '@/pages/quiz/config/config';
 import { FileWarning } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
 import DropZone from './DropZone';
@@ -20,8 +21,8 @@ const DragAndDrop = ({
     width = '100%',
     height = 'auto',
     maxFileSize = 10,
-    acceptedTypes = ['.pdf', '.docx', '.pptx', '.png', '.jpg', '.jpeg', '.webp'],
-    maxFiles = 5,
+    acceptedTypes = defaultAcceptedTypes,
+    maxFiles = defaultMaxFiles,
 }: DragAndDropProps) => {
     const [files, setFiles] = useState<File[]>([]); // fake copy
     const [error, setError] = useState<string | null>(null);

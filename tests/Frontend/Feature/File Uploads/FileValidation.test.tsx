@@ -22,7 +22,7 @@ describe('File validation', () => {
 
         await user.upload(fileInput, excessFiles);
 
-        expect(await screen.findByText(/Maximum of 5 files per upload allowed/i)).toBeInTheDocument();
+        expect(await screen.findByText(/maximum of 5 files per upload allowed/i)).toBeInTheDocument();
         screen.debug();
     });
 });
