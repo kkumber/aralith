@@ -3,6 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
 import DragAndDrop from '../../../../resources/js/components/DragAndDrop/DragAndDrop';
+import { createFile } from '../../utils/createFile';
 
 describe('File validation', () => {
     const emptyFn = () => {};
@@ -12,35 +13,43 @@ describe('File validation', () => {
         render(<DragAndDrop onFilesSelected={emptyFn} handleFilesSubmit={emptyFn} maxFiles={5} />);
 
         const fileInput = screen.getByLabelText(/upload files/i);
-        const excessFiles = [
-            new File(['1'], 'hello1.pdf', { type: 'application/pdf' }),
-            new File(['2'], 'hello2.pdf', { type: 'application/pdf' }),
-            new File(['3'], 'hello3.pdf', { type: 'application/pdf' }),
-            new File(['4'], 'hello4.pdf', { type: 'application/pdf' }),
-            new File(['5'], 'hello5.pdf', { type: 'application/pdf' }),
-            new File(['6'], 'hello6.pdf', { type: 'application/pdf' }),
-        ];
+        const excessFiles: File[] = [];
+
+        for (let i = 1; i <= 6; i++) {
+            excessFiles.push(createFile(`file${i}.pdf`));
+        }
 
         await user.upload(fileInput, excessFiles);
         expect(await screen.findByText(/maximum of 5 files per upload allowed/i)).toBeInTheDocument();
     });
 
     it('shows error for unsupported file type', async () => {
+        const user = userEvent.setup();
+
         render(<DragAndDrop onFilesSelected={emptyFn} handleFilesSubmit={emptyFn} />);
 
         const fileInput = screen.getByLabelText(/upload files/i);
-        const invalidFile = new File(['dummy'], 'file.exe', { type: 'application/x-msdownload' });
+        const invalidFile: File[] = [];
+        invalidFile.push(createFile('virus.exe', 5, 'application/x-msdownload'));
 
-        fireEvent.change(fileInput, { target: { files: [invalidFile] } });
-        expect(await screen.findByText(/unsupported/i)).toBeInTheDocument();
+        fireEvent.change(fileInput, { target: { files: invalidFile } });
+
+        const errorMsg = screen.queryByRole('alert', { name: 'file error' });
+        expect(errorMsg).not.toBeInTheDocument();
+        expect(await screen.findByText(/unsupported file/i)).toBeInTheDocument();
     });
 
     it('shows error for exceeding the maximum file size', async () => {
+        const user = userEvent.setup();
         render(<DragAndDrop onFilesSelected={emptyFn} handleFilesSubmit={emptyFn} />);
         const fileInput = screen.getByLabelText(/upload files/i);
-        const largeFile = [new File(['a'.repeat(11 * 1024 * 1024)], 'largeFile.pdf', { type: 'application/pdf' })];
+        const largeFile: File[] = [];
+        largeFile.push(createFile('file.pdf', 11));
 
-        fireEvent.change(fileInput, { target: { files: largeFile } });
+        await user.upload(fileInput, largeFile);
+
+        const errorMsg = screen.queryByRole('alert', { name: 'file error' });
+        expect(errorMsg).not.toBeInTheDocument();
         expect(await screen.findByText(/exceeds.*mb/i)).toBeInTheDocument();
     });
 
@@ -51,9 +60,11 @@ describe('File validation', () => {
         const fileInput = screen.getByLabelText(/upload files/i);
         const existingFile = [new File(['a'.repeat(5 * 1024 * 1024)], 'existingFile.pdf', { type: 'application/pdf' })];
 
-        user.upload(fileInput, existingFile);
-        user.upload(fileInput, existingFile);
+        await user.upload(fileInput, existingFile);
+        await user.upload(fileInput, existingFile);
 
+        const errorMsg = screen.queryByRole('alert', { name: 'file error' });
+        expect(errorMsg).not.toBeInTheDocument();
         expect(await screen.findByText(/file.*already exists/i)).toBeInTheDocument();
     });
 
@@ -62,21 +73,15 @@ describe('File validation', () => {
 
         render(<DragAndDrop onFilesSelected={emptyFn} handleFilesSubmit={emptyFn} />);
         const fileInput = screen.getByLabelText(/upload files/i);
-        const validFile = [
-            new File(['1'.repeat(5 * 1024 * 1024)], 'hello1.pdf', { type: 'application/pdf' }),
-            new File(['2'.repeat(5 * 1024 * 1024)], 'hello2.pdf', { type: 'application/pdf' }),
-            new File(['3'.repeat(5 * 1024 * 1024)], 'hello3.pdf', { type: 'application/pdf' }),
-            new File(['4'.repeat(5 * 1024 * 1024)], 'hello4.pdf', { type: 'application/pdf' }),
-            new File(['5'.repeat(5 * 1024 * 1024)], 'hello5.pdf', { type: 'application/pdf' }),
-        ];
+        const validFile: File[] = [];
 
-        screen.debug();
+        for (let i = 0; i <= 5; i++) {
+            validFile.push(createFile(`file${i}`));
+        }
 
         await user.upload(fileInput, validFile);
 
         const errorMsg = screen.queryByRole('alert', { name: 'file error' });
-
         expect(errorMsg).not.toBeInTheDocument();
-        screen.debug();
     });
 });
