@@ -22,10 +22,10 @@ export function isValidFileSize(file: File, maxSize: number) {
 
 export function isValidFileType(file: File, acceptedTypes: string[]) {
     const extension = '.' + file.name.split('.').pop()?.toLowerCase();
-    if (!acceptedTypes.includes(extension)) {
-        return false;
+    if (acceptedTypes.includes(extension)) {
+        return true;
     }
-    return true;
+    return false;
 }
 
 export function getFriendlyErrorMessage(error: string): string {

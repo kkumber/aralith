@@ -42,13 +42,13 @@ const DragAndDrop = ({
                     return;
                 }
 
-                if (!isValidFileSize(file, maxFileSize)) {
-                    setError(`File ${file.name} exceeds ${maxFileSize}MB limit`);
+                if (!isValidFileType(file, acceptedTypes)) {
+                    setError('Unsupported File');
                     return;
                 }
 
-                if (!isValidFileType(file, acceptedTypes)) {
-                    setError('Unsupported File');
+                if (!isValidFileSize(file, maxFileSize)) {
+                    setError(`File ${file.name} exceeds ${maxFileSize}MB limit`);
                     return;
                 }
 

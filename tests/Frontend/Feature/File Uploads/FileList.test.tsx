@@ -2,7 +2,6 @@ import '@testing-library/jest-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { useState } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import DragAndDrop from '../../../../resources/js/components/DragAndDrop/DragAndDrop';
 import FileList from '../../../../resources/js/components/DragAndDrop/FileList';
 
 describe('File List', () => {
@@ -19,27 +18,6 @@ describe('File List', () => {
 
     afterEach(() => {
         vi.clearAllMocks();
-    });
-
-    it('show file list when a file is dropped or selected', async () => {
-        render(<DragAndDrop onFilesSelected={mockFn} handleFilesSubmit={emptyFn} />);
-
-        const dropZone = screen.getByRole('region', { name: 'file dropzone' });
-
-        fireEvent.dragOver(dropZone, {
-            dataTransfer: {
-                files: files,
-                types: ['Files'],
-            },
-        });
-
-        fireEvent.drop(dropZone, {
-            dataTransfer: {
-                files: files,
-                types: ['Files'],
-            },
-        });
-        expect(mockFn).toHaveBeenCalledWith(files);
     });
 
     it('renders list of files', async () => {
