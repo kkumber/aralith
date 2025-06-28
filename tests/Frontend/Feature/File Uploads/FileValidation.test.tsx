@@ -48,7 +48,6 @@ describe('File validation', () => {
         const user = userEvent.setup();
 
         render(<DragAndDrop onFilesSelected={emptyFn} handleFilesSubmit={emptyFn} />);
-        console.log('rendered');
         const fileInput = screen.getByLabelText(/upload files/i);
         const existingFile = [new File(['a'.repeat(5 * 1024 * 1024)], 'existingFile.pdf', { type: 'application/pdf' })];
 
@@ -56,5 +55,28 @@ describe('File validation', () => {
         user.upload(fileInput, existingFile);
 
         expect(await screen.findByText(/file.*already exists/i)).toBeInTheDocument();
+    });
+
+    it('shows no error if file passed all validation', async () => {
+        const user = userEvent.setup();
+
+        render(<DragAndDrop onFilesSelected={emptyFn} handleFilesSubmit={emptyFn} />);
+        const fileInput = screen.getByLabelText(/upload files/i);
+        const validFile = [
+            new File(['1'.repeat(5 * 1024 * 1024)], 'hello1.pdf', { type: 'application/pdf' }),
+            new File(['2'.repeat(5 * 1024 * 1024)], 'hello2.pdf', { type: 'application/pdf' }),
+            new File(['3'.repeat(5 * 1024 * 1024)], 'hello3.pdf', { type: 'application/pdf' }),
+            new File(['4'.repeat(5 * 1024 * 1024)], 'hello4.pdf', { type: 'application/pdf' }),
+            new File(['5'.repeat(5 * 1024 * 1024)], 'hello5.pdf', { type: 'application/pdf' }),
+        ];
+
+        screen.debug();
+
+        await user.upload(fileInput, validFile);
+
+        const errorMsg = screen.queryByRole('alert', { name: 'file error' });
+
+        expect(errorMsg).not.toBeInTheDocument();
+        screen.debug();
     });
 });
