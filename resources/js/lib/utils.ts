@@ -21,6 +21,8 @@ export function isValidFileSize(file: File, maxSize: number) {
 }
 
 export function isValidFileType(file: File, acceptedTypes: string[]) {
+    if (!file || !file.name) return false;
+
     const extension = '.' + file.name.split('.').pop()?.toLowerCase();
     if (acceptedTypes.includes(extension)) {
         return true;
@@ -43,6 +45,8 @@ export function getWordCount(str: string) {
 }
 
 export function truncateStringByMaxCount(str: string, maxCount: number) {
+    if (!str) return;
+
     const words = str.trim().split(/\s+/);
     const wordCount = words.length;
 

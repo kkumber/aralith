@@ -7,7 +7,7 @@ import DragAndDrop from '../../../../resources/js/components/DragAndDrop/DragAnd
 describe('File validation', () => {
     const emptyFn = () => {};
 
-    it('shows error when the maximum allowed files is reached', async () => {
+    it('shows error for the maximum allowed files is reached', async () => {
         const user = userEvent.setup();
         render(<DragAndDrop onFilesSelected={emptyFn} handleFilesSubmit={emptyFn} maxFiles={5} />);
 
@@ -25,13 +25,23 @@ describe('File validation', () => {
         expect(await screen.findByText(/maximum of 5 files per upload allowed/i)).toBeInTheDocument();
     });
 
-    it('shows error when unsupported file type', async () => {
-        render(<DragAndDrop onFilesSelected={emptyFn} handleFilesSubmit={emptyFn} maxFiles={5} />);
+    it('shows error for unsupported file type', async () => {
+        render(<DragAndDrop onFilesSelected={emptyFn} handleFilesSubmit={emptyFn} />);
 
         const fileInput = screen.getByLabelText(/upload files/i);
         const invalidFile = new File(['dummy'], 'file.exe', { type: 'application/x-msdownload' });
 
         fireEvent.change(fileInput, { target: { files: [invalidFile] } });
         expect(await screen.findByText(/unsupported/i)).toBeInTheDocument();
+    });
+
+    it('shows error for exceeding the maximum file size', async () => {
+        render(<DragAndDrop onFilesSelected={emptyFn} handleFilesSubmit={emptyFn} />);
+        const fileInput = screen.getByLabelText(/upload files/i);
+        const largeFile = [new File(['a'.repeat(11 * 1024 * 1024)], 'largeFile.pdf', { type: 'application/pdf' })];
+
+        fireEvent.change(fileInput, { target: { files: largeFile } });
+        expect(await screen.findByText(/exceeds.*mb/i)).toBeInTheDocument();
+        screen.debug();
     });
 });
