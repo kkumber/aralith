@@ -42,6 +42,19 @@ describe('File validation', () => {
 
         fireEvent.change(fileInput, { target: { files: largeFile } });
         expect(await screen.findByText(/exceeds.*mb/i)).toBeInTheDocument();
-        screen.debug();
+    });
+
+    it('shows error for an already existing file', async () => {
+        const user = userEvent.setup();
+
+        render(<DragAndDrop onFilesSelected={emptyFn} handleFilesSubmit={emptyFn} />);
+        console.log('rendered');
+        const fileInput = screen.getByLabelText(/upload files/i);
+        const existingFile = [new File(['a'.repeat(5 * 1024 * 1024)], 'existingFile.pdf', { type: 'application/pdf' })];
+
+        user.upload(fileInput, existingFile);
+        user.upload(fileInput, existingFile);
+
+        expect(await screen.findByText(/file.*already exists/i)).toBeInTheDocument();
     });
 });
