@@ -4,11 +4,12 @@ import { File, X } from 'lucide-react';
 import { Button } from '../ui/button';
 
 interface FileListProps {
+    files: File[];
     handleClearAllFiles: () => void;
 }
 
-const FileList = ({ handleClearAllFiles }: FileListProps) => {
-    const { files, setFiles, handleFilesSubmit } = useFileProcessor();
+const FileList = ({ files, handleClearAllFiles }: FileListProps) => {
+    const { setFiles, handleFilesSubmit } = useFileProcessor();
 
     // Remove Files based on index
     const handleRemoveFile = (index: number) => {
