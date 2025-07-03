@@ -1,13 +1,12 @@
+import { useFileProcessor } from '@/hooks/useFileProcessor';
 import { isValidFileSize, isValidFileType } from '@/lib/utils';
 import { defaultAcceptedTypes, defaultMaxFiles } from '@/pages/quiz/config/config';
 import { FileWarning } from 'lucide-react';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import DropZone from './DropZone';
 import FileList from './FileList';
 
 interface DragAndDropProps {
-    onFilesSelected: (files: File[]) => void;
-    handleFilesSubmit: (e: React.FormEvent) => void;
     width?: string | number;
     height?: string | number;
     maxFileSize?: number; // in MB
@@ -16,15 +15,13 @@ interface DragAndDropProps {
 }
 
 const DragAndDrop = ({
-    onFilesSelected,
-    handleFilesSubmit,
     width = '100%',
     height = 'auto',
     maxFileSize = 10,
     acceptedTypes = defaultAcceptedTypes,
     maxFiles = defaultMaxFiles,
 }: DragAndDropProps) => {
-    const [files, setFiles] = useState<File[]>([]); // fake copy
+    const { setFiles, files } = useFileProcessor();
     const [error, setError] = useState<string | null>(null);
 
     // Main File Handler
@@ -37,9 +34,16 @@ const DragAndDrop = ({
 
             // Check each file in the array
             for (const file of filesArrayTemp) {
-                if (files.length + filesArrayTemp.length > maxFiles) {
-                    setError(`Maximum of ${maxFiles} files per upload allowed`);
-                    return;
+                if (files) {
+                    if (files.length + filesArrayTemp.length > maxFiles) {
+                        setError(`Maximum of ${maxFiles} files per upload allowed`);
+                        return;
+                    }
+
+                    if (files.some((existingFile) => existingFile.name === file.name && existingFile.size === file.size)) {
+                        setError(`File ${file.name} already exists`);
+                        return;
+                    }
                 }
 
                 if (!isValidFileType(file, acceptedTypes)) {
@@ -49,11 +53,6 @@ const DragAndDrop = ({
 
                 if (!isValidFileSize(file, maxFileSize)) {
                     setError(`File ${file.name} exceeds ${maxFileSize}MB limit`);
-                    return;
-                }
-
-                if (files.some((existingFile) => existingFile.name === file.name && existingFile.size === file.size)) {
-                    setError(`File ${file.name} already exists`);
                     return;
                 }
 
@@ -67,28 +66,16 @@ const DragAndDrop = ({
         [files, maxFileSize],
     );
 
-    // Remove Files based on index
-    const handleRemoveFile = (index: number) => {
-        setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
-    };
-
     // helper function
     const handleClearAllFiles = () => {
         setFiles([]);
         setError('');
     };
 
-    // Notify Parent Component of file Change
-    useEffect(() => {
-        if (typeof onFilesSelected === 'function') {
-            onFilesSelected(files);
-        }
-    }, [files, onFilesSelected]);
-
     return (
         <section className="space-y-4 rounded-xl border bg-transparent p-4 shadow-md dark:shadow-gray-950" style={{ width, height }}>
             {/* DropZone */}
-            <DropZone handleFiles={handleFiles} hasFiles={files.length > 0} config={{ maxFileSize, acceptedTypes }} />
+            <DropZone handleFiles={handleFiles} hasFiles={files!.length > 0} config={{ maxFileSize, acceptedTypes }} />
 
             {/* Error Message */}
             {error && (
@@ -99,12 +86,7 @@ const DragAndDrop = ({
             )}
 
             {/* File List */}
-            <FileList
-                files={files}
-                handleClearAllFiles={handleClearAllFiles}
-                handleRemoveFile={handleRemoveFile}
-                handleFilesSubmit={handleFilesSubmit}
-            />
+            <FileList handleClearAllFiles={handleClearAllFiles} />
         </section>
     );
 };

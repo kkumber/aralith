@@ -28,8 +28,7 @@ const Create = () => {
 
     // When a preset is clicked, it changes the configuration
     const handlePreset = (type: QuestionType, numOfQuestions: number) => {
-        if (!type) return;
-        if (!questionTypes.includes(type)) return;
+        if (!type || !questionTypes.includes(type)) return;
 
         setSelectedTypes([type]);
         setCurrentPreset(type);
@@ -38,8 +37,7 @@ const Create = () => {
 
     // In advance configuration, users can set multiple question types
     const handleAdvanceConfig = (type: QuestionType) => {
-        if (!type) return;
-        if (!questionTypes.includes(type)) return;
+        if (!type || !questionTypes.includes(type)) return;
 
         // Clear preset
         if (currentPreset) {
@@ -90,8 +88,6 @@ const Create = () => {
             total_number_of_questions: numOfQuestions,
             random_order: randomOrder,
         };
-
-        console.log(configuration);
     };
 
     return (

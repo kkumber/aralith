@@ -1,15 +1,21 @@
+import { useFileProcessor } from '@/hooks/useFileProcessor';
 import { formatFileSize } from '@/lib/utils';
 import { File, X } from 'lucide-react';
 import { Button } from '../ui/button';
 
 interface FileListProps {
-    files: File[];
     handleClearAllFiles: () => void;
-    handleRemoveFile: (num: number) => void;
-    handleFilesSubmit: (e: React.FormEvent) => void;
 }
 
-const FileList = ({ files, handleClearAllFiles, handleRemoveFile, handleFilesSubmit }: FileListProps) => {
+const FileList = ({ handleClearAllFiles }: FileListProps) => {
+    const { files, setFiles, handleFilesSubmit } = useFileProcessor();
+
+    // Remove Files based on index
+    const handleRemoveFile = (index: number) => {
+        if (files) {
+            setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
+        }
+    };
     return (
         <>
             {files.length > 0 && (
