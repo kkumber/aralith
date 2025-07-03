@@ -4,6 +4,12 @@ import { useState } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import FileList from '../../../../resources/js/components/DragAndDrop/FileList';
 
+vi.mock('../../../../resources/js/hooks/useFileProcessor.tsx', () => {
+    return {
+        useFileProcessor: vi.fn(),
+    };
+});
+
 describe('File List', () => {
     let files: File[];
     const mockFn = vi.fn();
@@ -21,7 +27,7 @@ describe('File List', () => {
     });
 
     it('renders list of files', async () => {
-        render(<FileList files={files} handleFilesSubmit={mockFn} handleClearAllFiles={emptyFn} handleRemoveFile={emptyFn} />);
+        render(<FileList handleFilesSubmit={mockFn} handleClearAllFiles={emptyFn} />);
         const fileList = await screen.findByText(/selected files/i);
         expect(fileList).toBeInTheDocument();
 
