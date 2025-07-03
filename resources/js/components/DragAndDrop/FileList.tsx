@@ -19,7 +19,7 @@ const FileList = ({ files, handleClearAllFiles }: FileListProps) => {
     };
     return (
         <>
-            {files.length > 0 && (
+            {files && files.length > 0 && (
                 <div className="space-y-4" role="container" aria-label="file list">
                     <div className="flex items-center justify-between">
                         <small>Selected Files ({files.length})</small>
