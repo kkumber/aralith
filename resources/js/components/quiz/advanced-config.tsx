@@ -38,7 +38,7 @@ const AdvancedConfig = ({
                             <TooltipTrigger asChild>
                                 <Info size={15} />
                             </TooltipTrigger>
-                            <TooltipContent>Calculated by dividing the total number of questions by the number of question types.</TooltipContent>
+                            <TooltipContent>The total number of questions divided by the number of question types.</TooltipContent>
                         </Tooltip>
                     </div>
 

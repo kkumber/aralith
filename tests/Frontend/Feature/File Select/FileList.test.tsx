@@ -4,6 +4,12 @@ import { useState } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import FileList from '../../../../resources/js/components/DragAndDrop/FileList';
 
+vi.mock('../../../../resources/js/hooks/useFileProcessor.tsx', () => ({
+    useFileProcessor: () => ({
+        handleFilesSubmit: vi.fn(),
+    }),
+}));
+
 describe('File List', () => {
     let files: File[];
     const mockFn = vi.fn();
@@ -21,7 +27,7 @@ describe('File List', () => {
     });
 
     it('renders list of files', async () => {
-        render(<FileList files={files} handleFilesSubmit={mockFn} handleClearAllFiles={emptyFn} />);
+        render(<FileList files={files} handleClearAllFiles={emptyFn} handleRemoveFile={emptyFn} />);
         const fileList = await screen.findByText(/selected files/i);
         expect(fileList).toBeInTheDocument();
 
@@ -31,7 +37,7 @@ describe('File List', () => {
     });
 
     it('calls handleRemoveFile when remove button is clicked', () => {
-        render(<FileList files={files} handleFilesSubmit={emptyFn} handleClearAllFiles={emptyFn} handleRemoveFile={mockFn} />);
+        render(<FileList files={files} handleClearAllFiles={emptyFn} handleRemoveFile={mockFn} />);
         const file = screen.getByText('hello.png');
         const removeBtn = screen.getByLabelText('Remove hello.png');
 
@@ -48,7 +54,7 @@ describe('File List', () => {
                 mockFn();
                 setMockFiles([]);
             };
-            return <FileList files={mockFiles} handleClearAllFiles={mockClearFiles} handleRemoveFile={emptyFn} handleFilesSubmit={emptyFn} />;
+            return <FileList files={mockFiles} handleClearAllFiles={mockClearFiles} handleRemoveFile={emptyFn} />;
         };
         render(<DragAndDrop />);
         const clearBtn = screen.getByRole('button', { name: 'Clear All' });
@@ -61,13 +67,13 @@ describe('File List', () => {
         });
     });
 
-    it('submits the files in the list', () => {
-        render(<FileList files={files} handleFilesSubmit={mockFn} handleClearAllFiles={emptyFn} handleRemoveFile={emptyFn} />);
+    it('submits the files in the list', async () => {
+        render(<FileList files={files} handleClearAllFiles={emptyFn} handleRemoveFile={emptyFn} />);
+        const { useFileProcessor } = await import('../../../../resources/js/hooks/useFileProcessor.tsx');
 
         const submitBtn = screen.getByRole('button', { name: /extract lessons/i });
 
         fireEvent.click(submitBtn);
-
-        expect(mockFn).toHaveBeenCalled();
+        expect(useFileProcessor().handleFilesSubmit).toHaveBeenCalled();
     });
 });

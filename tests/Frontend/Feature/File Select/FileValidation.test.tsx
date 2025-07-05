@@ -10,7 +10,7 @@ describe('File validation', () => {
 
     it('shows error for the maximum allowed files is reached', async () => {
         const user = userEvent.setup();
-        render(<DragAndDrop onFilesSelected={emptyFn} handleFilesSubmit={emptyFn} maxFiles={5} />);
+        render(<DragAndDrop maxFiles={5} />);
 
         const fileInput = screen.getByLabelText(/upload files/i);
         const excessFiles: File[] = [];
@@ -26,7 +26,7 @@ describe('File validation', () => {
     it('shows error for unsupported file type', async () => {
         const user = userEvent.setup();
 
-        render(<DragAndDrop onFilesSelected={emptyFn} handleFilesSubmit={emptyFn} />);
+        render(<DragAndDrop />);
 
         const fileInput = screen.getByLabelText(/upload files/i);
         const invalidFile: File[] = [];
@@ -41,7 +41,7 @@ describe('File validation', () => {
 
     it('shows error for exceeding the maximum file size', async () => {
         const user = userEvent.setup();
-        render(<DragAndDrop onFilesSelected={emptyFn} handleFilesSubmit={emptyFn} />);
+        render(<DragAndDrop />);
         const fileInput = screen.getByLabelText(/upload files/i);
         const largeFile: File[] = [];
         largeFile.push(createFile('file.pdf', 11));
@@ -56,7 +56,7 @@ describe('File validation', () => {
     it('shows error for an already existing file', async () => {
         const user = userEvent.setup();
 
-        render(<DragAndDrop onFilesSelected={emptyFn} handleFilesSubmit={emptyFn} />);
+        render(<DragAndDrop />);
         const fileInput = screen.getByLabelText(/upload files/i);
         const existingFile = [new File(['a'.repeat(5 * 1024 * 1024)], 'existingFile.pdf', { type: 'application/pdf' })];
 
@@ -71,7 +71,7 @@ describe('File validation', () => {
     it('shows no error if file passed all validation', async () => {
         const user = userEvent.setup();
 
-        render(<DragAndDrop onFilesSelected={emptyFn} handleFilesSubmit={emptyFn} />);
+        render(<DragAndDrop />);
         const fileInput = screen.getByLabelText(/upload files/i);
         const validFile: File[] = [];
 

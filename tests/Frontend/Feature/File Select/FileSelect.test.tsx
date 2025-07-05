@@ -4,9 +4,17 @@ import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import DragAndDrop from '../../../../resources/js/components/DragAndDrop/DragAndDrop';
 
+let mockFiles: File[];
+const mockFn = vi.fn();
+
+vi.mock('../../../../resources/js/hooks/useFileProcessor.tsx', () => ({
+    useFileProcessor: () => ({
+        files: mockFiles,
+        setFiles: mockFn,
+    }),
+}));
+
 describe('File selection and drag and drop', () => {
-    let mockFiles: File[];
-    const mockFn = vi.fn();
     const emptyFn = () => {};
 
     beforeEach(() => {
@@ -21,7 +29,7 @@ describe('File selection and drag and drop', () => {
     });
 
     it('saves the dragged and dropped files', () => {
-        render(<DragAndDrop onFilesSelected={mockFn} handleFilesSubmit={emptyFn} />);
+        render(<DragAndDrop />);
 
         const dropZone = screen.getByRole('region', { name: 'file dropzone' });
 
@@ -43,7 +51,7 @@ describe('File selection and drag and drop', () => {
 
     it('saves the selected files via user input', async () => {
         const user = userEvent.setup();
-        render(<DragAndDrop onFilesSelected={mockFn} handleFilesSubmit={emptyFn} />);
+        render(<DragAndDrop />);
         const input = screen.getByLabelText(/upload/i);
         await user.upload(input, mockFiles);
         expect(mockFn).toHaveBeenCalled();
