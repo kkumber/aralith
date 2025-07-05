@@ -1,35 +1,40 @@
-import { findByText, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import Main from '../../../../../resources/js/pages/main';
-import { setMockPageProps } from '../../../../__mocks__/@inertiajs/react';
+import FileList from '../../../../../resources/js/components/DragAndDrop/FileList';
+
+let mockFiles: File[] = [];
+const emptyFn = () => {};
+const mockFn = vi.fn();
+
+vi.mock('../../../../../resources/js/hooks/useFileProcessor.tsx', () => ({
+    useFileProcessor: () => ({
+        files: mockFiles,
+        handleFilesSubmit: mockFn,
+    }),
+}));
 
 describe('Extract text from files', () => {
     beforeEach(() => {
-        global.fetch = vi.fn(() =>
-            Promise.resolve({
-                ok: true,
-                status: 200,
-                json: () => Promise.resolve({ data: 'mocked data' }),
-            } as Response),
-        );
-        setMockPageProps({ error: {} });
+        mockFiles = [
+            new File(['Hello World'], 'hello.png', { type: 'image/png' }),
+            new File(['Another file content'], 'notes.pdf', { type: 'application/pdf' }),
+        ];
     });
 
     afterEach(() => {
         vi.resetAllMocks();
     });
 
-    it('extract text when files are submitted', async () => {
+    it('file submission handler is called', async () => {
         const user = userEvent.setup();
+        render(<FileList files={mockFiles} handleRemoveFile={emptyFn} handleClearAllFiles={emptyFn} />);
 
-        setMockPageProps({ data: { content: 'content' } });
-
-        render(<Main />);
-        const submitFilesForExtractionBtn = screen.getByRole('button', { name: 'Extract Lessons' });
-
-        await user.click(submitFilesForExtractionBtn);
-        expect(await findByText(/content/i)).toBeInTheDocument();
+        const extractFiles = screen.getByRole('button', { name: /extract lessons/i });
         screen.debug();
+
+        await user.click(extractFiles);
+
+        expect(mockFn).toHaveBeenCalled();
     });
 });

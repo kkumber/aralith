@@ -46,10 +46,8 @@ describe('File selection and drag and drop', () => {
                 types: ['Files'],
             },
         });
-        console.log('Mock FIles:');
 
-        console.log(mockFiles);
-        expect(mockFn).toHaveBeenCalled(mockFiles);
+        expect(mockFn).toHaveBeenCalled();
     });
 
     it('saves the selected files via user input', async () => {
@@ -57,8 +55,6 @@ describe('File selection and drag and drop', () => {
         render(<DragAndDrop />);
         const input = screen.getByLabelText(/upload/i);
         await user.upload(input, mockFiles);
-        console.log('Mock FIles:');
-        console.log(mockFiles);
 
         expect(mockFn).toHaveBeenCalled();
     });
