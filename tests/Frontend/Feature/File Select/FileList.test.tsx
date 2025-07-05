@@ -4,15 +4,16 @@ import { useState } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import FileList from '../../../../resources/js/components/DragAndDrop/FileList';
 
+const mockFn = vi.fn();
+
 vi.mock('../../../../resources/js/hooks/useFileProcessor.tsx', () => ({
     useFileProcessor: () => ({
-        handleFilesSubmit: vi.fn(),
+        handleFilesSubmit: mockFn,
     }),
 }));
 
 describe('File List', () => {
     let files: File[];
-    const mockFn = vi.fn();
     const emptyFn = () => {};
 
     beforeEach(() => {
@@ -69,11 +70,10 @@ describe('File List', () => {
 
     it('submits the files in the list', async () => {
         render(<FileList files={files} handleClearAllFiles={emptyFn} handleRemoveFile={emptyFn} />);
-        const { useFileProcessor } = await import('../../../../resources/js/hooks/useFileProcessor.tsx');
 
         const submitBtn = screen.getByRole('button', { name: /extract lessons/i });
 
         fireEvent.click(submitBtn);
-        expect(useFileProcessor().handleFilesSubmit).toHaveBeenCalled();
+        expect(mockFn).toHaveBeenCalled();
     });
 });

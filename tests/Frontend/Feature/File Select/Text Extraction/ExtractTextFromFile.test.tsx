@@ -1,29 +1,35 @@
-// describe('Extract text from files', () => {
-//     beforeEach(() => {
-//         global.fetch = vi.fn(() =>
-//             Promise.resolve({
-//                 ok: true,
-//                 status: 200,
-//                 json: () => Promise.resolve({ data: 'mocked data' }),
-//             } as Response),
-//         );
-//         setMockPageProps({ error: {} });
-//     });
+import { findByText, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import Main from '../../../../../resources/js/pages/main';
+import { setMockPageProps } from '../../../../__mocks__/@inertiajs/react';
 
-//     afterEach(() => {
-//         vi.resetAllMocks();
-//     });
+describe('Extract text from files', () => {
+    beforeEach(() => {
+        global.fetch = vi.fn(() =>
+            Promise.resolve({
+                ok: true,
+                status: 200,
+                json: () => Promise.resolve({ data: 'mocked data' }),
+            } as Response),
+        );
+        setMockPageProps({ error: {} });
+    });
 
-//     it('extract text when files are submitted', async () => {
-//         const user = userEvent.setup();
+    afterEach(() => {
+        vi.resetAllMocks();
+    });
 
-//         setMockPageProps({ data: { content: 'content' } });
+    it('extract text when files are submitted', async () => {
+        const user = userEvent.setup();
 
-//         render(<Main />);
-//         const submitFilesForExtractionBtn = screen.getByRole('button', { name: 'Extract Lessons' });
+        setMockPageProps({ data: { content: 'content' } });
 
-//         await user.click(submitFilesForExtractionBtn);
-//         expect(await findByText(/content/i)).toBeInTheDocument();
-//         screen.debug();
-//     });
-// });
+        render(<Main />);
+        const submitFilesForExtractionBtn = screen.getByRole('button', { name: 'Extract Lessons' });
+
+        await user.click(submitFilesForExtractionBtn);
+        expect(await findByText(/content/i)).toBeInTheDocument();
+        screen.debug();
+    });
+});
