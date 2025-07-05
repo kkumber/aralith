@@ -72,10 +72,17 @@ const DragAndDrop = ({
         setError('');
     };
 
+    // Remove Files based on index
+    const handleRemoveFile = (index: number) => {
+        if (files) {
+            setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
+        }
+    };
+
     return (
         <section className="space-y-4 rounded-xl border bg-transparent p-4 shadow-md dark:shadow-gray-950" style={{ width, height }}>
             {/* DropZone */}
-            <DropZone handleFiles={handleFiles} hasFiles={files!.length > 0} config={{ maxFileSize, acceptedTypes }} />
+            <DropZone files={files} handleFiles={handleFiles} hasFiles={files.length > 0} config={{ maxFileSize, acceptedTypes }} />
 
             {/* Error Message */}
             {error && (
@@ -86,7 +93,7 @@ const DragAndDrop = ({
             )}
 
             {/* File List */}
-            <FileList handleClearAllFiles={handleClearAllFiles} />
+            <FileList files={files} handleClearAllFiles={handleClearAllFiles} handleRemoveFile={handleRemoveFile} />
         </section>
     );
 };

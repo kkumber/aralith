@@ -6,17 +6,11 @@ import { Button } from '../ui/button';
 interface FileListProps {
     files: File[];
     handleClearAllFiles: () => void;
+    handleRemoveFile: (index: number) => void;
 }
 
-const FileList = ({ files, handleClearAllFiles }: FileListProps) => {
-    const { setFiles, handleFilesSubmit } = useFileProcessor();
-
-    // Remove Files based on index
-    const handleRemoveFile = (index: number) => {
-        if (files) {
-            setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
-        }
-    };
+const FileList = ({ files, handleClearAllFiles, handleRemoveFile }: FileListProps) => {
+    const { handleFilesSubmit } = useFileProcessor();
     return (
         <>
             {files && files.length > 0 && (

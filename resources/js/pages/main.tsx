@@ -24,7 +24,7 @@ const Main = () => {
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 {uploadError && <InputError message={uploadError} />}
                 <DragAndDrop />
-                <h3 className="my-8 text-center">or copy and paste the text directly</h3>
+                <h3 className="text-text-tertiary dark:text-dark-text-tertiary my-8 text-center">or copy and paste the text directly</h3>
                 <Card>
                     <CardHeader>Extracted Lesson</CardHeader>
                     <div className="flex flex-col gap-1">

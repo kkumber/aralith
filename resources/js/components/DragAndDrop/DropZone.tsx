@@ -7,6 +7,7 @@ interface Config {
 }
 
 interface DragAndDropProps {
+    files: File[];
     handleFiles: (arg: FileList | File[]) => void;
     hasFiles: boolean;
     config: Config;
