@@ -32,4 +32,23 @@ describe('usePost', () => {
         expect(result.current.error).toBeNull();
         expect(result.current.isLoading).toBe(false);
     });
+
+    it('should return error on failed post', async () => {
+        global.fetch = vi.fn(() =>
+            Promise.resolve({
+                ok: false,
+                json: () => Promise.resolve({ message: 'Something went wrong' }),
+            }),
+        ) as unknown as typeof fetch;
+
+        const { result } = renderHook(() => usePost<typeof payload, typeof mockResponse>(url));
+
+        await act(async () => {
+            await expect(result.current.postData(payload)).rejects.toThrow('Something went wrong');
+        });
+
+        expect(result.current.data).toBeNull();
+        expect(result.current.error).toEqual('Something went wrong');
+        expect(result.current.isLoading).toBe(false);
+    });
 });
