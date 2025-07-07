@@ -1,16 +1,15 @@
-import { useFileProcessor } from '@/hooks/useFileProcessor';
 import { formatFileSize } from '@/lib/utils';
 import { File, X } from 'lucide-react';
 import { Button } from '../ui/button';
 
 interface FileListProps {
     files: File[];
+    handleFilesSubmit: (param: File[]) => void;
     handleClearAllFiles: () => void;
     handleRemoveFile: (index: number) => void;
 }
 
-const FileList = ({ files, handleClearAllFiles, handleRemoveFile }: FileListProps) => {
-    const { handleFilesSubmit } = useFileProcessor();
+const FileList = ({ files, handleFilesSubmit, handleClearAllFiles, handleRemoveFile }: FileListProps) => {
     return (
         <>
             {files && files.length > 0 && (
@@ -53,7 +52,7 @@ const FileList = ({ files, handleClearAllFiles, handleRemoveFile }: FileListProp
                             </div>
                         ))}
                     </div>
-                    <Button className="w-full" onClick={handleFilesSubmit} size={`sm`}>
+                    <Button className="w-full" onClick={() => handleFilesSubmit(files)} size={`sm`}>
                         Extract Lessons
                     </Button>
                 </div>

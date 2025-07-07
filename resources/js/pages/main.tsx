@@ -16,14 +16,14 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 const Main = () => {
-    const { uploadError, lessonContent, setLessonContent, isLoading } = useFileProcessor();
+    const { uploadError, lessonContent, setLessonContent, isLoading, files, setFiles, handleFilesSubmit } = useFileProcessor();
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Upload Lessons" />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 {uploadError && <InputError message={uploadError} />}
-                <DragAndDrop />
+                <DragAndDrop files={files} setFiles={setFiles} handleFilesSubmit={handleFilesSubmit} />
                 <h3 className="text-text-tertiary dark:text-dark-text-tertiary my-8 text-center">or copy and paste the text directly</h3>
                 <Card>
                     <CardHeader>Extracted Lesson</CardHeader>
@@ -37,7 +37,7 @@ const Main = () => {
                             placeholder="E=mc^2"
                             onChange={(e) => setLessonContent(e.target.value)}
                         ></textarea>
-                        <small className="text-end">
+                        <small className="text-end font-semibold">
                             Word Limit: {lessonContent ? getWordCount(lessonContent) : 0}/{wordCountLimit}
                         </small>
                     </div>

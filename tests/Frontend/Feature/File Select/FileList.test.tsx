@@ -28,7 +28,7 @@ describe('File List', () => {
     });
 
     it('renders list of files', async () => {
-        render(<FileList files={files} handleClearAllFiles={emptyFn} handleRemoveFile={emptyFn} />);
+        render(<FileList files={files} handleClearAllFiles={emptyFn} handleRemoveFile={emptyFn} handleFilesSubmit={emptyFn} />);
         const fileList = await screen.findByText(/selected files/i);
         expect(fileList).toBeInTheDocument();
 
@@ -38,7 +38,7 @@ describe('File List', () => {
     });
 
     it('calls handleRemoveFile when remove button is clicked', () => {
-        render(<FileList files={files} handleClearAllFiles={emptyFn} handleRemoveFile={mockFn} />);
+        render(<FileList files={files} handleClearAllFiles={emptyFn} handleRemoveFile={mockFn} handleFilesSubmit={emptyFn} />);
         const file = screen.getByText('hello.png');
         const removeBtn = screen.getByLabelText('Remove hello.png');
 
@@ -55,7 +55,7 @@ describe('File List', () => {
                 mockFn();
                 setMockFiles([]);
             };
-            return <FileList files={mockFiles} handleClearAllFiles={mockClearFiles} handleRemoveFile={emptyFn} />;
+            return <FileList files={mockFiles} handleClearAllFiles={mockClearFiles} handleRemoveFile={emptyFn} handleFilesSubmit={emptyFn} />;
         };
         render(<DragAndDrop />);
         const clearBtn = screen.getByRole('button', { name: 'Clear All' });
@@ -69,7 +69,7 @@ describe('File List', () => {
     });
 
     it('submits the files in the list', async () => {
-        render(<FileList files={files} handleClearAllFiles={emptyFn} handleRemoveFile={emptyFn} />);
+        render(<FileList files={files} handleClearAllFiles={emptyFn} handleRemoveFile={emptyFn} handleFilesSubmit={emptyFn} />);
 
         const submitBtn = screen.getByRole('button', { name: /extract lessons/i });
 

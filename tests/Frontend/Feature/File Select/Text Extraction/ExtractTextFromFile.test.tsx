@@ -28,7 +28,7 @@ describe('Extract text from files', () => {
 
     it('file submission handler is called', async () => {
         const user = userEvent.setup();
-        render(<FileList files={mockFiles} handleRemoveFile={emptyFn} handleClearAllFiles={emptyFn} />);
+        render(<FileList files={mockFiles} handleRemoveFile={emptyFn} handleClearAllFiles={emptyFn} handleFilesSubmit={emptyFn} />);
 
         const extractFiles = screen.getByRole('button', { name: /extract lessons/i });
         screen.debug();

@@ -1,17 +1,19 @@
-import { useFileProcessor } from '@/hooks/useFileProcessor';
 import { isValidFileSize, isValidFileType } from '@/lib/utils';
 import { defaultAcceptedTypes, defaultMaxFiles } from '@/pages/quiz/config/config';
 import { FileWarning } from 'lucide-react';
-import { useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import DropZone from './DropZone';
 import FileList from './FileList';
 
-interface DragAndDropProps {
+interface DragAndDropProps<T> {
     width?: string | number;
     height?: string | number;
     maxFileSize?: number; // in MB
     acceptedTypes?: string[];
     maxFiles?: number;
+    files: File[];
+    setFiles: React.Dispatch<React.SetStateAction<T>>;
+    handleFilesSubmit: (param: File[]) => void;
 }
 
 const DragAndDrop = ({
@@ -20,8 +22,10 @@ const DragAndDrop = ({
     maxFileSize = 10,
     acceptedTypes = defaultAcceptedTypes,
     maxFiles = defaultMaxFiles,
-}: DragAndDropProps) => {
-    const { setFiles, files } = useFileProcessor();
+    files,
+    setFiles,
+    handleFilesSubmit,
+}: DragAndDropProps<File[]>) => {
     const [error, setError] = useState<string | null>(null);
 
     // Main File Handler
@@ -93,7 +97,12 @@ const DragAndDrop = ({
             )}
 
             {/* File List */}
-            <FileList files={files} handleClearAllFiles={handleClearAllFiles} handleRemoveFile={handleRemoveFile} />
+            <FileList
+                files={files}
+                handleFilesSubmit={handleFilesSubmit}
+                handleClearAllFiles={handleClearAllFiles}
+                handleRemoveFile={handleRemoveFile}
+            />
         </section>
     );
 };
