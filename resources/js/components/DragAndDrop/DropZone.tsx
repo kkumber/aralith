@@ -57,7 +57,7 @@ const DropZone = ({ handleFiles, hasFiles, config }: DragAndDropProps) => {
         <div
             role="region"
             aria-label="file dropzone"
-            className={`${isDragOver ? 'border-primary-green scale-[1.02]' : hasFiles ? 'border-primary-green bg-green-50 dark:bg-green-950' : ''} hover:border-secondary-green relative cursor-pointer rounded-xl border-2 border-dashed p-8 transition-all duration-200`}
+            className={`${isDragOver ? 'border-primary-green scale-[1.02]' : hasFiles ? 'bg-green-50 dark:bg-green-950' : ''} hover:border-primary-green/80 relative cursor-pointer rounded-xl border-2 border-dashed p-8 transition-all duration-200`}
             onDrop={handleDrop}
             onDragLeave={handleDragLeave}
             onDragOver={handleDragOver}
