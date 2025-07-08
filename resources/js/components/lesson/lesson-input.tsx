@@ -26,7 +26,7 @@ const LessonInput = ({ lessonContent, handleSetLessonContent, wordCount }: Lesso
                 <div className="flex items-center justify-end space-x-1">
                     <Tooltip>
                         <TooltipTrigger>
-                            <Info size={15} />
+                            <Info size={14} />
                         </TooltipTrigger>
                         <TooltipContent>
                             We restricted the minimum and maximum amount of words to ensure accurate and meaningful quizzes

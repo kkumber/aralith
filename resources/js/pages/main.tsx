@@ -4,7 +4,7 @@ import LessonSubmit from '@/components/lesson/lesson-submit';
 import { Card, CardFooter } from '@/components/ui/card';
 import { useFileProcessor } from '@/hooks/useFileProcessor';
 import AppLayout from '@/layouts/app-layout';
-import { getWordCount } from '@/lib/utils';
+import { getWordCount, retrieveFromLocalStorage } from '@/lib/utils';
 import { BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
@@ -29,13 +29,13 @@ const Main = () => {
     }, [lessonContent]);
 
     // Immediately get the saved lesson on mount. Incase of reloads
-    // useEffect(() => {
-    //     const existingLesson = retrieveFromLocalStorage('lesson');
+    useEffect(() => {
+        const existingLesson = retrieveFromLocalStorage('lesson');
 
-    //     if (existingLesson) {
-    //         setLessonContent(existingLesson);
-    //     }
-    // }, []);
+        if (existingLesson) {
+            setLessonContent(existingLesson);
+        }
+    }, []);
 
     const handleSetLessonContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setLessonContent(e.target.value);

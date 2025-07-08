@@ -26,6 +26,11 @@ const Create = () => {
     const [randomOrder, setRandomOrder] = useState<boolean>(true);
     const [currentPreset, setCurrentPreset] = useState<string>('');
 
+    /* Check if there is lesson on mount, redirect to main if not found 
+        
+    */
+
+
     // When a preset is clicked, it changes the configuration
     const handlePreset = (type: QuestionType, numOfQuestions: number) => {
         if (!type || !questionTypes.includes(type)) return;
