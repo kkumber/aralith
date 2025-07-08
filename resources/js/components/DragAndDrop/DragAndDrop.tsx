@@ -14,6 +14,7 @@ interface DragAndDropProps<T> {
     files: File[];
     setFiles: React.Dispatch<React.SetStateAction<T>>;
     handleFilesSubmit: (param: File[]) => void;
+    isLoading: boolean;
 }
 
 const DragAndDrop = ({
@@ -25,6 +26,7 @@ const DragAndDrop = ({
     files,
     setFiles,
     handleFilesSubmit,
+    isLoading,
 }: DragAndDropProps<File[]>) => {
     const [error, setError] = useState<string | null>(null);
 
@@ -102,6 +104,7 @@ const DragAndDrop = ({
                 handleFilesSubmit={handleFilesSubmit}
                 handleClearAllFiles={handleClearAllFiles}
                 handleRemoveFile={handleRemoveFile}
+                isLoading={isLoading}
             />
         </section>
     );

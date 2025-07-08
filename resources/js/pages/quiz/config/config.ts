@@ -12,6 +12,7 @@ export const defaultAcceptedTypes: string[] = ['.pdf', '.docx', '.pptx', '.png',
 export const defaultMaxFiles: number = 5;
 export const difficultyLevels: Difficulty[] = ['Easy', 'Medium', 'Hard'];
 export const wordCountLimit = 1000;
+export const wordCountMin = 100;
 export const maxCharacter = 4000;
 export const minCharacter = 1000
 

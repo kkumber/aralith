@@ -1,14 +1,16 @@
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Card, CardDescription, CardFooter, CardHeader } from '@/components/ui/card';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { useFileProcessor } from '@/hooks/useFileProcessor';
 import AppLayout from '@/layouts/app-layout';
-import { getWordCount } from '@/lib/utils';
+import { getWordCount, saveToLocalStorage } from '@/lib/utils';
 import { BreadcrumbItem } from '@/types';
-import { Head, Link } from '@inertiajs/react';
+import { Head } from '@inertiajs/react';
+import { Info } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import DragAndDrop from '../components/DragAndDrop/DragAndDrop';
-import { minCharacter, wordCountLimit } from './quiz/config/config';
+import { wordCountLimit, wordCountMin } from './quiz/config/config';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -20,6 +22,7 @@ const Main = () => {
     const { uploadError, lessonContent, setLessonContent, isLoading, files, setFiles, handleFilesSubmit } = useFileProcessor();
     const [wordCount, setWordCount] = useState<number>(0);
 
+    // Only count the words after waiting a few seconds
     useEffect(() => {
         if (lessonContent) {
             const timeout = setTimeout(() => setWordCount(getWordCount(lessonContent)), 1000);
@@ -27,12 +30,26 @@ const Main = () => {
         }
     }, [lessonContent]);
 
+    // Immediately get the saved lesson on mount. Incase of reloads
+    // useEffect(() => {
+    //     const existingLesson = retrieveFromLocalStorage('lesson');
+
+    //     if (existingLesson) {
+    //         setLessonContent(existingLesson);
+    //     }
+    // }, []);
+
     const handleSetLessonContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         e.preventDefault();
         if (wordCount > wordCountLimit) {
             return;
         }
+        console.log(e.target.value.length);
         setLessonContent(e.target.value);
+    };
+
+    const handleLessonContentSubmit = () => {
+        saveToLocalStorage('lesson', lessonContent);
     };
 
     return (
@@ -54,14 +71,23 @@ const Main = () => {
                             placeholder="E=mc^2"
                             onChange={handleSetLessonContent}
                         ></textarea>
-                        <small className="text-end font-semibold">
-                            Word Limit: {wordCount}/{wordCountLimit}
-                        </small>
+                        <div className="flex items-center justify-end space-x-1">
+                            <small className={`text-end font-semibold ${wordCount > wordCountLimit ? 'text-red-400' : ''}`}>
+                                Word Limit: <b>{wordCount}</b>/{wordCountLimit}
+                            </small>
+                            <Tooltip>
+                                <TooltipTrigger>
+                                    <Info size={15} />
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    We restricted the minimum and maximum amount of words to ensure accurate and meaningful quizzes
+                                </TooltipContent>
+                            </Tooltip>
+                        </div>
+                        <small className="text-end">Minimum words: {wordCountMin}</small>
                     </div>
                     <CardFooter>
-                        <Button asChild disabled={lessonContent?.length === minCharacter || isLoading}>
-                            <Link href={route('quiz.create')}>Configure Quiz</Link>
-                        </Button>
+                        <Button disabled={isLoading || wordCount > wordCountLimit || wordCount < wordCountMin}>Create Quiz</Button>
                     </CardFooter>
                 </Card>
             </div>

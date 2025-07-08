@@ -66,3 +66,11 @@ export function truncateStringByMaxCharacter(str: string, maxCharacter: number) 
 
     return str;
 }
+
+export function saveToLocalStorage<T>(key: string, value: T) {
+    localStorage.setItem(key, JSON.stringify(value));
+}
+
+export function retrieveFromLocalStorage(key: string) {
+    return JSON.parse(localStorage.getItem(key) || '');
+}

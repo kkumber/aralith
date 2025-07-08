@@ -54,7 +54,6 @@ export const useFileProcessor = () => {
     // Parse the result from postData and validate against zod schema
     useEffect(() => {
         if (!data) return;
-
         const result = FileExtractionResultSchema.safeParse(data);
         setUploadError('');
 
