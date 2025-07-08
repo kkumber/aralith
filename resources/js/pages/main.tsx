@@ -1,6 +1,7 @@
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Card, CardDescription, CardFooter, CardHeader } from '@/components/ui/card';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { useFileProcessor } from '@/hooks/useFileProcessor';
 import AppLayout from '@/layouts/app-layout';
@@ -21,11 +22,12 @@ const breadcrumbs: BreadcrumbItem[] = [
 const Main = () => {
     const { uploadError, lessonContent, setLessonContent, isLoading, files, setFiles, handleFilesSubmit } = useFileProcessor();
     const [wordCount, setWordCount] = useState<number>(0);
+    const [showModal, setShowModal] = useState<boolean>(false);
 
     // Only count the words after waiting a few seconds
     useEffect(() => {
         if (lessonContent) {
-            const timeout = setTimeout(() => setWordCount(getWordCount(lessonContent)), 1000);
+            const timeout = setTimeout(() => setWordCount(getWordCount(lessonContent)), 500);
             return () => clearTimeout(timeout);
         }
     }, [lessonContent]);
@@ -38,12 +40,6 @@ const Main = () => {
     //         setLessonContent(existingLesson);
     //     }
     // }, []);
-
-    const handleSetLessonContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        e.preventDefault();
-        if (wordCount > wordCountLimit) return;
-        setLessonContent(e.target.value);
-    };
 
     const handleLessonContentSubmit = () => {
         if (!lessonContent) return;
@@ -70,7 +66,7 @@ const Main = () => {
                             value={lessonContent}
                             className="h-80 w-full rounded-sm border p-3 focus:outline-0"
                             placeholder="E=mc^2"
-                            onChange={handleSetLessonContent}
+                            onChange={(e) => setLessonContent(e.target.value)}
                         ></textarea>
                         <div className="flex items-center justify-end space-x-1">
                             <small className={`text-end font-semibold ${wordCount > wordCountLimit ? 'text-red-400' : ''}`}>
@@ -88,9 +84,30 @@ const Main = () => {
                         <small className="text-end">Minimum words: {wordCountMin}</small>
                     </div>
                     <CardFooter>
-                        <Button disabled={isLoading || wordCount > wordCountLimit || wordCount < wordCountMin} onClick={handleLessonContentSubmit}>
-                            Create Quiz
-                        </Button>
+                        <Dialog open={showModal} onOpenChange={setShowModal}>
+                            <DialogTrigger asChild>
+                                <Button disabled={isLoading || wordCount < wordCountMin}>Create Quiz</Button>
+                            </DialogTrigger>
+                            <DialogContent>
+                                <DialogHeader>
+                                    <DialogTitle>Submit Lesson</DialogTitle>
+                                </DialogHeader>
+                                <DialogDescription>
+                                    Please make sure that the lesson is easily understandable for accurate quiz generation.
+                                    {wordCount > wordCountLimit && (
+                                        <small className="mt-4 inline-block text-red-400">
+                                            The lesson exceeds the word limit. It will be automatically truncated to be below 1000 words.
+                                        </small>
+                                    )}
+                                </DialogDescription>
+                                <DialogFooter>
+                                    <Button variant={'outline'} onClick={() => setShowModal(false)}>
+                                        Close
+                                    </Button>
+                                    <Button onClick={handleLessonContentSubmit}>Confirm</Button>
+                                </DialogFooter>
+                            </DialogContent>
+                        </Dialog>
                     </CardFooter>
                 </Card>
             </div>
