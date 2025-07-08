@@ -6,6 +6,7 @@ import AppLayout from '@/layouts/app-layout';
 import { getWordCount } from '@/lib/utils';
 import { BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
 import DragAndDrop from '../components/DragAndDrop/DragAndDrop';
 import { minCharacter, wordCountLimit } from './quiz/config/config';
 
@@ -17,6 +18,22 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 const Main = () => {
     const { uploadError, lessonContent, setLessonContent, isLoading, files, setFiles, handleFilesSubmit } = useFileProcessor();
+    const [wordCount, setWordCount] = useState<number>(0);
+
+    useEffect(() => {
+        if (lessonContent) {
+            const timeout = setTimeout(() => setWordCount(getWordCount(lessonContent)), 1000);
+            return () => clearTimeout(timeout);
+        }
+    }, [lessonContent]);
+
+    const handleSetLessonContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        e.preventDefault();
+        if (wordCount > wordCountLimit) {
+            return;
+        }
+        setLessonContent(e.target.value);
+    };
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -35,10 +52,10 @@ const Main = () => {
                             value={lessonContent}
                             className="h-80 w-full rounded-sm border p-3 focus:outline-0"
                             placeholder="E=mc^2"
-                            onChange={(e) => setLessonContent(e.target.value)}
+                            onChange={handleSetLessonContent}
                         ></textarea>
                         <small className="text-end font-semibold">
-                            Word Limit: {lessonContent ? getWordCount(lessonContent) : 0}/{wordCountLimit}
+                            Word Limit: {wordCount}/{wordCountLimit}
                         </small>
                     </div>
                     <CardFooter>
