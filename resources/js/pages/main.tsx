@@ -4,9 +4,9 @@ import { Card, CardDescription, CardFooter, CardHeader } from '@/components/ui/c
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { useFileProcessor } from '@/hooks/useFileProcessor';
 import AppLayout from '@/layouts/app-layout';
-import { getWordCount, saveToLocalStorage } from '@/lib/utils';
+import { getWordCount, saveToLocalStorage, truncateStringByMaxCount } from '@/lib/utils';
 import { BreadcrumbItem } from '@/types';
-import { Head } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 import { Info } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import DragAndDrop from '../components/DragAndDrop/DragAndDrop';
@@ -41,15 +41,16 @@ const Main = () => {
 
     const handleSetLessonContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         e.preventDefault();
-        if (wordCount > wordCountLimit) {
-            return;
-        }
-        console.log(e.target.value.length);
+        if (wordCount > wordCountLimit) return;
         setLessonContent(e.target.value);
     };
 
     const handleLessonContentSubmit = () => {
-        saveToLocalStorage('lesson', lessonContent);
+        if (!lessonContent) return;
+
+        const cleanText = truncateStringByMaxCount(lessonContent, wordCountLimit);
+        saveToLocalStorage('lesson', cleanText);
+        router.visit(route('quiz.create'));
     };
 
     return (
@@ -87,7 +88,9 @@ const Main = () => {
                         <small className="text-end">Minimum words: {wordCountMin}</small>
                     </div>
                     <CardFooter>
-                        <Button disabled={isLoading || wordCount > wordCountLimit || wordCount < wordCountMin}>Create Quiz</Button>
+                        <Button disabled={isLoading || wordCount > wordCountLimit || wordCount < wordCountMin} onClick={handleLessonContentSubmit}>
+                            Create Quiz
+                        </Button>
                     </CardFooter>
                 </Card>
             </div>
