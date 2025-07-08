@@ -7,13 +7,6 @@ import DragAndDrop from '../../../../resources/js/components/DragAndDrop/DragAnd
 let mockFiles: File[] = [];
 const mockFn = vi.fn();
 
-vi.mock('../../../../resources/js/hooks/useFileProcessor.tsx', () => ({
-    useFileProcessor: () => ({
-        files: [],
-        setFiles: mockFn,
-    }),
-}));
-
 describe('File selection and drag and drop', () => {
     const emptyFn = () => {};
 
@@ -29,7 +22,7 @@ describe('File selection and drag and drop', () => {
     });
 
     it('saves the dragged and dropped files', () => {
-        render(<DragAndDrop />);
+        render(<DragAndDrop files={mockFiles} setFiles={mockFn} handleFilesSubmit={emptyFn} />);
 
         const dropZone = screen.getByRole('region', { name: 'file dropzone' });
 
@@ -52,7 +45,7 @@ describe('File selection and drag and drop', () => {
 
     it('saves the selected files via user input', async () => {
         const user = userEvent.setup();
-        render(<DragAndDrop />);
+        render(<DragAndDrop files={mockFiles} setFiles={mockFn} handleFilesSubmit={emptyFn} />);
         const input = screen.getByLabelText(/upload/i);
         await user.upload(input, mockFiles);
 

@@ -12,6 +12,8 @@ export const defaultAcceptedTypes: string[] = ['.pdf', '.docx', '.pptx', '.png',
 export const defaultMaxFiles: number = 5;
 export const difficultyLevels: Difficulty[] = ['Easy', 'Medium', 'Hard'];
 export const wordCountLimit = 1000;
+export const maxCharacter = 4000;
+export const minCharacter = 1000
 
 export const presets = [
     { type: 'Multiple Choice', selected: false, title: 'Vocabulary Drill', description: 'Multiple choice · 10 questions', numOfQuestions: 10 },

@@ -51,10 +51,6 @@ export const useFileProcessor = () => {
         await postData(formData);
     };
 
-    const handleLessonContentSubmit = () => {
-        // Cache data then go to options page or truncate first if over word limit
-    };
-
     // Parse the result from postData and validate against zod schema
     useEffect(() => {
         if (!data) return;
@@ -72,7 +68,6 @@ export const useFileProcessor = () => {
         const texts = chunks.join('\n\n');
         const truncatedText = truncateStringByMaxCount(texts, wordCountLimit);
         setLessonContent(truncatedText);
-        console.log(truncatedText);
     }, [data]);
 
     // Sync error from postData to uploadError

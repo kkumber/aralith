@@ -56,3 +56,13 @@ export function truncateStringByMaxCount(str: string, maxCount: number) {
     }
     return str;
 }
+
+export function truncateStringByMaxCharacter(str: string, maxCharacter: number) {
+    if (!str) return;
+
+    if (str.length > maxCharacter) {
+        return str.slice(0, maxCharacter)
+    }
+
+    return str;
+}

@@ -7,7 +7,7 @@ import { getWordCount } from '@/lib/utils';
 import { BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import DragAndDrop from '../components/DragAndDrop/DragAndDrop';
-import { wordCountLimit } from './quiz/config/config';
+import { minCharacter, wordCountLimit } from './quiz/config/config';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -23,7 +23,7 @@ const Main = () => {
             <Head title="Upload Lessons" />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 {uploadError && <InputError message={uploadError} />}
-                <DragAndDrop files={files} setFiles={setFiles} handleFilesSubmit={handleFilesSubmit} />
+                <DragAndDrop files={files} setFiles={setFiles} handleFilesSubmit={handleFilesSubmit} isLoading={isLoading} />
                 <h3 className="text-text-tertiary dark:text-dark-text-tertiary my-8 text-center">or copy and paste the text directly</h3>
                 <Card>
                     <CardHeader>Extracted Lesson</CardHeader>
@@ -42,7 +42,7 @@ const Main = () => {
                         </small>
                     </div>
                     <CardFooter>
-                        <Button asChild disabled={!lessonContent || isLoading}>
+                        <Button asChild disabled={lessonContent?.length === minCharacter || isLoading}>
                             <Link href={route('quiz.create')}>Configure Quiz</Link>
                         </Button>
                     </CardFooter>

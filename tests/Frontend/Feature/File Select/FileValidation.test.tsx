@@ -1,16 +1,21 @@
 import '@testing-library/jest-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import DragAndDrop from '../../../../resources/js/components/DragAndDrop/DragAndDrop';
 import { createFile } from '../../utils/createFile';
 
 describe('File validation', () => {
     const emptyFn = () => {};
+    let mockFiles: File[] = [];
+
+    beforeEach(() => {
+        mockFiles = [new File(['Hello World'], 'hello.png', { type: 'image/png' })];
+    });
 
     it('shows error for the maximum allowed files is reached', async () => {
         const user = userEvent.setup();
-        render(<DragAndDrop maxFiles={5} />);
+        render(<DragAndDrop maxFiles={5} files={mockFiles} setFiles={emptyFn} handleFilesSubmit={emptyFn} />);
 
         const fileInput = screen.getByLabelText(/upload files/i);
         const excessFiles: File[] = [];
@@ -26,7 +31,7 @@ describe('File validation', () => {
     it('shows error for unsupported file type', async () => {
         const user = userEvent.setup();
 
-        render(<DragAndDrop />);
+        render(<DragAndDrop files={mockFiles} setFiles={emptyFn} handleFilesSubmit={emptyFn} />);
 
         const fileInput = screen.getByLabelText(/upload files/i);
         const invalidFile: File[] = [];
@@ -41,7 +46,7 @@ describe('File validation', () => {
 
     it('shows error for exceeding the maximum file size', async () => {
         const user = userEvent.setup();
-        render(<DragAndDrop />);
+        render(<DragAndDrop files={mockFiles} setFiles={emptyFn} handleFilesSubmit={emptyFn} />);
         const fileInput = screen.getByLabelText(/upload files/i);
         const largeFile: File[] = [];
         largeFile.push(createFile('file.pdf', 11));
@@ -56,7 +61,7 @@ describe('File validation', () => {
     it('shows error for an already existing file', async () => {
         const user = userEvent.setup();
 
-        render(<DragAndDrop />);
+        render(<DragAndDrop files={mockFiles} setFiles={emptyFn} handleFilesSubmit={emptyFn} />);
         const fileInput = screen.getByLabelText(/upload files/i);
         const existingFile = [new File(['a'.repeat(5 * 1024 * 1024)], 'existingFile.pdf', { type: 'application/pdf' })];
 
@@ -71,7 +76,7 @@ describe('File validation', () => {
     it('shows no error if file passed all validation', async () => {
         const user = userEvent.setup();
 
-        render(<DragAndDrop />);
+        render(<DragAndDrop files={mockFiles} setFiles={emptyFn} handleFilesSubmit={emptyFn} />);
         const fileInput = screen.getByLabelText(/upload files/i);
         const validFile: File[] = [];
 

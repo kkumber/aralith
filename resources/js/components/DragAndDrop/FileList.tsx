@@ -1,15 +1,17 @@
 import { formatFileSize } from '@/lib/utils';
 import { File, X } from 'lucide-react';
 import { Button } from '../ui/button';
+import DashedLoading from '../ui/dashed-loading';
 
 interface FileListProps {
     files: File[];
     handleFilesSubmit: (param: File[]) => void;
     handleClearAllFiles: () => void;
     handleRemoveFile: (index: number) => void;
+    isLoading: boolean;
 }
 
-const FileList = ({ files, handleFilesSubmit, handleClearAllFiles, handleRemoveFile }: FileListProps) => {
+const FileList = ({ files, handleFilesSubmit, handleClearAllFiles, handleRemoveFile, isLoading }: FileListProps) => {
     return (
         <>
             {files && files.length > 0 && (
@@ -52,9 +54,13 @@ const FileList = ({ files, handleFilesSubmit, handleClearAllFiles, handleRemoveF
                             </div>
                         ))}
                     </div>
-                    <Button className="w-full" onClick={() => handleFilesSubmit(files)} size={`sm`}>
-                        Extract Lessons
-                    </Button>
+                    {isLoading ? (
+                        <DashedLoading mainContent="Extracting..." />
+                    ) : (
+                        <Button className="w-full" onClick={() => handleFilesSubmit(files)} size={`sm`} disabled={isLoading}>
+                            Extract Lessons
+                        </Button>
+                    )}
                 </div>
             )}
         </>
