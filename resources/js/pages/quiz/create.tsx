@@ -2,12 +2,13 @@ import AdvancedConfig from '@/components/quiz/advanced-config';
 import QuizPreset from '@/components/quiz/quiz-preset';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import useQuizConfig from '@/hooks/useQuizConfig';
 import AppLayout from '@/layouts/app-layout';
 import { retrieveFromSessionStorage } from '@/lib/utils';
 import { BreadcrumbItem } from '@/types';
 import { Head, router } from '@inertiajs/react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Configuration } from './config/config';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -23,16 +24,21 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 const Create = () => {
     const { values, handlers } = useQuizConfig();
+    const [showModal, setShowModal] = useState<boolean>(false);
 
     /* Check if there is lesson on mount, redirect to main if not found */
     useEffect(() => {
         const lesson = retrieveFromSessionStorage('lesson');
 
         if (!lesson) {
-            router.visit(route('main'));
-            alert('No lesson found');
+            setShowModal(true);
         }
     });
+
+    const handleReturnModal = () => {
+        setShowModal(false);
+        router.visit(route('main'));
+    };
 
     const handleGenerateQuiz = () => {
         // Submit the config
@@ -51,7 +57,7 @@ const Create = () => {
             <Head title="Upload Lessons" />
 
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
-                <Card className="p-6 shadow-md">
+                <Card className="p-8 shadow-md">
                     <QuizPreset handlePreset={handlers.handlePreset} currentPreset={values.currentPreset} />
                     <hr />
                     <CardContent className="space-y-4">
@@ -71,6 +77,20 @@ const Create = () => {
                     </CardContent>
                 </Card>
             </div>
+
+            <Dialog open={showModal} onOpenChange={setShowModal}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>No Lesson found</DialogTitle>
+                    </DialogHeader>
+                    <DialogDescription>No lesson found. Please upload a lesson first.</DialogDescription>
+                    <DialogFooter>
+                        <Button variant={'outline'} onClick={handleReturnModal}>
+                            Return
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </AppLayout>
     );
 };
