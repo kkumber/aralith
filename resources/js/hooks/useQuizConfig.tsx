@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Difficulty, QuestionType, questionTypes } from '../pages/quiz/config/config';
 
 const useQuizConfig = () => {
@@ -7,6 +7,7 @@ const useQuizConfig = () => {
     const [difficulty, setDifficulty] = useState<Difficulty>('Medium');
     const [randomOrder, setRandomOrder] = useState<boolean>(true);
     const [currentPreset, setCurrentPreset] = useState<string>('');
+    const [title, setTitle] = useState<string>('');
 
     /*  When a preset is clicked, it changes the configuration */
     const handlePreset = (type: QuestionType, numOfQuestions: number) => {
@@ -60,9 +61,14 @@ const useQuizConfig = () => {
         setRandomOrder(randomOrder);
     };
 
+    const handleSetTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setTitle(e.target.value);
+    };
+
     return {
         /* States */
         values: {
+            title,
             selectedTypes,
             numOfQuestions,
             difficulty,
@@ -77,6 +83,7 @@ const useQuizConfig = () => {
             handleNumOfQuestions,
             handleDifficulty,
             handleRandomOrder,
+            handleSetTitle,
         },
     };
 };

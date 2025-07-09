@@ -1,8 +1,8 @@
 import AdvancedConfig from '@/components/quiz/advanced-config';
 import QuizPreset from '@/components/quiz/quiz-preset';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import QuizTitle from '@/components/quiz/quiz-title';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import useQuizConfig from '@/hooks/useQuizConfig';
 import AppLayout from '@/layouts/app-layout';
@@ -42,11 +42,10 @@ const Create = () => {
         router.visit(route('main'));
     };
 
+    /* Submit Config to generate quiz */
     const handleGenerateQuiz = () => {
-        // Submit the config
-
-        // The finalized quiz config.
         const configuration: Configuration = {
+            title: values.title,
             question_types: values.selectedTypes,
             difficulty: values.difficulty,
             total_number_of_questions: values.numOfQuestions,
@@ -74,16 +73,7 @@ const Create = () => {
                             handleRandomOrder={handlers.handleRandomOrder}
                         />
                         <hr />
-                        <Accordion type="single" collapsible defaultValue="lesson">
-                            <AccordionItem value="lesson">
-                                <AccordionTrigger>
-                                    <CardTitle className="text-xl">Uploaded Lesson</CardTitle>
-                                </AccordionTrigger>
-                                <AccordionContent className="text-balance">
-                                    <p>{lesson}</p>
-                                </AccordionContent>
-                            </AccordionItem>
-                        </Accordion>
+                        <QuizTitle lesson={lesson} handleSetTitle={handlers.handleSetTitle} />
                         <Button className="w-full" onClick={handleGenerateQuiz}>
                             Generate Quiz
                         </Button>
