@@ -3,9 +3,10 @@ import QuizPreset from '@/components/quiz/quiz-preset';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
+import { retrieveFromLocalStorage } from '@/lib/utils';
 import { BreadcrumbItem } from '@/types';
-import { Head } from '@inertiajs/react';
-import { useState } from 'react';
+import { Head, router } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
 import { Configuration, Difficulty, QuestionType, questionTypes } from './config/config';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -26,12 +27,17 @@ const Create = () => {
     const [randomOrder, setRandomOrder] = useState<boolean>(true);
     const [currentPreset, setCurrentPreset] = useState<string>('');
 
-    /* Check if there is lesson on mount, redirect to main if not found 
-        
-    */
+    /* Check if there is lesson on mount, redirect to main if not found */
+    useEffect(() => {
+        const lesson = retrieveFromLocalStorage('lesson');
 
+        if (!lesson) {
+            router.visit(route('main'));
+            alert('No lesson found');
+        }
+    });
 
-    // When a preset is clicked, it changes the configuration
+    /*  When a preset is clicked, it changes the configuration */
     const handlePreset = (type: QuestionType, numOfQuestions: number) => {
         if (!type || !questionTypes.includes(type)) return;
 
