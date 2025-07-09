@@ -74,3 +74,19 @@ export function saveToLocalStorage<T>(key: string, value: T) {
 export function retrieveFromLocalStorage(key: string) {
     return JSON.parse(localStorage.getItem(key) || '');
 }
+
+export function saveToSessionStorage<T>(key: string, value: T) {
+    sessionStorage.setItem(key, JSON.stringify(value));
+};
+
+export function retrieveFromSessionStorage(key: string) {
+    const raw = sessionStorage.getItem(key);
+    if (!raw) return null;
+
+    try {
+        return JSON.parse(raw)
+    } catch (e) {
+        console.error(`Failed to parse sessionStorage[${key}]`, e);
+        return null;
+  }
+}

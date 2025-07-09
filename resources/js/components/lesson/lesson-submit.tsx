@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { saveToLocalStorage, truncateStringByMaxCount } from '@/lib/utils';
+import { saveToSessionStorage, truncateStringByMaxCount } from '@/lib/utils';
 import { wordCountLimit, wordCountMin } from '@/pages/quiz/config/config';
 import { router } from '@inertiajs/react';
 import { useState } from 'react';
@@ -17,7 +17,7 @@ const LessonSubmit = ({ lessonContent, isLoading, wordCount }: LessonSubmitProps
         if (!lessonContent) return;
 
         const cleanText = truncateStringByMaxCount(lessonContent, wordCountLimit);
-        saveToLocalStorage('lesson', cleanText);
+        saveToSessionStorage('lesson', cleanText);
         router.visit(route('quiz.create'));
     };
 
