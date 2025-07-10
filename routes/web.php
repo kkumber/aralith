@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\LessonsController;
 use App\Http\Controllers\QuizzesController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -18,6 +19,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('main');
     })->name('main');
 
+    Route::resource('lesson', LessonsController::class);
     Route::resource('quiz', QuizzesController::class);
 });
 

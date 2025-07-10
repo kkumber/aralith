@@ -22,6 +22,11 @@ class Lessons extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function flashcard(): HasMany
+    {
+        return $this->hasMany(LessonFlashCard::class);
+    }
+
     public function quizzes(): HasMany
     {
         return $this->hasMany(Quizzes::class);

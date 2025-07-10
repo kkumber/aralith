@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Lessons;
 use App\Http\Requests\StoreLessonsRequest;
 use App\Http\Requests\UpdateLessonsRequest;
+use App\Services\LessonService;
+use Exception;
+use Illuminate\Support\Facades\Log;
 
 class LessonsController extends Controller
 {
@@ -27,9 +30,25 @@ class LessonsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreLessonsRequest $request)
+    public function store(StoreLessonsRequest $request, LessonService $lessonService)
     {
-        //
+
+        try {
+            $lesson = $lessonService->createLesson($request->validated());
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Lesson created successfully',
+                'lesson' => $lesson
+            ]);
+        } catch (Exception $e) {
+            Log::error('Lesson creation failed: ' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to save lesson. Please try again.'
+            ], 500);
+        }
     }
 
     /**
