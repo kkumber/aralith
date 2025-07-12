@@ -8,7 +8,6 @@ use App\Http\Requests\UpdateLessonsRequest;
 use App\Services\LessonService;
 use Exception;
 use Illuminate\Support\Facades\Log;
-use App\Helpers\ApiResponse;
 
 
 class LessonsController extends Controller
@@ -32,14 +31,13 @@ class LessonsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreLessonsRequest $request, LessonService $lessonService)
+    public function store(StoreLessonsRequest $request)
     {
 
         try {
             $validated = $request->validated();
-            Lessons::create($validated);
-
-            return back()->with('success', 'Lesson saved!');
+            auth()->user()->lessons()->create($validated);
+            return response()->noContent();
         } catch (Exception $e) {
             Log::error('Lesson creation failed: ' . $e->getMessage());
             return back()->with('error', 'Error: ' . $e->getMessage());

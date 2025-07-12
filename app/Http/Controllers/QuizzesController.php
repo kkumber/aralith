@@ -37,7 +37,7 @@ class QuizzesController extends Controller
 
             $quiz = Quizzes::create($validated);
 
-            return back()->with('success', 'Quiz saved!');
+            return to_route('lesson.show')->with('success', 'Quiz saved!')->with('quiz', $quiz);
             // MIght redirect to show
         } catch (Exception $e) {
             return back()->with('error', 'Error: ' . $e->getMessage());

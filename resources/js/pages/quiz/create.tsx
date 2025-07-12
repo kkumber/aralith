@@ -47,11 +47,12 @@ const Create = () => {
      * Also submit the lesson with title and content
      *
      */
-    const saveLesson = async () => {
+    const saveLesson = () => {
         const payload = { title: values.title, content: lesson };
-        await router.post(route('lesson.store'), payload, {
+        router.post(route('lesson.store'), payload, {
             onSuccess: () => {
                 console.log('Lesson Saved');
+                saveQuiz();
             },
             onError: (errors) => {
                 console.log(errors);
@@ -59,7 +60,7 @@ const Create = () => {
         });
     };
 
-    const saveQuiz = async () => {
+    const saveQuiz = () => {
         const payload = {
             title: values.title,
             config: {
@@ -71,9 +72,10 @@ const Create = () => {
             },
         };
 
-        await router.post(route('quiz.store'), payload, {
+        router.post(route('quiz.store'), payload, {
             onSuccess: () => {
-                console.log('Lesson Saved');
+                console.log('Quiz Saved');
+                console.log(props.flash);
             },
             onError: (errors) => {
                 console.log(errors);
@@ -83,7 +85,6 @@ const Create = () => {
 
     const handleGenerateQuiz = () => {
         saveLesson();
-        saveQuiz();
     };
 
     return (
