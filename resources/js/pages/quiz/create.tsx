@@ -8,9 +8,8 @@ import useQuizConfig from '@/hooks/useQuizConfig';
 import AppLayout from '@/layouts/app-layout';
 import { retrieveFromSessionStorage } from '@/lib/utils';
 import { BreadcrumbItem } from '@/types';
-import { Head, router } from '@inertiajs/react';
+import { Head, router, usePage } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
-import { Configuration } from './config/config';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -25,6 +24,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 const Create = () => {
     const { values, handlers } = useQuizConfig();
+    const { props } = usePage();
     const [showModal, setShowModal] = useState<boolean>(false);
     const [lesson, setLesson] = useState<string>('');
 
@@ -47,12 +47,19 @@ const Create = () => {
      * Also submit the lesson with title and content
      *
      */
-    const saveLesson = () => {
+    const saveLesson = async () => {
         const payload = { title: values.title, content: lesson };
-        router.post(route('lesson.store'), payload);
+        await router.post(route('lesson.store'), payload, {
+            onSuccess: () => {
+                console.log('Lesson Saved');
+            },
+            onError: (errors) => {
+                console.log(errors);
+            },
+        });
     };
 
-    const saveQuiz = () => {
+    const saveQuiz = async () => {
         const payload = {
             title: values.title,
             config: {
@@ -63,18 +70,20 @@ const Create = () => {
                 random_order: values.randomOrder,
             },
         };
+
+        await router.post(route('quiz.store'), payload, {
+            onSuccess: () => {
+                console.log('Lesson Saved');
+            },
+            onError: (errors) => {
+                console.log(errors);
+            },
+        });
     };
 
     const handleGenerateQuiz = () => {
         saveLesson();
-
-        const configuration: Configuration = {
-            title: values.title,
-            question_types: values.selectedTypes,
-            difficulty: values.difficulty,
-            total_number_of_questions: values.numOfQuestions,
-            random_order: values.randomOrder,
-        };
+        saveQuiz();
     };
 
     return (

@@ -7,6 +7,7 @@ use App\Http\Requests\StoreQuizzesRequest;
 use App\Http\Requests\UpdateQuizzesRequest;
 use Inertia\Inertia;
 use Exception;
+use App\Helpers\ApiResponse;
 
 class QuizzesController extends Controller
 {
@@ -36,17 +37,10 @@ class QuizzesController extends Controller
 
             $quiz = Quizzes::create($validated);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Quiz successfully created',
-                'quiz' => $quiz
-            ]);
+            return back()->with('success', 'Quiz saved!');
             // MIght redirect to show
         } catch (Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to save quiz. Please try again'
-            ], 500);
+            return back()->with('error', 'Error: ' . $e->getMessage());
         }
     }
 

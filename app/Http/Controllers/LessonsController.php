@@ -36,12 +36,13 @@ class LessonsController extends Controller
     {
 
         try {
-            $lesson = $lessonService->createLesson($request->validated());
+            $validated = $request->validated();
+            Lessons::create($validated);
 
-            ApiResponse::success('Lesson successfully created.', $lesson);
+            return back()->with('success', 'Lesson saved!');
         } catch (Exception $e) {
             Log::error('Lesson creation failed: ' . $e->getMessage());
-            ApiResponse::error('Failed to save lesson. Please try again');
+            return back()->with('error', 'Error: ' . $e->getMessage());
         }
     }
 
