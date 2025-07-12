@@ -23,7 +23,7 @@ class Quizzes extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function lesson(): BelongsTo
+    public function lessons(): BelongsTo
     {
         return $this->belongsTo(Lessons::class);
     }
