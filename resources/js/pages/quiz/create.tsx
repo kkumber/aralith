@@ -47,13 +47,28 @@ const Create = () => {
      * Also submit the lesson with title and content
      *
      */
-    const handleSaveLesson = () => {
+    const saveLesson = () => {
         const payload = { title: values.title, content: lesson };
         router.post(route('lesson.store'), payload);
     };
 
+    const saveQuiz = () => {
+        const payload = {
+            title: values.title,
+            config: {
+                title: values.title,
+                question_types: values.selectedTypes,
+                difficulty: values.difficulty,
+                total_number_of_questions: values.numOfQuestions,
+                random_order: values.randomOrder,
+            },
+        };
+    };
+
     const handleGenerateQuiz = () => {
-        const config: Configuration = {
+        saveLesson();
+
+        const configuration: Configuration = {
             title: values.title,
             question_types: values.selectedTypes,
             difficulty: values.difficulty,

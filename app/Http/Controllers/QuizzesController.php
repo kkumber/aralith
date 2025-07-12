@@ -6,6 +6,7 @@ use App\Models\Quizzes;
 use App\Http\Requests\StoreQuizzesRequest;
 use App\Http\Requests\UpdateQuizzesRequest;
 use Inertia\Inertia;
+use Exception;
 
 class QuizzesController extends Controller
 {
@@ -30,7 +31,23 @@ class QuizzesController extends Controller
      */
     public function store(StoreQuizzesRequest $request)
     {
-        //
+        try {
+            $validated = $request->validated();
+
+            $quiz = Quizzes::create($validated);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Quiz successfully created',
+                'quiz' => $quiz
+            ]);
+            // MIght redirect to show
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to save quiz. Please try again'
+            ], 500);
+        }
     }
 
     /**

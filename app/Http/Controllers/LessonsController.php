@@ -8,6 +8,8 @@ use App\Http\Requests\UpdateLessonsRequest;
 use App\Services\LessonService;
 use Exception;
 use Illuminate\Support\Facades\Log;
+use App\Helpers\ApiResponse;
+
 
 class LessonsController extends Controller
 {
@@ -36,18 +38,10 @@ class LessonsController extends Controller
         try {
             $lesson = $lessonService->createLesson($request->validated());
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Lesson created successfully',
-                'lesson' => $lesson
-            ], 200);
+            ApiResponse::success('Lesson successfully created.', $lesson);
         } catch (Exception $e) {
             Log::error('Lesson creation failed: ' . $e->getMessage());
-
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to save lesson. Please try again.'
-            ], 500);
+            ApiResponse::error('Failed to save lesson. Please try again');
         }
     }
 
