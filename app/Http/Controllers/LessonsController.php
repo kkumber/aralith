@@ -40,7 +40,7 @@ class LessonsController extends Controller
                 'success' => true,
                 'message' => 'Lesson created successfully',
                 'lesson' => $lesson
-            ]);
+            ], 200);
         } catch (Exception $e) {
             Log::error('Lesson creation failed: ' . $e->getMessage());
 

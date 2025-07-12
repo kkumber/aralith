@@ -22,7 +22,12 @@ class StoreQuizzesRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' => ['required', 'string', 'max:50'],
+            'config' => ['required', 'array'],
+            'config.question_types' => ['required', 'array'],
+            'config.difficulty' => ['required', 'string'],
+            'config.total_number_of_questions' => ['required', 'integer'],
+            'config.random_order' => ['required', 'boolean'],
         ];
     }
 }
