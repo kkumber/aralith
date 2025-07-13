@@ -34,7 +34,7 @@ class QuizzesController extends Controller
     {
         try {
             $validated = $request->validated();
-
+            
             $quiz = Quizzes::create($validated);
 
             return to_route('lesson.show')->with('success', 'Quiz saved!')->with('quiz', $quiz);
