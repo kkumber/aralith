@@ -2,11 +2,36 @@
 
 namespace App\Services;
 
+use Exception;
+use Illuminate\Support\Facades\Http;
+
 class AiService
 {
-    public function generateQuestions(array $quizData)
+    public function generateQuestions(array $quizData, string $lessonData)
     {
         $prompt = '';
+    }
+
+    public function callAi(string $prompt)
+    {
+        try {
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . config('ai.openrouter.api_key'),
+                'Content-Type' => 'application/json'
+            ])->post(config('ai.openrouter.api_url'), [
+                'model' => config('ai.openrouter.models.gemma3n'),
+                'messages' => [
+                    [
+                        'role' => 'user',
+                        'content' => $prompt
+                    ]
+                ]
+            ])->throw();
+
+            return $response->json();
+        } catch (Exception $e) {
+            return ['success' => false, 'error' => 'Error: ' . $e->getMessage()];
+        };
     }
 
     public function createQuestionsPrompt(array $quizData, string $lessonData): string
