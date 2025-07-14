@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Lessons;
 use App\Http\Requests\StoreLessonsRequest;
 use App\Http\Requests\UpdateLessonsRequest;
-use App\Services\LessonService;
+use App\Services\LessonQuizService;
 use Exception;
 use Illuminate\Support\Facades\Log;
 

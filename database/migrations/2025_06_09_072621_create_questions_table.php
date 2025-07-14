@@ -19,7 +19,6 @@ return new class extends Migration
             $table->text('explanation');
             $table->jsonb('options');
             $table->string('correct_answer');
-            $table->jsonb('ai_meta');
             $table->timestamps();
         });
     }
