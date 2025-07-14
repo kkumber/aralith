@@ -39,7 +39,7 @@ class AiService
         3. FALLBACK STRATEGIES:
         - If lesson is too short: focus on key terms and basic concepts
         - If too many questions requested: prioritize most important concepts
-        - If mixed types requested but content supports only certain types: adjust distribution
+        - If Mixed types requested but content supports only certain types: adjust distribution
         - Never pad with generic/external knowledge questions
 
         EXAMPLES OF ERROR SCENARIOS:
@@ -71,7 +71,7 @@ class AiService
         {
         \"title\": \"string, max 50 chars\",
         \"config\": {
-            \"question_types\": [\"multiple_choice\", \"true_false\", \"fill_in_the_blank\", \"identification\", \"multiple_answers\", \"mixed\"],
+            \"question_types\": [\"Multiple Choice\", \"True/False\", \"Fill in the blank\", \"Identification\", \"Multiple Answers\", \"Mixed\"],
             \"difficulty\": \"easy\"|\"medium\"|\"hard\",
             \"total_number_of_questions\": \"integer > 0\",
             \"random_order\": true|false
@@ -93,10 +93,10 @@ class AiService
         - Use difficulty level: {$quizData['config']['difficulty']}
         
         3. QUESTION TYPE DISTRIBUTION:
-        - If question_types contains \"mixed\": distribute among all supported types as equally as possible
+        - If question_types contains \"Mixed\": distribute among all supported types as equally as possible
         - If specific types provided: distribute among specified types as equally as possible
         - For uneven distribution: prioritize in order provided
-        - Supported types: multiple_choice, true_false, fill_in_the_blank, identification, multiple_answers
+        - Supported types: Multiple Choice, True/False, Fill in the blank, Identification, Multiple Answers
 
         4. QUESTION STRUCTURE:
         For each question, provide:
@@ -107,15 +107,15 @@ class AiService
         - correct_answer: string or array based on question type
 
         5. OPTIONS ARRAY RULES:
-        - multiple_choice: exactly 4 plausible options (strings), one correct
-        - true_false: exactly [\"True\", \"False\"]
-        - fill_in_the_blank: empty array []
-        - identification: empty array []
-        - multiple_answers: exactly 5 options, 2-3 correct answers
+        - Multiple Choice: exactly 4 plausible options (strings), one correct
+        - True/False: exactly [\"True\", \"False\"]
+        - Fill in the blank: empty array []
+        - Identification: empty array []
+        - Multiple Answers: exactly 5 options, 2-3 correct answers
 
         6. CORRECT_ANSWER RULES:
-        - multiple_choice, true_false, fill_in_the_blank, identification: single string
-        - multiple_answers: array of strings (all correct options)
+        - Multiple Choice, True/False, Fill in the blank, Identification: single string
+        - Multiple Answers: array of strings (all correct options)
 
         7. DIFFICULTY GUIDELINES:
         - easy: basic recall, simple concepts
@@ -124,7 +124,7 @@ class AiService
 
         8. FINAL STEPS:
         - If random_order is true: shuffle final question array
-        - If random_order is false: maintain generation order
+        - If random_order is false: group the questions by the types
 
         OUTPUT FORMATS:
 
@@ -132,7 +132,7 @@ class AiService
         Return ONLY the questions array:
         [
         {
-            \"type\": \"multiple_choice\",
+            \"type\": \"Multiple Choice\",
             \"question_text\": \"What is the main concept discussed?\",
             \"explanation\": \"The lesson explicitly states that...\",
             \"options\": [\"Option A\", \"Option B\", \"Option C\", \"Option D\"],
@@ -149,7 +149,7 @@ class AiService
         \"reason\": \"insufficient_content|too_short|limited_concepts\",
         \"questions\": [
             {
-            \"type\": \"multiple_choice\",
+            \"type\": \"Multiple Choice\",
             \"question_text\": \"...\",
             \"explanation\": \"...\",
             \"options\": [...],
