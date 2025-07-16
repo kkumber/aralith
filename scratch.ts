@@ -10,7 +10,7 @@ async function call() {
                     messages: [
                         {
                             role: 'user',
-                            content: `Generate 5 quiz questions from this text: ${lesson}. Answer in json format like this:
+                            content: `Generate random questions in this format. only return like this.
                             {
                             question: '',
                             type: mcq,
@@ -26,4 +26,18 @@ async function call() {
             console.log(data);
         }
 
-/*         call(); */
+// call(); 
+
+curl https://openrouter.ai/api/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer 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" \
+  -d '{
+  "model": "google/gemma-3n-e2b-it:free",
+  "messages": [
+    {
+      "role": "user",
+      "content": "What is the meaning of life?"
+    }
+  ]
+  
+}'

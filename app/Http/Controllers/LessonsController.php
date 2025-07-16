@@ -8,7 +8,7 @@ use App\Http\Requests\UpdateLessonsRequest;
 use App\Services\LessonQuizService;
 use Exception;
 use Illuminate\Support\Facades\Log;
-
+use Inertia\Inertia;
 
 class LessonsController extends Controller
 {
@@ -31,25 +31,14 @@ class LessonsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreLessonsRequest $request)
-    {
-
-        try {
-            $validated = $request->validated();
-            auth()->user()->lessons()->create($validated);
-            return response()->noContent();
-        } catch (Exception $e) {
-            Log::error('Lesson creation failed: ' . $e->getMessage());
-            return back()->with('error', 'Error: ' . $e->getMessage());
-        }
-    }
+    public function store(StoreLessonsRequest $request) {}
 
     /**
      * Display the specified resource.
      */
     public function show(Lessons $lessons)
     {
-        //
+        return Inertia::render('main');
     }
 
     /**

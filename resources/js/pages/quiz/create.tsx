@@ -76,7 +76,7 @@ const Create = () => {
     };
 
     const handleGenerateQuiz = () => {
-        saveLesson();
+        saveLessonQuiz();
     };
 
     return (

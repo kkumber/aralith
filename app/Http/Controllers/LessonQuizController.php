@@ -41,7 +41,12 @@ class LessonQuizController extends Controller
             }
 
             // Generate questions data first from AI
-            $questionsData = $aiService->generateQuestions($validated['quiz_config'], $validated['lesson']);
+            $questionsData = $aiService->generateQuestions($validated['quiz_config'], $validated['lesson']['content']);
+
+            // Validate that AI service returned valid data
+            if (empty($questionsData) || !is_array($questionsData)) {
+                return back()->with('error', 'Failed to generate questions from AI');
+            }
 
             // Save in db
             $result = $lessonQuizService->createLessonQuiz($validated['lesson'], $validated['quiz_config'], $questionsData, $user);
