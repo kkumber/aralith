@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\LessonQuizController;
 use App\Http\Controllers\LessonsController;
 use App\Http\Controllers\QuizzesController;
 use Illuminate\Support\Facades\Route;
@@ -21,6 +22,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::resource('lesson', LessonsController::class);
     Route::resource('quiz', QuizzesController::class);
+    Route::resource('lesson-quiz', LessonQuizController::class);
 });
 
 
