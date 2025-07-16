@@ -47,35 +47,27 @@ const Create = () => {
      * Also submit the lesson with title and content
      *
      */
-    const saveLesson = () => {
-        const payload = { title: values.title, content: lesson };
-        router.post(route('lesson.store'), payload, {
-            onSuccess: () => {
-                console.log('Lesson Saved');
-                saveQuiz();
-            },
-            onError: (errors) => {
-                console.log(errors);
-            },
-        });
-    };
-
-    const saveQuiz = () => {
+    const saveLessonQuiz = () => {
         const payload = {
-            title: values.title,
-            config: {
+            lesson: {
                 title: values.title,
-                question_types: values.selectedTypes,
-                difficulty: values.difficulty,
-                total_number_of_questions: values.numOfQuestions,
-                random_order: values.randomOrder,
+                content: lesson,
+            },
+            quiz_config: {
+                title: values.title,
+                config: {
+                    title: values.title,
+                    question_types: values.selectedTypes,
+                    difficulty: values.difficulty,
+                    total_number_of_questions: values.numOfQuestions,
+                    random_order: values.randomOrder,
+                },
             },
         };
 
-        router.post(route('quiz.store'), payload, {
+        router.post(route('lesson-quiz.store'), payload, {
             onSuccess: () => {
-                console.log('Quiz Saved');
-                console.log(props.flash);
+                console.log('Lesson and Quiz Saved');
             },
             onError: (errors) => {
                 console.log(errors);
