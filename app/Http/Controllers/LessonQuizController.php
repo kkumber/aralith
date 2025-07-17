@@ -31,29 +31,26 @@ class LessonQuizController extends Controller
      */
     public function store(StoreLessonQuizRequest $request, LessonQuizService $lessonQuizService, AiService $aiService)
     {
-        try {
-            $validated = $request->validated();
+        $validated = $request->validated();
 
-            $user = auth()->user();
+        $user = auth()->user();
 
-            if (!$user) {
-                return back()->with('error', 'Unauthorized');
-            }
-
-            // Generate questions data first from AI
-            $questionsData = $aiService->generateQuestions($validated['quiz_config'], $validated['lesson']['content']);
-
-            // Validate that AI service returned valid data
-            if (empty($questionsData) || !is_array($questionsData)) {
-                return back()->with('error', 'Failed to generate questions from AI');
-            }
-
-            // Save in db
-            $result = $lessonQuizService->createLessonQuiz($validated['lesson'], $validated['quiz_config'], $questionsData, $user);
-
-            return redirect()->route('lesson.show', $result['lesson']->id)->with('success', true)->with('result', $result);
-        } catch (Exception $e) {
-            return back()->with('error', 'Error: ' . $e->getMessage());
+        if (!$user) {
+            return back()->with('error', 'Unauthorized');
         }
+        // Generate questions data first from AI
+        $questionsData = $aiService->generateQuestions($validated['quiz_config'], $validated['lesson']['content']);
+
+        dd($questionsData);
+
+        // Validate that AI service returned valid data
+        if (empty($questionsData) || !is_array($questionsData)) {
+            return back()->with('error', 'Failed to generate questions from AI');
+        }
+
+        // Save in db
+        $result = $lessonQuizService->createLessonQuiz($validated['lesson'], $validated['quiz_config'], $questionsData, $user);
+
+        return redirect()->route('main', $result['lesson']->id)->with('success', true)->with('result', $result);
     }
 }

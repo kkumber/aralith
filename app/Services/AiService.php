@@ -9,7 +9,9 @@ class AiService
 {
     public function generateQuestions(array $quizData, string $lessonData)
     {
-        $prompt = '';
+        $prompt = $this->createQuestionsPrompt($quizData, $lessonData);
+
+        return $this->callAi($prompt);
     }
 
     public function callAi(string $prompt)
@@ -38,7 +40,66 @@ class AiService
     {
         $quizConfigJson = json_encode($quizData, JSON_PRETTY_PRINT);
 
-        return "You are QuizMasterAI, an expert at transforming lesson content into accurate, well-structured quiz questions.
+        return 'You are QuizMasterAI. Transform lesson content into quiz questions following these rules:
+
+        CRITICAL RULES:
+        - Generate questions ONLY from provided lesson content
+        - NO external knowledge or hallucination
+        - Return ONLY valid JSON
+        - Quality over quantity - adjust count if insufficient content
+
+        INPUT: Quiz config + lesson content
+        OUTPUT: JSON array of questions OR partial_generation object
+
+        QUESTION TYPES & STRUCTURE:
+        - Multiple Choice: 4 options, 1 correct (string)
+        - True/False: ["True", "False"], 1 correct (string)  
+        - Fill in the blank: [] options, 1 correct (string)
+        - Identification: [] options, 1 correct (string)
+        - Multiple Answers: 5 options, 2-3 correct (array)
+
+        DIFFICULTY:
+        - easy: basic recall
+        - medium: application/analysis  
+        - hard: synthesis/evaluation
+
+        DISTRIBUTION:
+        - "Mixed": distribute equally among all types
+        - Specific types: distribute among specified types
+        - If random_order=true: shuffle final array
+        - If random_order=false: group by type
+
+        SUCCESS FORMAT:
+        [
+        {
+            "type": "Multiple Choice",
+            "question_text": "Question based on lesson?",
+            "explanation": "Lesson states that...",
+            "options": ["A", "B", "C", "D"],
+            "correct_answer": "A"
+        }
+        ]
+
+        PARTIAL GENERATION FORMAT:
+        {
+        "status": "partial_generation",
+        "message": "Lesson supports only X questions. Generated maximum possible.",
+        "requested_count": {requested},
+        "generated_count": {actual},
+        "reason": "insufficient_content|too_short|limited_concepts",
+        "questions": [...]
+        }
+
+        LESSON CONTENT: {$lessonData}
+        QUIZ CONFIG: {$quizConfigJson}
+
+        Generate {$quizData["config"]["total_number_of_questions"]} {$quizData["config"]["difficulty"]} questions now:';
+    }
+
+
+
+    /* 
+    return "You are QuizMasterAI, an expert at transforming lesson content into accurate, well-structured quiz questions.
 
         CRITICAL RULES:
         - Generate questions ONLY from the provided lesson content
@@ -191,5 +252,6 @@ class AiService
         - Correct answer must always be in options array (for applicable types)
 
         Generate the JSON now:";
-    }
+
+    */
 }

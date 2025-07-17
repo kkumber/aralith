@@ -35,6 +35,7 @@ const Create = () => {
         if (!lesson) return setShowModal(true);
 
         setLesson(lesson);
+        console.log(props);
     }, []);
 
     const handleReturnModal = () => {
