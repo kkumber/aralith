@@ -30,19 +30,7 @@ class QuizzesController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreQuizzesRequest $request)
-    {
-        try {
-            $validated = $request->validated();
-            
-            $quiz = Quizzes::create($validated);
-
-            return to_route('lesson.show')->with('success', 'Quiz saved!')->with('quiz', $quiz);
-            // MIght redirect to show
-        } catch (Exception $e) {
-            return back()->with('error', 'Error: ' . $e->getMessage());
-        }
-    }
+    public function store(StoreQuizzesRequest $request) {}
 
     /**
      * Display the specified resource.

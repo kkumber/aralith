@@ -57,7 +57,6 @@ const Create = () => {
             quiz_config: {
                 title: values.title,
                 config: {
-                    title: values.title,
                     question_types: values.selectedTypes,
                     difficulty: values.difficulty,
                     total_number_of_questions: values.numOfQuestions,

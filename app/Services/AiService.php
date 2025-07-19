@@ -9,59 +9,90 @@ class AiService
 {
     public function generateQuestions(array $quizData, string $lessonData)
     {
-        $prompt = $this->createQuestionsPrompt($quizData, $lessonData);
-
-        return $this->callAi($prompt);
+        $systemContent = $this->createQuestionsSystemPrompt();
+        $userContent = $this->combineQuizLessonContent($quizData, $lessonData);
+        return $this->callAi($systemContent, $userContent);
     }
 
-    public function callAi(string $prompt)
+    public function callAi(string $systemContent, string $userContent)
     {
         try {
             $response = Http::withHeaders([
-                'Authorization' => 'Bearer ' . config('ai.openrouter.api_key'),
+                'Authorization' => 'Bearer ' . config('ai.groq.api_key'),
                 'Content-Type' => 'application/json'
-            ])->post(config('ai.openrouter.api_url'), [
-                'model' => config('ai.openrouter.models.gemma3n'),
+            ])->post(config('ai.groq.api_url'), [
+                'model' => config('ai.groq.models.kimi-k2'),
                 'messages' => [
                     [
+                        'role' => 'system',
+                        'content' => $systemContent
+                    ],
+                    [
                         'role' => 'user',
-                        'content' => $prompt
+                        'content' => $userContent
                     ]
-                ]
+                ],
+                /* 'response_format' => [
+                    'type' => 'json_schema',
+                    'json_schema' => [
+                        'name' => 'questions',
+                        'schema' => [
+                            'type' => 'array',
+                            'items' => [
+                                'type' => 'object',
+                                'properties' => [
+                                    'type' => ['type' => 'string', 'enum' => ['Multiple Choice', 'True/False', 'Fill in the blank', 'Identification', 'Multiple Answers']],
+                                    'question_text' => ['type' => 'string'],
+                                    'explanation' => ['type' => 'string'],
+                                    'options' => ['type' => 'array', 'items' => ['type' => 'string']],
+                                    'correct_answer' => ['type' => 'string']
+                                ],
+                                'required' => ['type', 'question_text', 'correct_answer'],
+                                'additionalProperties' => false,
+                            ]
+                        ]
+                    ]
+                ] */
             ])->throw();
 
-            return $response->json();
+            return $response->json()['choices'][0]['message']['content'];
         } catch (Exception $e) {
             return ['success' => false, 'error' => 'Error: ' . $e->getMessage()];
         };
     }
 
-    public function createQuestionsPrompt(array $quizData, string $lessonData): string
+    public function combineQuizLessonContent(array $quizData, string $lessonData): string
     {
-        $quizConfigJson = json_encode($quizData, JSON_PRETTY_PRINT);
+        return 'Quiz configuration: ' . json_encode($quizData) . '\n Lesson content: ' . $lessonData . '.';
+    }
 
-        return 'You are QuizMasterAI. Transform lesson content into quiz questions following these rules:
+    public function createQuestionsSystemPrompt(): string
+    {
+        return 'You are QuizMasterAI, a professional quiz maker that only answers in JSON with the specific schema given that transforms lesson content into quiz questions based on the quiz configuration:
 
         CRITICAL RULES:
         - Generate questions ONLY from provided lesson content
         - NO external knowledge or hallucination
         - Return ONLY valid JSON
         - Quality over quantity - adjust count if insufficient content
+        - **Only** return texts with no escape sequences.
+        - You can return your JSON as one line only. DO NOT ATTEMPT TO FORMAT.
+        - Make sure to only generate questions based on the requested quiz configuration and lesson content.
 
         INPUT: Quiz config + lesson content
-        OUTPUT: JSON array of questions OR partial_generation object
+        OUTPUT: JSON array of questions
 
         QUESTION TYPES & STRUCTURE:
-        - Multiple Choice: 4 options, 1 correct (string)
+        - Multiple Choice: 4 options, 1 correct (string). Ex."The dog".
         - True/False: ["True", "False"], 1 correct (string)  
-        - Fill in the blank: [] options, 1 correct (string)
-        - Identification: [] options, 1 correct (string)
-        - Multiple Answers: 5 options, 2-3 correct (array)
+        - Fill in the blank: ["The quick brown fox"] options, 1 correct (string)
+        - Identification: ["bag"] options, 1 correct (string)
+        - Multiple Answers: 5 options, 2-3 correct (array). Example correct answers ["Apple", "Dog"]
 
         DIFFICULTY:
-        - easy: basic recall
-        - medium: application/analysis  
-        - hard: synthesis/evaluation
+        - Easy: basic recall
+        - Medium: application/analysis  
+        - Hard: synthesis/evaluation
 
         DISTRIBUTION:
         - "Mixed": distribute equally among all types
@@ -70,30 +101,17 @@ class AiService
         - If random_order=false: group by type
 
         SUCCESS FORMAT:
-        [
+        questions: [
         {
             "type": "Multiple Choice",
             "question_text": "Question based on lesson?",
             "explanation": "Lesson states that...",
-            "options": ["A", "B", "C", "D"],
-            "correct_answer": "A"
+            "options": ["The independence", "Boar", "Cat", "Dog"],
+            "correct_answer": "Dog"
         }
         ]
 
-        PARTIAL GENERATION FORMAT:
-        {
-        "status": "partial_generation",
-        "message": "Lesson supports only X questions. Generated maximum possible.",
-        "requested_count": {requested},
-        "generated_count": {actual},
-        "reason": "insufficient_content|too_short|limited_concepts",
-        "questions": [...]
-        }
-
-        LESSON CONTENT: {$lessonData}
-        QUIZ CONFIG: {$quizConfigJson}
-
-        Generate {$quizData["config"]["total_number_of_questions"]} {$quizData["config"]["difficulty"]} questions now:';
+        Generate questions now. Make sure to **only** return the success JSON format.';
     }
 
 

@@ -39,9 +39,7 @@ class LessonQuizController extends Controller
             return back()->with('error', 'Unauthorized');
         }
         // Generate questions data first from AI
-        $questionsData = $aiService->generateQuestions($validated['quiz_config'], $validated['lesson']['content']);
-
-        dd($questionsData);
+        $questionsData = json_decode($aiService->generateQuestions($validated['quiz_config'], $validated['lesson']['content']));
 
         // Validate that AI service returned valid data
         if (empty($questionsData) || !is_array($questionsData)) {
@@ -50,6 +48,8 @@ class LessonQuizController extends Controller
 
         // Save in db
         $result = $lessonQuizService->createLessonQuiz($validated['lesson'], $validated['quiz_config'], $questionsData, $user);
+
+        dd($result);
 
         return redirect()->route('main', $result['lesson']->id)->with('success', true)->with('result', $result);
     }

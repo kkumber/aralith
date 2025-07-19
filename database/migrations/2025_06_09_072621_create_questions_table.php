@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('question_text');
             $table->text('explanation');
             $table->jsonb('options');
-            $table->string('correct_answer');
+            $table->jsonb('correct_answer');
             $table->timestamps();
         });
     }
