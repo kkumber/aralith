@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreLessonQuizRequest;
+use App\Models\Lessons;
 use App\Services\AiService;
 use App\Services\LessonQuizService;
 use Illuminate\Http\Request;
 use Exception;
+use Inertia\Inertia;
 
 class LessonQuizController extends Controller
 {

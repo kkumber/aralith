@@ -6,7 +6,7 @@ import { useFileProcessor } from '@/hooks/useFileProcessor';
 import AppLayout from '@/layouts/app-layout';
 import { getWordCount, retrieveFromSessionStorage } from '@/lib/utils';
 import { BreadcrumbItem } from '@/types';
-import { Head } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import DragAndDrop from '../components/DragAndDrop/DragAndDrop';
 
@@ -19,6 +19,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 const Main = () => {
     const { uploadError, lessonContent, setLessonContent, isLoading, files, setFiles, handleFilesSubmit } = useFileProcessor();
     const [wordCount, setWordCount] = useState<number>(0);
+    const { lessons } = usePage().props;
 
     // Only count the words after waiting a few seconds
     useEffect(() => {
@@ -35,6 +36,7 @@ const Main = () => {
         if (existingLesson) {
             setLessonContent(existingLesson);
         }
+        console.log(lessons);
     }, []);
 
     const handleSetLessonContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {

@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\LessonQuizController;
 use App\Http\Controllers\LessonsController;
 use App\Http\Controllers\QuizzesController;
+use App\Models\Lessons;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -16,9 +17,7 @@ Route::get('/welcome', function () {
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/', function () {
-        return Inertia::render('main');
-    })->name('main');
+    Route::get('/', [LessonsController::class, 'home'])->name('main');
 
     Route::resource('lesson', LessonsController::class);
     Route::resource('quiz', QuizzesController::class);

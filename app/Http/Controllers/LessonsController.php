@@ -12,6 +12,15 @@ use Inertia\Inertia;
 
 class LessonsController extends Controller
 {
+
+    public function home()
+    {
+        $userId = auth()->user()->id;
+        $lessons = Lessons::where('user_id', $userId)->latest()->paginate(10);
+        return Inertia::render('main', ['lessons' => $lessons]);
+    }
+
+
     /**
      * Display a listing of the resource.
      */
@@ -38,7 +47,7 @@ class LessonsController extends Controller
      */
     public function show(Lessons $lessons)
     {
-        return Inertia::render('main');
+        //
     }
 
     /**
