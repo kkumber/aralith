@@ -26,7 +26,7 @@ class LessonsController extends Controller
      */
     public function index()
     {
-        //
+        return Inertia::render('history');
     }
 
     /**
@@ -45,7 +45,7 @@ class LessonsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Lessons $lessons)
+    public function show(Lessons $lesson)
     {
         //
     }

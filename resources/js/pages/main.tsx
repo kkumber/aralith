@@ -5,7 +5,7 @@ import { Card, CardFooter } from '@/components/ui/card';
 import { useFileProcessor } from '@/hooks/useFileProcessor';
 import AppLayout from '@/layouts/app-layout';
 import { getWordCount, retrieveFromSessionStorage } from '@/lib/utils';
-import { BreadcrumbItem } from '@/types';
+import { BreadcrumbItem, LessonResponse, PaginatedResponse } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import DragAndDrop from '../components/DragAndDrop/DragAndDrop';
@@ -16,10 +16,13 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: route('main'),
     },
 ];
+
 const Main = () => {
     const { uploadError, lessonContent, setLessonContent, isLoading, files, setFiles, handleFilesSubmit } = useFileProcessor();
     const [wordCount, setWordCount] = useState<number>(0);
-    const { lessons } = usePage().props;
+    const { lessons } = usePage<{
+        lessons: PaginatedResponse<LessonResponse>;
+    }>().props;
 
     // Only count the words after waiting a few seconds
     useEffect(() => {
@@ -29,14 +32,14 @@ const Main = () => {
         }
     }, [lessonContent]);
 
-    // Immediately get the saved lesson on mount. Incase of reloads
+    // Run checks on mount
     useEffect(() => {
+        // Check if existing lesson exist in session storage in case of accidental reloads
         const existingLesson = retrieveFromSessionStorage('lesson');
 
         if (existingLesson) {
             setLessonContent(existingLesson);
         }
-        console.log(lessons);
     }, []);
 
     const handleSetLessonContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -50,7 +53,7 @@ const Main = () => {
                 {uploadError && <InputError message={uploadError} />}
                 <DragAndDrop files={files} setFiles={setFiles} handleFilesSubmit={handleFilesSubmit} isLoading={isLoading} />
                 <h3 className="text-text-tertiary dark:text-dark-text-tertiary my-8 text-center">or copy and paste the text directly</h3>
-                <Card>
+                <Card className="rounded-sm">
                     <LessonInput lessonContent={lessonContent} handleSetLessonContent={handleSetLessonContent} wordCount={wordCount} />
                     <CardFooter>
                         <LessonSubmit lessonContent={lessonContent} isLoading={isLoading} wordCount={wordCount} />
