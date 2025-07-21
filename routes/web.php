@@ -18,13 +18,12 @@ Route::get('/welcome', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', [LessonsController::class, 'home'])->name('main');
+    Route::post('/lessons/bulk-destroy', [LessonsController::class, 'bulkDestroy'])->name('lesson.bulkDestroy');
 
     Route::resource('lesson', LessonsController::class);
     Route::resource('quiz', QuizzesController::class);
     Route::resource('lesson-quiz', LessonQuizController::class);
 });
-
-
 
 
 require __DIR__ . '/settings.php';

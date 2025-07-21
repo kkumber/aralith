@@ -7,6 +7,7 @@ use App\Http\Requests\StoreLessonsRequest;
 use App\Http\Requests\UpdateLessonsRequest;
 use App\Services\LessonQuizService;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
@@ -52,7 +53,7 @@ class LessonsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Lessons $lessons)
+    public function edit(Lessons $lesson)
     {
         //
     }
@@ -60,7 +61,7 @@ class LessonsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateLessonsRequest $request, Lessons $lessons)
+    public function update(UpdateLessonsRequest $request, Lessons $lesson)
     {
         //
     }
@@ -68,8 +69,30 @@ class LessonsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Lessons $lessons)
+    public function destroy(Lessons $lesson)
     {
         //
+    }
+
+    public function bulktDestroy(Request $request)
+    {
+        $validate = $request->validate([
+            'lesson_ids' => ['required', 'array'],
+            'lesson_ids.*' => ['exists:lessons,id']
+        ]);
+
+        $lessonIds = $validate['lesson_ids'];
+
+        $lessons = Lessons::whereIn('id', $lessonIds)->get();
+
+        foreach ($lessons as $lesson) {
+            if (!auth()->user()->can('delete', $lesson)) {
+                abort(403, 'You are not authorized to delete this lesson');
+            };
+        };
+
+        Lessons::whereIn('id', $lessonIds)->delete();
+
+        return back()->with('delete', count($lessonIds) . ' lessons deleted');
     }
 }

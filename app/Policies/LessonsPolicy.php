@@ -19,7 +19,7 @@ class LessonsPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Lessons $lessons): bool
+    public function view(User $user, Lessons $lesson): bool
     {
         return false;
     }
@@ -35,31 +35,31 @@ class LessonsPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Lessons $lessons): bool
+    public function update(User $user, Lessons $lesson): bool
     {
-        return false;
+        return $user->id === $lesson->user_id;
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Lessons $lessons): bool
+    public function delete(User $user, Lessons $lesson): bool
     {
-        return false;
+        return $user->id === $lesson->user_id;
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Lessons $lessons): bool
+    public function restore(User $user, Lessons $lesson): bool
     {
-        return false;
+        return $user->id === $lesson->user_id;
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Lessons $lessons): bool
+    public function forceDelete(User $user, Lessons $lesson): bool
     {
         return false;
     }
