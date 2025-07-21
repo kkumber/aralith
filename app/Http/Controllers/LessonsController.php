@@ -15,18 +15,17 @@ class LessonsController extends Controller
 
     public function home()
     {
-        $userId = auth()->user()->id;
-        $lessons = Lessons::where('user_id', $userId)->latest()->paginate(10);
-        return Inertia::render('main', ['lessons' => $lessons]);
+        return Inertia::render('main');
     }
-
 
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return Inertia::render('history');
+        $userId = auth()->user()->id;
+        $lessons = Lessons::where('user_id', $userId)->latest()->paginate(10);
+        return Inertia::render('history', ['lessons' => $lessons]);
     }
 
     /**

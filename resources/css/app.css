@@ -198,6 +198,10 @@
         @apply font-paragraph text-text-secondary dark:text-dark-text-secondary text-base font-normal;
     }
 
+    b {
+        @apply font-paragraph text-text-secondary dark:text-dark-text-secondary text-base font-bold;
+    }
+
     small {
         @apply font-paragraph text-text-tertiary dark:text-dark-text-tertiary text-sm font-normal;
     }
