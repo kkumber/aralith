@@ -1,4 +1,5 @@
 import { LessonResponse } from '@/types';
+import { Link } from '@inertiajs/react';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 
@@ -16,8 +17,8 @@ const PreviousLessons = ({ lessons }: any) => {
                         <Card className="gap-1">
                             <CardHeader>
                                 <CardTitle>
-                                    <Button variant={'link'} className="p-0 text-base">
-                                        {lesson.title}
+                                    <Button variant={'link'} className="p-0 text-base" asChild>
+                                        <Link href={route('lesson.show', { lesson: lesson.id })}>{lesson.title}</Link>
                                     </Button>
                                 </CardTitle>
                             </CardHeader>

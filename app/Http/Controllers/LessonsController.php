@@ -46,7 +46,7 @@ class LessonsController extends Controller
      */
     public function show(Lessons $lesson)
     {
-        //
+        return Inertia::render('lesson', ['lesson' => $lesson]);
     }
 
     /**
