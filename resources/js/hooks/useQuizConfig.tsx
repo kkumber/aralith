@@ -1,3 +1,4 @@
+import { capitalizeFirstLetter } from '@/lib/utils';
 import React, { useState } from 'react';
 import { Difficulty, QuestionType, questionTypes } from '../pages/quiz/config/config';
 
@@ -62,7 +63,9 @@ const useQuizConfig = () => {
     };
 
     const handleSetTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setTitle(e.target.value);
+        const cleanStr = capitalizeFirstLetter(e.target.value);
+        console.log(cleanStr);
+        setTitle(cleanStr);
     };
 
     return {

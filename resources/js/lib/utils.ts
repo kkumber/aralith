@@ -90,3 +90,10 @@ export function retrieveFromSessionStorage(key: string) {
         return null;
   }
 }
+
+export function capitalizeFirstLetter(str: string) {
+  if (typeof str !== 'string' || str.length === 0) {
+    return str; // Handle non-string or empty inputs
+  }
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}

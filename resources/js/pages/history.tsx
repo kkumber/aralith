@@ -20,11 +20,9 @@ const History = () => {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="History" />
-            <main className="p-20">
+            <main className="mx-auto grid max-w-screen-md items-center justify-center p-4">
                 <h1 className="font-medium">Previous Lessons</h1>
-                <PreviousLessons lessons={lessons} />
-
-                {!lessons && <NoLessonMessage />}
+                {lessons && lessons.data.length ? <PreviousLessons lessons={lessons.data} /> : <NoLessonMessage />}
             </main>
         </AppLayout>
     );
