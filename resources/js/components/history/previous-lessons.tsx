@@ -3,16 +3,27 @@ import { Link } from '@inertiajs/react';
 import { useState } from 'react';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardTitle } from '../ui/card';
+import { Checkbox } from '../ui/checkbox';
 
 interface Props {
     lessons: LessonResponse[];
 }
 
 const PreviousLessons = ({ lessons }: Props) => {
-    const [selected, setSelected] = useState([]);
+    const [selected, setSelected] = useState<number[]>([]);
 
-    const handleSelected = (id: number) => {};
+    const handleSelected = (id: number) => {
+        if (!id) return;
 
+        if (selected.includes(id)) {
+            const filtered = selected.filter((prev) => prev !== id);
+            return setSelected(filtered);
+        }
+
+        setSelected((prev: number[]) => [...prev, id]);
+    };
+
+    console.log(selected);
     return (
         <section className="grid">
             <div className="flex items-center justify-between">
@@ -23,7 +34,11 @@ const PreviousLessons = ({ lessons }: Props) => {
             {lessons && lessons.length && (
                 <div className="flex flex-col items-center justify-center">
                     {lessons.map((lesson: LessonResponse) => (
-                        <Card className="gap-1">
+                        <Card className={`relative gap-1 ${selected.includes(lesson.id)}`} key={lesson.id}>
+                            <Checkbox
+                                className={`absolute top-9 -left-2 z-10 bg-[#fafafa] dark:bg-[#0a0a0a] ${selected.includes(lesson.id) ? 'bg-primary-green' : ''}`}
+                                onCheckedChange={() => handleSelected(lesson.id)}
+                            />
                             <CardContent>
                                 <CardTitle>
                                     <Button variant={'link'} className="p-0 text-base font-bold" asChild>
