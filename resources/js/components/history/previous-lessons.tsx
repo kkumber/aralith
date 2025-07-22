@@ -46,6 +46,7 @@ const PreviousLessons = ({ lessons }: Props) => {
                                     </Button>
                                 </CardTitle>
                                 <p className="line-clamp-1 w-full overflow-hidden text-ellipsis">{lesson.content}</p>
+                                <small>{lesson.updated_at}</small>
                             </CardContent>
                         </Card>
                     ))}
