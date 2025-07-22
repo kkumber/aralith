@@ -36,7 +36,7 @@ const PreviousLessons = ({ lessons }: Props) => {
                     {lessons.map((lesson: LessonResponse) => (
                         <Card className={`relative gap-1 ${selected.includes(lesson.id)}`} key={lesson.id}>
                             <Checkbox
-                                className={`absolute top-9 -left-2 z-10 bg-[#fafafa] dark:bg-[#0a0a0a] ${selected.includes(lesson.id) ? 'bg-primary-green' : ''}`}
+                                className={`data-[state=checked]:bg-primary-green data-[state=checked]:border-primary-green absolute top-9 -left-2 z-10 data-[state=checked]:text-white data-[state=unchecked]:bg-[#fafafa] data-[state=unchecked]:dark:bg-[#0a0a0a]`}
                                 onCheckedChange={() => handleSelected(lesson.id)}
                             />
                             <CardContent>
