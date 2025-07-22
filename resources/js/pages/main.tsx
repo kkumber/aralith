@@ -50,7 +50,7 @@ const Main = () => {
                 {uploadError && <InputError message={uploadError} />}
                 <DragAndDrop files={files} setFiles={setFiles} handleFilesSubmit={handleFilesSubmit} isLoading={isLoading} />
                 <h3 className="text-text-tertiary dark:text-dark-text-tertiary my-8 text-center">or copy and paste the text directly</h3>
-                <Card className="rounded-sm">
+                <Card className="w-full rounded-sm">
                     <LessonInput lessonContent={lessonContent} handleSetLessonContent={handleSetLessonContent} wordCount={wordCount} />
                     <CardFooter>
                         <LessonSubmit lessonContent={lessonContent} isLoading={isLoading} wordCount={wordCount} />

@@ -15,12 +15,11 @@ const History = () => {
     const { lessons } = usePage<{
         lessons: PaginatedResponse<LessonResponse>;
     }>().props;
-    console.log(lessons);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="History" />
-            <main className="mx-auto grid max-w-screen-md items-center justify-center p-4">
+            <main className="mx-auto grid max-w-screen-lg items-center justify-center p-4">
                 <h1 className="font-medium">Previous Lessons</h1>
                 {lessons && lessons.data.length ? <PreviousLessons lessons={lessons.data} /> : <NoLessonMessage />}
             </main>
