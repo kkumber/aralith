@@ -1,5 +1,5 @@
 import { LessonResponse } from '@/types';
-import { Link } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { Trash } from 'lucide-react';
@@ -7,7 +7,6 @@ import { useState } from 'react';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardTitle } from '../ui/card';
 import { Checkbox } from '../ui/checkbox';
-
 dayjs.extend(relativeTime);
 
 interface Props {
@@ -27,6 +26,10 @@ const PreviousLessons = ({ lessons }: Props) => {
         }
 
         setSelected((prev: number[]) => [...prev, id]);
+    };
+
+    const handleDeleteSingleItem = (id: number) => {
+        router.delete(route('lesson.destroy', id));
     };
 
     return (
@@ -94,6 +97,7 @@ const PreviousLessons = ({ lessons }: Props) => {
                                         <Trash
                                             className={`absolute top-4 right-4 z-10 origin-right rounded-md opacity-0 transition-all duration-300 ease-out hover:scale-110 hover:rotate-3 hover:cursor-pointer active:scale-95 ${showCheckbox ? 'opacity-100' : ''}`}
                                             size={15}
+                                            onClick={() => handleDeleteSingleItem(lesson.id)}
                                         />
                                     )}
                                 </CardTitle>

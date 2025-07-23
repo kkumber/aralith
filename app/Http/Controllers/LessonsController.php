@@ -10,10 +10,12 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
-use Illuminate\Auth\Access\AuthorizationException
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class LessonsController extends Controller
 {
+    use AuthorizesRequests;
 
     public function home()
     {
@@ -92,10 +94,8 @@ class LessonsController extends Controller
         try {
             $deleted = $lessonQuizService->bulkDestroyLessonQuiz(auth()->user(), $validated['lesson_ids']);
             return back()->with('delete', count($deleted) . ' lessons deleted');
-
         } catch (AuthorizationException $e) {
             abort(403, $e->getMessage());
-            
         } catch (\Exception $e) {
             return back()->with('error', 'Failed to delete lessons. Please try again.');
         }
