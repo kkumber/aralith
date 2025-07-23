@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Lessons;
 use App\Models\Quizzes;
 use App\Models\User;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\DB;
 
 class LessonQuizService
@@ -27,6 +28,22 @@ class LessonQuizService
                 'quiz' => $quiz,
                 'questions' => $questions
             ];
+        });
+    }
+
+    public function bulkDestroyLessonQuiz(User $user, array $lessonIds)
+    {
+        return DB::transaction(function () use ($user, $lessonIds) {
+            $lessons = $user->lessons()->whereIn('id', $lessonIds)->get();
+
+            foreach ($lessons as $lesson) {
+                if (!$user->can('delete', $lesson)) {
+                    throw new AuthorizationException('You do not have permission to delete this lesson.');
+                };
+            };
+
+            $deleteCount = $user->lessons()->whereIn('id', $lessonIds)->delete();
+            return $deleteCount;
         });
     }
 }

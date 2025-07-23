@@ -10,6 +10,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
+use Illuminate\Auth\Access\AuthorizationException
 
 class LessonsController extends Controller
 {
@@ -71,28 +72,32 @@ class LessonsController extends Controller
      */
     public function destroy(Lessons $lesson)
     {
-        //
+        $this->authorize('delete', $lesson);
+
+        try {
+            $lesson->delete();
+            return back()->with('success', 'Lesson deleted successfully');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Failed to delete lesson. Please try again.');
+        }
     }
 
-    public function bulktDestroy(Request $request)
+    public function bulkDestroy(Request $request, LessonQuizService $lessonQuizService)
     {
-        $validate = $request->validate([
+        $validated = $request->validate([
             'lesson_ids' => ['required', 'array'],
             'lesson_ids.*' => ['exists:lessons,id']
         ]);
 
-        $lessonIds = $validate['lesson_ids'];
+        try {
+            $deleted = $lessonQuizService->bulkDestroyLessonQuiz(auth()->user(), $validated['lesson_ids']);
+            return back()->with('delete', count($deleted) . ' lessons deleted');
 
-        $lessons = Lessons::whereIn('id', $lessonIds)->get();
-
-        foreach ($lessons as $lesson) {
-            if (!auth()->user()->can('delete', $lesson)) {
-                abort(403, 'You are not authorized to delete this lesson');
-            };
-        };
-
-        Lessons::whereIn('id', $lessonIds)->delete();
-
-        return back()->with('delete', count($lessonIds) . ' lessons deleted');
+        } catch (AuthorizationException $e) {
+            abort(403, $e->getMessage());
+            
+        } catch (\Exception $e) {
+            return back()->with('error', 'Failed to delete lessons. Please try again.');
+        }
     }
 }
