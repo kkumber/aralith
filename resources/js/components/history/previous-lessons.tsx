@@ -34,11 +34,6 @@ const PreviousLessons = ({ lessons }: Props) => {
 
     return (
         <section className="grid">
-            <div className="mb-4 flex items-center justify-between">
-                <small>You have {lessons.length} previous lessons with Aralith</small>
-                <Button variant={'link'}>Select</Button>
-            </div>
-
             {lessons && lessons.length && (
                 <div className="flex flex-col items-center justify-center">
                     {lessons.map((lesson: LessonResponse) => (
