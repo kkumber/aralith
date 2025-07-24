@@ -2,6 +2,7 @@ import NoLessonMessage from '@/components/history/no-lesson-message';
 import PreviousLessons from '@/components/history/previous-lessons';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import useLessonDelete from '@/hooks/useLessonDelete';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem, LessonResponse, PaginatedResponse } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
@@ -19,8 +20,9 @@ const History = () => {
         lessons: PaginatedResponse<LessonResponse>;
     }>().props;
 
-    const handleDelete = () => {};
+    const { selected, handleSelected, handleDeleteItems, handleConfirmDialog } = useLessonDelete();
 
+    console.log(selected);
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="History" />
@@ -46,10 +48,20 @@ const History = () => {
                 </div>
                 <div className="mb-4 flex items-center justify-between">
                     <small>You have {lessons.data.length} previous lesson with Aralith</small>
-                    <Button variant={'link'}>Select</Button>
+                    <Button variant={'link'}>Select All</Button>
                 </div>
 
-                {lessons && lessons.data.length ? <PreviousLessons lessons={lessons.data} /> : <NoLessonMessage />}
+                {lessons && lessons.data.length ? (
+                    <PreviousLessons
+                        lessons={lessons.data}
+                        selected={selected}
+                        handleSelected={handleSelected}
+                        handleDeleteItems={handleDeleteItems}
+                        handleConfirmDialog={handleConfirmDialog}
+                    />
+                ) : (
+                    <NoLessonMessage />
+                )}
             </main>
         </AppLayout>
     );

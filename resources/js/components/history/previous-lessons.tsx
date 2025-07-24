@@ -13,35 +13,14 @@ dayjs.extend(relativeTime);
 
 interface Props {
     lessons: LessonResponse[];
+    selected: number[];
+    handleSelected: (id: number) => void;
+    handleDeleteItems: () => void;
+    handleConfirmDialog: (id: number) => void;
 }
 
-const PreviousLessons = ({ lessons }: Props) => {
-    const [selected, setSelected] = useState<number[]>([]);
+const PreviousLessons = ({ lessons, selected, handleSelected, handleDeleteItems, handleConfirmDialog }: Props) => {
     const [showCheckbox, setShowCheckbox] = useState<boolean>(false);
-
-    const handleSelected = (id: number) => {
-        if (!id) return;
-
-        if (selected.includes(id)) {
-            const filtered = selected.filter((prev) => prev !== id);
-            return setSelected(filtered);
-        }
-
-        setSelected((prev: number[]) => [...prev, id]);
-    };
-
-    // Main Delete handler
-    const handleDeleteItems = () => {
-        if (!selected.length) return;
-
-        // router.delete(route('lesson.bulk.destroy'), lesson_ids: selected });
-    };
-
-    const handleConfirmDialog = (id: number) => {
-        if (!id) return;
-        console.log(id);
-        // router.delete(route('lesson.destroy', id));
-    };
 
     return (
         <section className="grid">
@@ -49,14 +28,14 @@ const PreviousLessons = ({ lessons }: Props) => {
                 <div className="flex flex-col items-center justify-center">
                     {lessons.map((lesson: LessonResponse) => (
                         <Card
-                            className={`relative gap-1 ${selected.includes(lesson.id) ? 'border-primary-green bg-primary-green/5' : ''} hover:border-primary-green z-0 w-full transition-all duration-300 ease-out hover:cursor-pointer hover:bg-black/5 dark:hover:bg-white/5`}
+                            className={`relative gap-1 ${selected.includes(lesson.id) ? 'border-primary-green bg-primary-green/5' : ''} hover:border-primary-green z-0 w-full pt-2 transition-all duration-300 ease-out hover:cursor-pointer hover:bg-black/5 dark:hover:bg-white/5`}
                             key={lesson.id}
                             onClick={() => handleSelected(lesson.id)}
                             onMouseEnter={() => setShowCheckbox(true)}
                             onMouseLeave={() => setShowCheckbox(false)}
                         >
                             <div
-                                className={`absolute top-12 -left-2 z-10 transform transition-all duration-300 ease-out ${
+                                className={`absolute top-10 -left-2 z-10 transform transition-all duration-300 ease-out ${
                                     selected.includes(lesson.id) || showCheckbox
                                         ? 'translate-x-0 scale-100 opacity-100'
                                         : 'pointer-events-none -translate-x-2 scale-75 opacity-0'
@@ -104,7 +83,7 @@ const PreviousLessons = ({ lessons }: Props) => {
                                                             size={15}
                                                         />
                                                     ),
-                                                    titleContent: 'Delete Lesson',
+                                                    titleContent: 'Delete Lesson?',
                                                     descriptionContent: 'Are you sure you want to delete this lesson?',
                                                     submitBtn: 'Delete',
                                                     submitBtnVariant: 'destructive',
