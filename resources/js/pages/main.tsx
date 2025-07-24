@@ -1,5 +1,6 @@
 import InputError from '@/components/input-error';
 import LessonInput from '@/components/lesson/lesson-input';
+import { Button } from '@/components/ui/button';
 import { Card, CardFooter } from '@/components/ui/card';
 import DialogSubmit from '@/components/ui/dialog-submit';
 import { useFileProcessor } from '@/hooks/useFileProcessor';
@@ -65,8 +66,7 @@ const Main = () => {
                         <DialogSubmit
                             submitFn={handleLessonContentSubmit}
                             config={{
-                                disableTriggerBtn: !lessonContent || isLoading || wordCount < wordCountMin,
-                                triggerContent: 'Create Quiz',
+                                triggerContent: <Button disabled={!lessonContent || isLoading || wordCount < wordCountMin}>Submit</Button>,
                                 titleContent: 'Submit Lesson',
                                 descriptionContent: 'Please make sure that the lesson is easily understandable for accurate quiz generation.',
                                 warningText: wordCount > wordCountLimit,

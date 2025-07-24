@@ -1,15 +1,15 @@
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 
-interface DialogSubmitProps { 
-    submitFn: () => void;
+interface DialogSubmitProps<T> { 
+    submitFn: (param?: T) => void;
+    cancelFn?: (param?: T) => void;
     config: DialogConfig;
 }
 
 interface DialogConfig {
-    disableTriggerBtn: boolean;
-    triggerContent: string;
+    triggerContent: ReactNode;
     titleContent: string;
     descriptionContent: string;
     warningTextContent?: string;
@@ -19,13 +19,17 @@ interface DialogConfig {
     warningText?: boolean;
 }
 
-const DialogSubmit = ({ submitFn, config }: DialogSubmitProps) => {
+const DialogSubmit = ({ submitFn, cancelFn, config }: DialogSubmitProps<number>) => {
     const [showModal, setShowModal] = useState<boolean>(false);
+    const handleCloseModal = () => {
+        if (typeof cancelFn === 'function') cancelFn();
+        setShowModal(false)
+    };
 
     return (
         <Dialog open={showModal} onOpenChange={setShowModal}>
             <DialogTrigger asChild>
-                <Button disabled={config.disableTriggerBtn}>{config.triggerContent}</Button>
+                {config.triggerContent}
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
@@ -40,10 +44,10 @@ const DialogSubmit = ({ submitFn, config }: DialogSubmitProps) => {
                     )}
                 </DialogDescription>
                 <DialogFooter>
-                    <Button variant={'outline'} onClick={() => setShowModal(false)}>
+                    <Button variant={'outline'} onClick={() => handleCloseModal()}>
                         {config.closeBtn}
                     </Button>
-                    <Button onClick={submitFn} variant={config.submitBtnVariant}>
+                    <Button onClick={() => submitFn()} variant={config.submitBtnVariant}>
                         {config.submitBtn}
                     </Button>
                 </DialogFooter>

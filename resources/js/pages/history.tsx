@@ -19,6 +19,8 @@ const History = () => {
         lessons: PaginatedResponse<LessonResponse>;
     }>().props;
 
+    const handleDelete = () => {};
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="History" />
