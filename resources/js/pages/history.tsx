@@ -81,6 +81,7 @@ const History = () => {
                                 <Button variant={'outline'} size={'sm'} onClick={() => setSelected([])}>
                                     Cancel
                                 </Button>
+                                {/* Reuseable Dialog component with custom messages and functions */}
                                 <DialogSubmit
                                     submitFn={handleDeleteItems}
                                     config={{

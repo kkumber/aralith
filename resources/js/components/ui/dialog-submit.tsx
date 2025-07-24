@@ -28,14 +28,19 @@ const DialogSubmit = ({ submitFn, cancelFn, config }: DialogSubmitProps<number>)
     return (
         <Dialog open={showModal} onOpenChange={setShowModal}>
             <DialogTrigger asChild>
+                {/* Component that triggers the dialog */}
                 {config.triggerContent}
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
+                    {/* Dialog title */}
                     <DialogTitle>{config.titleContent}</DialogTitle>
                 </DialogHeader>
                 <DialogDescription>
+                    {/* Dialog description */}
                     {config.descriptionContent}
+
+                    {/* Warning text. Optional */}
                     {config.warningTextContent && (
                         <small className="mt-4 inline-block text-red-400">
                             {config.warningTextContent}
@@ -43,6 +48,7 @@ const DialogSubmit = ({ submitFn, cancelFn, config }: DialogSubmitProps<number>)
                     )}
                 </DialogDescription>
                 <DialogFooter>
+                    {/* Cancel and submit buttons */}
                     <Button variant={'outline'} onClick={() => handleCloseModal()}>
                         {config.closeBtn}
                     </Button>
