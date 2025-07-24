@@ -20,36 +20,40 @@ interface Props {
 }
 
 const PreviousLessons = ({ lessons, selected, handleSelected, handleDeleteItems, handleConfirmDialog }: Props) => {
-    const [showCheckbox, setShowCheckbox] = useState<boolean>(false);
+    const [showCheckbox, setShowCheckbox] = useState<number[]>([]);
 
     return (
         <section className="grid">
             {lessons && lessons.length && (
-                <div className="flex flex-col items-center justify-center">
+                <div className="flex flex-col items-center justify-center gap-2">
                     {lessons.map((lesson: LessonResponse) => (
                         <Card
-                            className={`relative gap-1 ${selected.includes(lesson.id) ? 'border-primary-green bg-primary-green/5' : ''} hover:border-primary-green z-0 w-full pt-2 transition-all duration-300 ease-out hover:cursor-pointer hover:bg-black/5 dark:hover:bg-white/5`}
+                            className={`relative gap-1 ${selected.includes(lesson.id) ? 'border-primary-green bg-primary-green/5' : ''} hover:border-primary-green z-0 w-full pt-2 pl-5 transition-all duration-300 ease-out hover:cursor-pointer hover:bg-black/5 dark:hover:bg-white/5`}
                             key={lesson.id}
                             onClick={() => handleSelected(lesson.id)}
-                            onMouseEnter={() => setShowCheckbox(true)}
-                            onMouseLeave={() => setShowCheckbox(false)}
+                            onMouseEnter={() => setShowCheckbox((prev: number[]) => [...prev, lesson.id])}
+                            onMouseLeave={() => setShowCheckbox([])}
                         >
                             <div
                                 className={`absolute top-10 -left-2 z-10 transform transition-all duration-300 ease-out ${
-                                    selected.includes(lesson.id) || showCheckbox
+                                    selected.includes(lesson.id) || showCheckbox.includes(lesson.id) || selected.length > 0
                                         ? 'translate-x-0 scale-100 opacity-100'
                                         : 'pointer-events-none -translate-x-2 scale-75 opacity-0'
                                 }`}
                             >
                                 <div
                                     className={`relative transform transition-all duration-200 ease-out ${
-                                        selected.includes(lesson.id) || showCheckbox ? 'scale-100 rotate-0' : 'scale-95 -rotate-12'
+                                        selected.includes(lesson.id) || showCheckbox.includes(lesson.id)
+                                            ? 'scale-100 rotate-0'
+                                            : 'scale-95 -rotate-12'
                                     }`}
                                 >
                                     {/* Ripple effect on hover */}
                                     <div
                                         className={`bg-primary-green/20 absolute inset-0 transform rounded-sm transition-all duration-300 ease-out ${
-                                            showCheckbox && !selected.includes(lesson.id) ? 'scale-150 opacity-0' : 'scale-100 opacity-0'
+                                            showCheckbox.includes(lesson.id) && !selected.includes(lesson.id)
+                                                ? 'scale-150 opacity-0'
+                                                : 'scale-100 opacity-0'
                                         }`}
                                     />
 
@@ -79,7 +83,7 @@ const PreviousLessons = ({ lessons, selected, handleSelected, handleDeleteItems,
                                                 config={{
                                                     triggerContent: (
                                                         <Trash
-                                                            className={`absolute top-4 right-4 z-50 origin-right rounded-md opacity-0 transition-all duration-300 ease-out hover:scale-110 hover:rotate-3 hover:cursor-pointer active:scale-95 ${showCheckbox ? 'opacity-100' : ''}`}
+                                                            className={`absolute top-4 right-4 z-50 origin-right rounded-md opacity-0 transition-all duration-300 ease-out hover:scale-110 hover:rotate-3 hover:cursor-pointer active:scale-95 ${showCheckbox.includes(lesson.id) ? 'opacity-100' : ''}`}
                                                             size={15}
                                                         />
                                                     ),

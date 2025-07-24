@@ -64,7 +64,6 @@ const useQuizConfig = () => {
 
     const handleSetTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
         const cleanStr = capitalizeFirstLetter(e.target.value);
-        console.log(cleanStr);
         setTitle(cleanStr);
     };
 

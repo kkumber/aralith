@@ -22,13 +22,12 @@ const History = () => {
 
     const { selected, handleSelected, handleDeleteItems, handleConfirmDialog } = useLessonDelete();
 
-    console.log(selected);
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="History" />
             <main className="mx-auto flex h-full w-full max-w-screen-lg flex-col p-4">
                 <div className="flex items-center justify-between">
-                    <h1 className="self-start text-start font-medium">Previous Lessons</h1>
+                    <h1 className="self-start text-start font-medium">Your previous lessons</h1>
                     <Button className="flex items-center justify-center" asChild>
                         <Link href={route('main')}>
                             <PlusIcon />
