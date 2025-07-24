@@ -29,6 +29,7 @@ const useLessonDelete = () => {
 
     return {
         selected,
+        setSelected,
         handleSelected,
         handleDeleteItems,
         handleConfirmDialog,

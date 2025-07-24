@@ -27,6 +27,7 @@ const PreviousLessons = ({ lessons, selected, handleSelected, handleDeleteItems,
             {lessons && lessons.length && (
                 <div className="flex flex-col items-center justify-center gap-2">
                     {lessons.map((lesson: LessonResponse) => (
+                        // Parent container
                         <Card
                             className={`relative gap-1 ${selected.includes(lesson.id) ? 'border-primary-green bg-primary-green/5' : ''} hover:border-primary-green z-0 w-full pt-2 pl-5 transition-all duration-300 ease-out hover:cursor-pointer hover:bg-black/5 dark:hover:bg-white/5`}
                             key={lesson.id}
@@ -34,6 +35,7 @@ const PreviousLessons = ({ lessons, selected, handleSelected, handleDeleteItems,
                             onMouseEnter={() => setShowCheckbox((prev: number[]) => [...prev, lesson.id])}
                             onMouseLeave={() => setShowCheckbox([])}
                         >
+                            {/* Checkbox with animation start */}
                             <div
                                 className={`absolute top-10 -left-2 z-10 transform transition-all duration-300 ease-out ${
                                     selected.includes(lesson.id) || showCheckbox.includes(lesson.id) || selected.length > 0
@@ -66,6 +68,7 @@ const PreviousLessons = ({ lessons, selected, handleSelected, handleDeleteItems,
                                     />
                                 </div>
                             </div>
+                            {/* Checkbox with animation end */}
 
                             <CardContent>
                                 <CardTitle>
@@ -78,6 +81,7 @@ const PreviousLessons = ({ lessons, selected, handleSelected, handleDeleteItems,
                                                 e.stopPropagation();
                                             }}
                                         >
+                                            {/* Dialog component. Reuseable with custom messages. */}
                                             <DialogSubmit
                                                 submitFn={() => handleConfirmDialog(lesson.id)}
                                                 config={{
@@ -98,6 +102,7 @@ const PreviousLessons = ({ lessons, selected, handleSelected, handleDeleteItems,
                                     )}
                                 </CardTitle>
 
+                                {/* Converted time */}
                                 <p className="line-clamp-1 overflow-hidden text-ellipsis">{lesson.content}</p>
                                 <small>{dayjs(lesson.updated_at).fromNow()}</small>
                             </CardContent>

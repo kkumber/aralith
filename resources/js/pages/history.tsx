@@ -6,7 +6,7 @@ import useLessonDelete from '@/hooks/useLessonDelete';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem, LessonResponse, PaginatedResponse } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
-import { PlusIcon, Search } from 'lucide-react';
+import { CheckCheck, PlusIcon, Search } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -20,12 +20,20 @@ const History = () => {
         lessons: PaginatedResponse<LessonResponse>;
     }>().props;
 
-    const { selected, handleSelected, handleDeleteItems, handleConfirmDialog } = useLessonDelete();
+    const { selected, setSelected, handleSelected, handleDeleteItems, handleConfirmDialog } = useLessonDelete();
+
+    const selectAllItems = () => {
+        if (!lessons.data.length) return;
+        // Remove all existing items first then fill it up again
+        setSelected([]);
+        lessons.data.map((lesson: LessonResponse) => setSelected((prevLesson) => [...prevLesson, lesson.id]));
+    };
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="History" />
             <main className="mx-auto flex h-full w-full max-w-screen-lg flex-col p-4">
+                {/* Header start */}
                 <div className="flex items-center justify-between">
                     <h1 className="self-start text-start font-medium">Your previous lessons</h1>
                     <Button className="flex items-center justify-center" asChild>
@@ -35,6 +43,9 @@ const History = () => {
                         </Link>
                     </Button>
                 </div>
+                {/* Header end */}
+
+                {/* Search start */}
                 <div className="relative mt-8 mb-3 w-full">
                     <Search size={15} className="text-muted-foreground absolute top-1/2 left-4 -translate-y-1/2 transform" />
                     <Input
@@ -45,11 +56,40 @@ const History = () => {
                         className="text-md w-full py-5 pr-5 pl-10"
                     />
                 </div>
-                <div className="mb-4 flex items-center justify-between">
-                    <small>You have {lessons.data.length} previous lesson with Aralith</small>
-                    <Button variant={'link'}>Select All</Button>
-                </div>
+                {/* Search end */}
 
+                {/* Stats start */}
+                <div className="mb-4 flex items-center justify-between">
+                    {selected.length ? (
+                        <div className="flex items-center justify-center gap-2">
+                            <CheckCheck className="text-primary-green" />
+                            <p className="text-primary-green">{selected.length} selected lessons</p>
+                        </div>
+                    ) : (
+                        <small>You have {lessons.data.length} previous lesson with Aralith</small>
+                    )}
+                    <div className="flex items-center justify-between">
+                        {selected.length !== lessons.data.length && (
+                            <Button variant={'link'} onClick={selectAllItems} size={'sm'}>
+                                Select All
+                            </Button>
+                        )}
+                        {/* Delete handlers */}
+                        {selected.length > 0 && (
+                            <div className="flex gap-2">
+                                <Button variant={'outline'} size={'sm'} onClick={() => setSelected([])}>
+                                    Cancel
+                                </Button>
+                                <Button variant={'destructive'} size={'sm'} onClick={() => handleDeleteItems()}>
+                                    Delete Selected
+                                </Button>
+                            </div>
+                        )}
+                    </div>
+                </div>
+                {/* Stats end */}
+
+                {/* Show previous lessons or no lesson message based on data */}
                 {lessons && lessons.data.length ? (
                     <PreviousLessons
                         lessons={lessons.data}
