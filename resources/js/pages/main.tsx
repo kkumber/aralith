@@ -1,14 +1,15 @@
 import InputError from '@/components/input-error';
 import LessonInput from '@/components/lesson/lesson-input';
-import LessonSubmit from '@/components/lesson/lesson-submit';
 import { Card, CardFooter } from '@/components/ui/card';
+import DialogSubmit from '@/components/ui/dialog-submit';
 import { useFileProcessor } from '@/hooks/useFileProcessor';
 import AppLayout from '@/layouts/app-layout';
-import { getWordCount, retrieveFromSessionStorage } from '@/lib/utils';
+import { getWordCount, retrieveFromSessionStorage, saveToSessionStorage, truncateStringByMaxCount } from '@/lib/utils';
 import { BreadcrumbItem } from '@/types';
-import { Head } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import DragAndDrop from '../components/DragAndDrop/DragAndDrop';
+import { wordCountLimit, wordCountMin } from './quiz/config/config';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -20,6 +21,18 @@ const breadcrumbs: BreadcrumbItem[] = [
 const Main = () => {
     const { uploadError, lessonContent, setLessonContent, isLoading, files, setFiles, handleFilesSubmit } = useFileProcessor();
     const [wordCount, setWordCount] = useState<number>(0);
+
+    const handleSetLessonContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setLessonContent(e.target.value);
+    };
+
+    const handleLessonContentSubmit = () => {
+        if (!lessonContent) return;
+
+        const cleanText = truncateStringByMaxCount(lessonContent, wordCountLimit);
+        saveToSessionStorage('lesson', cleanText);
+        router.visit(route('quiz.create'));
+    };
 
     // Only count the words after waiting a few seconds
     useEffect(() => {
@@ -39,10 +52,6 @@ const Main = () => {
         }
     }, []);
 
-    const handleSetLessonContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setLessonContent(e.target.value);
-    };
-
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Upload Lessons" />
@@ -53,7 +62,20 @@ const Main = () => {
                 <Card className="w-full rounded-sm">
                     <LessonInput lessonContent={lessonContent} handleSetLessonContent={handleSetLessonContent} wordCount={wordCount} />
                     <CardFooter>
-                        <LessonSubmit lessonContent={lessonContent} isLoading={isLoading} wordCount={wordCount} />
+                        <DialogSubmit
+                            submitFn={handleLessonContentSubmit}
+                            config={{
+                                disableTriggerBtn: !lessonContent || isLoading || wordCount < wordCountMin,
+                                triggerContent: 'Create Quiz',
+                                titleContent: 'Submit Lesson',
+                                descriptionContent: 'Please make sure that the lesson is easily understandable for accurate quiz generation.',
+                                warningText: wordCount > wordCountLimit,
+                                warningTextContent: `The lesson exceeds the word limit. It will be automatically truncated to be below ${wordCountLimit} words.`,
+                                closeBtn: 'Close',
+                                submitBtn: 'Confirm',
+                                submitBtnVariant: 'default',
+                            }}
+                        />
                     </CardFooter>
                 </Card>
             </div>

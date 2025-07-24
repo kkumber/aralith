@@ -43,9 +43,10 @@ const History = () => {
                     />
                 </div>
                 <div className="mb-4 flex items-center justify-between">
-                    <small>You have {lessons.data.length} previous lessons with Aralith</small>
+                    <small>You have {lessons.data.length} previous lesson with Aralith</small>
                     <Button variant={'link'}>Select</Button>
                 </div>
+
                 {lessons && lessons.data.length ? <PreviousLessons lessons={lessons.data} /> : <NoLessonMessage />}
             </main>
         </AppLayout>

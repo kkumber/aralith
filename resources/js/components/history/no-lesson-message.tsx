@@ -9,7 +9,7 @@ const NoLessonMessage = () => {
                 <FilePlus2 size={80} className="text-text-primary dark:text-dark-text-primary" />
                 <b>Ready for your first quiz?</b>
                 <p>Upload a file and create a new quiz. Uploaded lessons will show up here.</p>
-                <Button variant={'outline'} className="hover:border-primary-green" asChild>
+                <Button variant={'outline'} asChild>
                     <Link href={route('main')}>
                         <PlusIcon />
                         New Quiz

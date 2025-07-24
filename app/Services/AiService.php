@@ -85,8 +85,8 @@ class AiService
         QUESTION TYPES & STRUCTURE:
         - Multiple Choice: 4 options, 1 correct (string). Ex."The dog".
         - True/False: ["True", "False"], 1 correct (string)  
-        - Fill in the blank: ["The quick brown fox"] options, 1 correct (string)
-        - Identification: ["bag"] options, 1 correct (string)
+        - Fill in the blank: [] options, 1 correct (string)
+        - Identification: [] options, 1 correct (string)
         - Multiple Answers: 5 options, 2-3 correct (array). Example correct answers ["Apple", "Dog"]
 
         DIFFICULTY:
