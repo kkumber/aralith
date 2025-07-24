@@ -1,6 +1,7 @@
 import NoLessonMessage from '@/components/history/no-lesson-message';
 import PreviousLessons from '@/components/history/previous-lessons';
 import { Button } from '@/components/ui/button';
+import DialogSubmit from '@/components/ui/dialog-submit';
 import { Input } from '@/components/ui/input';
 import useLessonDelete from '@/hooks/useLessonDelete';
 import AppLayout from '@/layouts/app-layout';
@@ -80,9 +81,22 @@ const History = () => {
                                 <Button variant={'outline'} size={'sm'} onClick={() => setSelected([])}>
                                     Cancel
                                 </Button>
-                                <Button variant={'destructive'} size={'sm'} onClick={() => handleDeleteItems()}>
-                                    Delete Selected
-                                </Button>
+                                <DialogSubmit
+                                    submitFn={handleDeleteItems}
+                                    config={{
+                                        triggerContent: (
+                                            <Button variant={'destructive'} size={'sm'}>
+                                                Delete Selected
+                                            </Button>
+                                        ),
+                                        titleContent: 'Delete selected lessons?',
+                                        descriptionContent: `Are you sure you want to delete ${selected.length} lessons? `,
+                                        warningTextContent: 'This action cannot be undone.',
+                                        closeBtn: 'Cancel',
+                                        submitBtn: 'Delete',
+                                        submitBtnVariant: 'destructive',
+                                    }}
+                                />
                             </div>
                         )}
                     </div>

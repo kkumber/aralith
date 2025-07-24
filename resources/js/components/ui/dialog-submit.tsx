@@ -16,7 +16,6 @@ interface DialogConfig {
     closeBtn: string;
     submitBtn: string;
     submitBtnVariant: "link" | "default" | "destructive" | "outline" | "secondary" | "ghost" | null | undefined;
-    warningText?: boolean;
 }
 
 const DialogSubmit = ({ submitFn, cancelFn, config }: DialogSubmitProps<number>) => {
@@ -37,7 +36,7 @@ const DialogSubmit = ({ submitFn, cancelFn, config }: DialogSubmitProps<number>)
                 </DialogHeader>
                 <DialogDescription>
                     {config.descriptionContent}
-                    {config.warningText && (
+                    {config.warningTextContent && (
                         <small className="mt-4 inline-block text-red-400">
                             {config.warningTextContent}
                         </small>
