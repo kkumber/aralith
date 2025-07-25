@@ -14,7 +14,7 @@ const LessonSearch = () => {
     };
 
     return (
-        <form className="relative mt-8 mb-3 w-full" onSubmit={(e) => redirectToSearch(e)}>
+        <form className="relative mt-8 mb-3 w-full" onSubmit={redirectToSearch}>
             <Search size={15} className="text-muted-foreground absolute top-1/2 left-4 -translate-y-1/2 transform" />
             <Input
                 type="text"
