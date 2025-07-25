@@ -12,6 +12,7 @@ interface DialogConfig {
     triggerContent: ReactNode;
     titleContent: string;
     descriptionContent: string;
+    showWarningText?: boolean;
     warningTextContent?: string;
     closeBtn: string;
     submitBtn: string;
@@ -41,7 +42,7 @@ const DialogSubmit = ({ submitFn, cancelFn, config }: DialogSubmitProps<number>)
                     {config.descriptionContent}
 
                     {/* Warning text. Optional */}
-                    {config.warningTextContent && (
+                    {config.showWarningText && (
                         <small className="mt-4 inline-block text-red-400">
                             {config.warningTextContent}
                         </small>

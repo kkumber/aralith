@@ -19,6 +19,7 @@ Route::get('/welcome', function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', [LessonsController::class, 'home'])->name('main');
     Route::post('/lessons/bulk-destroy', [LessonsController::class, 'bulkDestroy'])->name('lesson.bulkDestroy');
+    Route::post('/lessons/search', [LessonsController::class, 'searchLesson'])->name('lesson.search');
 
     Route::resource('lesson', LessonsController::class);
     Route::resource('quiz', QuizzesController::class);

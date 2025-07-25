@@ -100,4 +100,14 @@ class LessonsController extends Controller
             return back()->with('error', 'Failed to delete lessons. Please try again.');
         }
     }
+
+    public function searchLesson(Request $request)
+    {
+        $searchedItem = $request->input('search');
+        $userId = auth()->user()->id;
+
+        $lessons = Lessons::where('user_id', $userId)->where('title', 'like', '%' . $searchedItem . '%')->latest()->paginate(10);
+
+        return Inertia::render('history', ['lessons' => $lessons]);
+    }
 }

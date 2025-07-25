@@ -57,19 +57,27 @@ const Main = () => {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Upload Lessons" />
             <div className="mx-auto flex h-full max-w-screen-lg flex-1 flex-col gap-4 rounded-xl p-4">
+                {/* Upload Error */}
                 {uploadError && <InputError message={uploadError} />}
+
+                {/* Drag and Drop */}
                 <DragAndDrop files={files} setFiles={setFiles} handleFilesSubmit={handleFilesSubmit} isLoading={isLoading} />
+
                 <h3 className="text-text-tertiary dark:text-dark-text-tertiary my-8 text-center">or copy and paste the text directly</h3>
+
+                {/* Extracted text/text area */}
                 <Card className="w-full rounded-sm">
+                    {/* Lesson Input */}
                     <LessonInput lessonContent={lessonContent} handleSetLessonContent={handleSetLessonContent} wordCount={wordCount} />
                     <CardFooter>
+                        {/* Dialog before submission */}
                         <DialogSubmit
                             submitFn={handleLessonContentSubmit}
                             config={{
                                 triggerContent: <Button disabled={!lessonContent || isLoading || wordCount < wordCountMin}>Submit</Button>,
                                 titleContent: 'Submit Lesson',
                                 descriptionContent: 'Please make sure that the lesson is easily understandable for accurate quiz generation.',
-                                warningText: wordCount > wordCountLimit,
+                                showWarningText: wordCount > wordCountLimit,
                                 warningTextContent: `The lesson exceeds the word limit. It will be automatically truncated to be below ${wordCountLimit} words.`,
                                 closeBtn: 'Close',
                                 submitBtn: 'Confirm',
