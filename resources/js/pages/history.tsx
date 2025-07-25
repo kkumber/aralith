@@ -1,13 +1,13 @@
+import LessonSearch from '@/components/history/lesson-search';
 import LessonSelectionControls from '@/components/history/lesson-selection-controls';
 import NoLessonMessage from '@/components/history/no-lesson-message';
 import PreviousLessons from '@/components/history/previous-lessons';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import useLessonDelete from '@/hooks/useLessonDelete';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem, LessonResponse, PaginatedResponse } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
-import { PlusIcon, Search } from 'lucide-react';
+import { PlusIcon } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -20,6 +20,8 @@ const History = () => {
     const { lessons } = usePage<{
         lessons: PaginatedResponse<LessonResponse>;
     }>().props;
+
+    console.log(usePage().props);
 
     const { selected, setSelection, handleSelected, handleDeleteItems, handleConfirmDialog } = useLessonDelete();
 
@@ -44,20 +46,9 @@ const History = () => {
                         </Link>
                     </Button>
                 </div>
-                {/* Header end */}
 
-                {/* Search start */}
-                <div className="relative mt-8 mb-3 w-full">
-                    <Search size={15} className="text-muted-foreground absolute top-1/2 left-4 -translate-y-1/2 transform" />
-                    <Input
-                        type="text"
-                        name="lesson_search"
-                        id="lessonSearch"
-                        placeholder="Search your lessons..."
-                        className="text-md w-full py-5 pr-5 pl-10"
-                    />
-                </div>
-                {/* Search end */}
+                {/* Search component */}
+                <LessonSearch />
 
                 {/* Selection controls */}
                 <LessonSelectionControls

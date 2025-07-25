@@ -106,8 +106,13 @@ class LessonsController extends Controller
         $searchedItem = $request->input('search');
         $userId = auth()->user()->id;
 
-        $lessons = Lessons::where('user_id', $userId)->where('title', 'like', '%' . $searchedItem . '%')->latest()->paginate(10);
+        $lessons = Lessons::where('user_id', $userId)
+            ->where('title', 'like', '%' . $searchedItem . '%')
+            ->latest()
+            ->paginate(10);
 
-        return Inertia::render('history', ['lessons' => $lessons]);
+        return Inertia::render('history', [
+            'lessons' => $lessons,
+        ]);
     }
 }
