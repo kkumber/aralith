@@ -27,9 +27,11 @@ const useLessonDelete = () => {
         // router.delete(route('lesson.destroy', id));
     };
 
+    const setSelection = (param: number[]) => setSelected(param);
+
     return {
         selected,
-        setSelected,
+        setSelection,
         handleSelected,
         handleDeleteItems,
         handleConfirmDialog,

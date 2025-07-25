@@ -1,13 +1,13 @@
+import LessonSelectionControls from '@/components/history/lesson-selection-controls';
 import NoLessonMessage from '@/components/history/no-lesson-message';
 import PreviousLessons from '@/components/history/previous-lessons';
 import { Button } from '@/components/ui/button';
-import DialogSubmit from '@/components/ui/dialog-submit';
 import { Input } from '@/components/ui/input';
 import useLessonDelete from '@/hooks/useLessonDelete';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem, LessonResponse, PaginatedResponse } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
-import { CheckCheck, PlusIcon, Search } from 'lucide-react';
+import { PlusIcon, Search } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -21,13 +21,13 @@ const History = () => {
         lessons: PaginatedResponse<LessonResponse>;
     }>().props;
 
-    const { selected, setSelected, handleSelected, handleDeleteItems, handleConfirmDialog } = useLessonDelete();
+    const { selected, setSelection, handleSelected, handleDeleteItems, handleConfirmDialog } = useLessonDelete();
 
+    // Select all items that exists
     const selectAllItems = () => {
         if (!lessons.data.length) return;
-        // Remove all existing items first then fill it up again
-        setSelected([]);
-        lessons.data.map((lesson: LessonResponse) => setSelected((prevLesson) => [...prevLesson, lesson.id]));
+        const lessonIds = lessons.data.map((lesson: LessonResponse) => lesson.id);
+        setSelection(lessonIds);
     };
 
     return (
@@ -59,50 +59,16 @@ const History = () => {
                 </div>
                 {/* Search end */}
 
-                {/* Stats start */}
-                <div className="mb-4 flex items-center justify-between">
-                    {selected.length ? (
-                        <div className="flex items-center justify-center gap-2">
-                            <CheckCheck className="text-primary-green" />
-                            <p className="text-primary-green">{selected.length} selected lessons</p>
-                        </div>
-                    ) : (
-                        <small>You have {lessons.data.length} previous lesson with Aralith</small>
-                    )}
-                    <div className="flex items-center justify-between">
-                        {selected.length !== lessons.data.length && (
-                            <Button variant={'link'} onClick={selectAllItems} size={'sm'}>
-                                Select All
-                            </Button>
-                        )}
-                        {/* Delete handlers */}
-                        {selected.length > 0 && (
-                            <div className="flex gap-2">
-                                <Button variant={'outline'} size={'sm'} onClick={() => setSelected([])}>
-                                    Cancel
-                                </Button>
-                                {/* Reuseable Dialog component with custom messages and functions */}
-                                <DialogSubmit
-                                    submitFn={handleDeleteItems}
-                                    config={{
-                                        triggerContent: (
-                                            <Button variant={'destructive'} size={'sm'}>
-                                                Delete Selected
-                                            </Button>
-                                        ),
-                                        titleContent: 'Delete selected lessons?',
-                                        descriptionContent: `Are you sure you want to delete ${selected.length} lessons? `,
-                                        warningTextContent: 'This action cannot be undone.',
-                                        closeBtn: 'Cancel',
-                                        submitBtn: 'Delete',
-                                        submitBtnVariant: 'destructive',
-                                    }}
-                                />
-                            </div>
-                        )}
-                    </div>
-                </div>
-                {/* Stats end */}
+                {/* Selection controls */}
+                <LessonSelectionControls
+                    lessons={lessons}
+                    selected={selected}
+                    setSelection={setSelection}
+                    handleSelected={handleSelected}
+                    handleDeleteItems={handleDeleteItems}
+                    handleConfirmDialog={handleConfirmDialog}
+                    selectAllItems={selectAllItems}
+                />
 
                 {/* Show previous lessons or no lesson message based on data */}
                 {lessons && lessons.data.length ? (
