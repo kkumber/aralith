@@ -1,5 +1,22 @@
+import AppLayout from '@/layouts/app-layout';
+import { BreadcrumbItem } from '@/types';
+import { Head, usePage } from '@inertiajs/react';
+
+const breadcrumbs: BreadcrumbItem[] = [
+    {
+        title: 'Current Lesson',
+        href: route('lesson.index'),
+    },
+];
+
 const Lesson = () => {
-    return <h1>Lesson Page</h1>;
+    const { lesson } = usePage().props;
+    console.log(usePage());
+    return (
+        <AppLayout breadcrumbs={breadcrumbs}>
+            <Head title="Current Lesson" />
+        </AppLayout>
+    );
 };
 
 export default Lesson;

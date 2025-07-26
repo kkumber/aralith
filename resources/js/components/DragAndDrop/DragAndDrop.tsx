@@ -86,7 +86,7 @@ const DragAndDrop = ({
     };
 
     return (
-        <section className="space-y-4 rounded-xl bg-transparent p-4 shadow-md" style={{ width, height }}>
+        <section className="space-y-4 rounded-xl bg-transparent shadow-md" style={{ width, height }}>
             {/* DropZone */}
             <DropZone files={files} handleFiles={handleFiles} hasFiles={files.length > 0} config={{ maxFileSize, acceptedTypes }} />
 

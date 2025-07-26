@@ -51,6 +51,7 @@ const Create = () => {
         /* 
             Todo:
             Add error handling if any property is missing
+            The post redirect needs better success and error
         */
         const payload = {
             lesson: {
@@ -78,10 +79,6 @@ const Create = () => {
         });
     };
 
-    const handleGenerateQuiz = () => {
-        saveLessonQuiz();
-    };
-
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Upload Lessons" />
@@ -103,7 +100,7 @@ const Create = () => {
                         />
                         <hr />
                         <QuizTitle lesson={lesson} handleSetTitle={handlers.handleSetTitle} />
-                        <Button className="w-full" onClick={handleGenerateQuiz}>
+                        <Button className="w-full" onClick={saveLessonQuiz}>
                             Generate Quiz
                         </Button>
                     </CardContent>

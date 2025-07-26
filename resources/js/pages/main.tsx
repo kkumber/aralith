@@ -6,8 +6,8 @@ import DialogSubmit from '@/components/ui/dialog-submit';
 import { useFileProcessor } from '@/hooks/useFileProcessor';
 import AppLayout from '@/layouts/app-layout';
 import { getWordCount, retrieveFromSessionStorage, saveToSessionStorage, truncateStringByMaxCount } from '@/lib/utils';
-import { BreadcrumbItem } from '@/types';
-import { Head, router } from '@inertiajs/react';
+import { BreadcrumbItem, User } from '@/types';
+import { Head, router, usePage } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import DragAndDrop from '../components/DragAndDrop/DragAndDrop';
 import { wordCountLimit, wordCountMin } from './quiz/config/config';
@@ -22,6 +22,8 @@ const breadcrumbs: BreadcrumbItem[] = [
 const Main = () => {
     const { uploadError, lessonContent, setLessonContent, isLoading, files, setFiles, handleFilesSubmit } = useFileProcessor();
     const [wordCount, setWordCount] = useState<number>(0);
+    console.log(usePage());
+    const { user } = usePage().props.auth as { user: User };
 
     const handleSetLessonContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setLessonContent(e.target.value);
@@ -57,6 +59,12 @@ const Main = () => {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Upload Lessons" />
             <div className="mx-auto flex h-full max-w-screen-lg flex-1 flex-col gap-4 rounded-xl p-4">
+                {user && (
+                    <div>
+                        <h2>Welcome back, {user.name}!</h2>
+                        <small>Ready to create your next quiz?</small>
+                    </div>
+                )}
                 {/* Upload Error */}
                 {uploadError && <InputError message={uploadError} />}
 
@@ -66,7 +74,7 @@ const Main = () => {
                 <h3 className="text-text-tertiary dark:text-dark-text-tertiary my-8 text-center">or copy and paste the text directly</h3>
 
                 {/* Extracted text/text area */}
-                <Card className="w-full rounded-sm">
+                <Card className="w-full rounded-md">
                     {/* Lesson Input */}
                     <LessonInput lessonContent={lessonContent} handleSetLessonContent={handleSetLessonContent} wordCount={wordCount} />
                     <CardFooter>
