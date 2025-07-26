@@ -54,7 +54,6 @@ const useLessonDelete = () => {
         router.delete(route('lesson.destroy', id), {
             preserveScroll: true,
             onSuccess: () => {
-                console.log('showing toast');
                 toast.success('Lesson deleted successfully.', {
                     description: getCurrentTimeCustom(),
                 });
