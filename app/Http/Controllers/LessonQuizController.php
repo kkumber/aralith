@@ -65,7 +65,13 @@ class LessonQuizController extends Controller
         }
 
         // Save in db
-        $result = $lessonQuizService->createLessonSummaryFlashcardQuiz(array_merge($validated['lesson'], $summary), $validated['quiz_config'], $questionsData, $flashcards, $user);
+        $result = $lessonQuizService->createLessonSummaryFlashcardQuiz(
+            array_merge($validated['lesson'], $summary),  // merge summary with lesson data
+            $validated['quiz_config'],
+            $questionsData,
+            $flashcards,
+            $user
+        );
 
         return redirect()->route('lesson.show', $result['lesson']->id)
             ->with('success', 'Lesson created successfully');

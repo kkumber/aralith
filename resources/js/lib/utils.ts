@@ -92,6 +92,11 @@ export function retrieveFromSessionStorage(key: string) {
   }
 }
 
+export function removeFromSessionStorage(key: string) {
+    if (!key) return null;
+    sessionStorage.removeItem(key);
+}
+
 export function capitalizeFirstLetter(str: string) {
   if (typeof str !== 'string' || str.length === 0) {
     return str; // Handle non-string or empty inputs

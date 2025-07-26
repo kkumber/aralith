@@ -6,10 +6,11 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import useQuizConfig from '@/hooks/useQuizConfig';
 import AppLayout from '@/layouts/app-layout';
-import { retrieveFromSessionStorage } from '@/lib/utils';
+import { removeFromSessionStorage, retrieveFromSessionStorage } from '@/lib/utils';
 import { BreadcrumbItem } from '@/types';
 import { Head, router, usePage } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -51,7 +52,6 @@ const Create = () => {
         /* 
             Todo:
             Add error handling if any property is missing
-            The post redirect needs better success and error
         */
         const payload = {
             lesson: {
@@ -71,10 +71,10 @@ const Create = () => {
 
         router.post(route('lesson-quiz.store'), payload, {
             onSuccess: () => {
-                console.log('Lesson and Quiz Saved');
+                removeFromSessionStorage('lesson');
             },
             onError: (errors) => {
-                console.log(errors);
+                toast.error(errors?.message || errors?.general || 'Failed to generate quiz. Please try again.');
             },
         });
     };
