@@ -10,9 +10,9 @@ use Illuminate\Support\Facades\DB;
 
 class LessonQuizService
 {
-    public function createLessonQuiz(array $lessonData, array $quizData, array $questionsData, User $user)
+    public function createLessonSummaryFlashcardQuiz(array $lessonData, array $quizData, array $questionsData, array $flashcardsData, User $user)
     {
-        return DB::transaction(function () use ($lessonData, $quizData, $questionsData, $user) {
+        return DB::transaction(function () use ($lessonData, $quizData, $questionsData, $flashcardsData, $user) {
             $lesson = $user->lessons()->create($lessonData);
             $quiz = $user->quizzes()->create(['lessons_id' => $lesson->id, 'title' => $quizData['title'], 'config' => json_encode($quizData['config'])]);
 
@@ -22,11 +22,20 @@ class LessonQuizService
                 $questionArray[$key] = (array) $value;
             };
 
+            $flashcardsArray = [];
+            foreach ($flashcardsData as $key => $value) {
+                $flashcardsArray[$key] = (array) $value;
+            }
+
+            $flashcards = $lesson->flashcard()->createMany($flashcardsArray);
+
             $questions = $quiz->questions()->createMany($questionArray);
+
             return [
                 'lesson' => $lesson,
                 'quiz' => $quiz,
-                'questions' => $questions
+                'questions' => $questions,
+                'flashcards' => $flashcards
             ];
         });
     }

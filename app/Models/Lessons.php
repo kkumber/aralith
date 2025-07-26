@@ -15,6 +15,7 @@ class Lessons extends Model
     protected $fillable = [
         'title',
         'content',
+        'summary',
     ];
 
     public function user(): BelongsTo

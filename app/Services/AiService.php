@@ -14,14 +14,19 @@ class AiService
         return $this->callAi($systemContent, $userContent);
     }
 
-    public function generateFlashcard(string $lessonData)
+    public function generateFlashcards(string $lessonData)
     {
         $systemContent = config('ai.prompts.generate.flashcard');
         $userContent = $lessonData;
         return $this->callAi($systemContent, $userContent);
     }
 
-    public function generateSummary(string $lessonData) {}
+    public function generateSummary(string $lessonData)
+    {
+        $systemContent = config('ai.prompts.generate.summary');
+        $userContent = $lessonData;
+        return $this->callAi($systemContent, $userContent);
+    }
 
     public function callAi(string $systemContent, string $userContent)
     {
