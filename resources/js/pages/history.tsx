@@ -21,9 +21,8 @@ const History = () => {
         lessons: PaginatedResponse<LessonResponse>;
     }>().props;
 
-    console.log(usePage().props);
-
     const { selected, setSelection, handleSelected, handleDeleteItems, handleConfirmDialog } = useLessonDelete();
+    console.log(selected);
 
     // Select all items that exists
     const selectAllItems = () => {

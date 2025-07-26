@@ -22,7 +22,7 @@ interface DialogConfig {
 const DialogSubmit = ({ submitFn, cancelFn, config }: DialogSubmitProps<number>) => {
     const [showModal, setShowModal] = useState<boolean>(false);
     const handleCloseModal = () => {
-        if (typeof cancelFn === 'function') cancelFn();
+        cancelFn?.();
         setShowModal(false)
     };
 

@@ -78,9 +78,9 @@ class LessonsController extends Controller
 
         try {
             $lesson->delete();
-            return back()->with('success', 'Lesson deleted successfully');
+            return back();
         } catch (\Exception $e) {
-            return back()->with('error', 'Failed to delete lesson. Please try again.');
+            return back();
         }
     }
 
@@ -93,11 +93,11 @@ class LessonsController extends Controller
 
         try {
             $deleted = $lessonQuizService->bulkDestroyLessonQuiz(auth()->user(), $validated['lesson_ids']);
-            return back()->with('delete', count($deleted) . ' lessons deleted');
+            return back();
         } catch (AuthorizationException $e) {
             abort(403, $e->getMessage());
         } catch (\Exception $e) {
-            return back()->with('error', 'Failed to delete lessons. Please try again.');
+            return back()->withErrors(['message' => 'Failed to delete lesson. Please try again.']);
         }
     }
 

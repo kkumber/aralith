@@ -48,6 +48,10 @@ const Create = () => {
      *
      */
     const saveLessonQuiz = () => {
+        /* 
+            Todo:
+            Add error handling if any property is missing
+        */
         const payload = {
             lesson: {
                 title: values.title,

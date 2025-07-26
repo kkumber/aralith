@@ -51,8 +51,7 @@ class LessonQuizController extends Controller
         // Save in db
         $result = $lessonQuizService->createLessonQuiz($validated['lesson'], $validated['quiz_config'], $questionsData, $user);
 
-        dd($result);
-
-        return redirect()->route('main', $result['lesson']->id)->with('success', true)->with('result', $result);
+        return redirect()->route('lesson.show', $result['lesson']->id)
+            ->with('success', 'Lesson created successfully');
     }
 }

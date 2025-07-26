@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import dayjs from 'dayjs';
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
@@ -97,3 +98,8 @@ export function capitalizeFirstLetter(str: string) {
   }
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
+
+export function getCurrentTimeCustom() {
+    const now = dayjs();
+    return `${now.format('dddd, MMMM DD, YYYY')} at ${now.format('h:mm A')}`;
+};

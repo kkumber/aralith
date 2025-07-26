@@ -47,6 +47,7 @@ const LessonSelectionControls = ({
                         {/* Reuseable Dialog component with custom messages and functions */}
                         <DialogSubmit
                             submitFn={handleDeleteItems}
+                            cancelFn={() => setSelection([])}
                             config={{
                                 triggerContent: (
                                     <Button variant={'destructive'} size={'sm'}>
