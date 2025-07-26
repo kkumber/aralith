@@ -4,13 +4,13 @@ import QuizTitle from '@/components/quiz/quiz-title';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import useCreateQuiz from '@/hooks/useCreateQuiz';
 import useQuizConfig from '@/hooks/useQuizConfig';
 import AppLayout from '@/layouts/app-layout';
-import { removeFromSessionStorage, retrieveFromSessionStorage } from '@/lib/utils';
+import { retrieveFromSessionStorage } from '@/lib/utils';
 import { BreadcrumbItem } from '@/types';
-import { Head, router, usePage } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
-import { toast } from 'sonner';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -25,9 +25,9 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 const Create = () => {
     const { values, handlers } = useQuizConfig();
-    const { props } = usePage();
     const [showModal, setShowModal] = useState<boolean>(false);
     const [lesson, setLesson] = useState<string>('');
+    const { saveLessonQuiz } = useCreateQuiz();
 
     /* Check if there is lesson on mount, redirect to main if not found */
     useEffect(() => {
@@ -41,42 +41,6 @@ const Create = () => {
     const handleReturnModal = () => {
         setShowModal(false);
         router.visit(route('main'));
-    };
-
-    /*
-     * Submit Config to generate quiz
-     * Also submit the lesson with title and content
-     *
-     */
-    const saveLessonQuiz = () => {
-        /* 
-            Todo:
-            Add error handling if any property is missing
-        */
-        const payload = {
-            lesson: {
-                title: values.title,
-                content: lesson,
-            },
-            quiz_config: {
-                title: values.title,
-                config: {
-                    question_types: values.selectedTypes,
-                    difficulty: values.difficulty,
-                    total_number_of_questions: values.numOfQuestions,
-                    random_order: values.randomOrder,
-                },
-            },
-        };
-
-        router.post(route('lesson-quiz.store'), payload, {
-            onSuccess: () => {
-                removeFromSessionStorage('lesson');
-            },
-            onError: (errors) => {
-                toast.error(errors?.message || errors?.general || 'Failed to generate quiz. Please try again.');
-            },
-        });
     };
 
     return (
@@ -100,7 +64,7 @@ const Create = () => {
                         />
                         <hr />
                         <QuizTitle lesson={lesson} handleSetTitle={handlers.handleSetTitle} />
-                        <Button className="w-full" onClick={saveLessonQuiz}>
+                        <Button className="w-full" onClick={() => saveLessonQuiz(values, lesson)}>
                             Generate Quiz
                         </Button>
                     </CardContent>
