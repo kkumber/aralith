@@ -80,5 +80,14 @@ export interface LessonResponse {
     created_at: string;
     updated_at: string;
     user_id: number;
+    flashcard?: FlashcardResponse[];
 }
 
+export interface FlashcardResponse {
+    question: string;
+    answer: string;
+    id: number;
+    created_at: string;
+    updated_at: string;
+    lesson_id: number;
+}

@@ -40,10 +40,11 @@ const Lesson = () => {
                 </section>
 
                 {/* Flashcards */}
-                <section>
-                    {lesson.flashcard.map((flashcard) => (
-                        <Flashcard frontcard={flashcard.question} backcard={flashcard.answer} key={flashcard.id} />
-                    ))}
+                <section className="space-y-4">
+                    {lesson.flashcard &&
+                        lesson.flashcard.map((flashcard) => (
+                            <Flashcard frontcard={flashcard.question} backcard={flashcard.answer} key={flashcard.id} />
+                        ))}
                 </section>
             </main>
         </AppLayout>

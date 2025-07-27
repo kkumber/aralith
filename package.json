@@ -31,6 +31,7 @@
         "prettier-plugin-organize-imports": "^4.1.0",
         "prettier-plugin-tailwindcss": "^0.6.11",
         "tailwindcss": "^4.1.7",
+        "tailwindcss-animated": "^2.0.0",
         "typescript-eslint": "^8.23.0",
         "vitest": "^3.2.4"
     },
