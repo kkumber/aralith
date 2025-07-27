@@ -12,11 +12,11 @@ const Flashcard = ({className, frontcard, backcard, ...props}: Props) => {
     const [flipped, setFlipped] = useState(false);
 
     return ( 
-        <div className={cn(`p-4 rounded-lg shadow-md border hover:border-primary-green hover:cursor-pointer text-center ${flipped ? 'bg-green-200/5' : ''}`, className)} {...props} onClick={() => setFlipped(!flipped)}>
+        <div className={cn(`p-4 rounded-lg shadow-md border hover:border-primary-green hover:cursor-pointer text-center hover:scale-105 transition-all duration-300 ease-out ${flipped ? 'bg-primary-green/5' : ''}`, className)} {...props} onClick={() => setFlipped(!flipped)}>
 
         {!flipped ? (
             // Front
-            <div className="flex flex-col">
+            <div className="flex flex-col animate-fade-right animate-once animate-duration-200">
                 <p className="my-20 font-semibold">{frontcard}</p>
                 <div className="flex gap-2 items-center justify-center">
                     <small>Click to reveal answer </small>
@@ -25,16 +25,13 @@ const Flashcard = ({className, frontcard, backcard, ...props}: Props) => {
             </div>
         ): (
             // Back
-            <div className="flex flex-col">
-                <p className="my-20 text-primary-green">{backcard}</p>
+            <div className="flex flex-col animate-fade-left animate-once animate-duration-200">
+                <p className="my-20 font-medium">{backcard}</p>
                 <div className="flex gap-2 items-center justify-center ">
-                    <small>Click to hide answer </small>
-                    <EyeOff className="text-primary" size={15}/>
+                    <small className="text-green-800 ">Click to hide answer </small>
+                    <EyeOff className="text-green-800" size={15}/>
                 </div>
             </div>)}
-            
-
-            
         </div>
      );
 }
