@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import Flashcard from '@/components/ui/flashcard';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem, LessonResponse } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
@@ -14,11 +15,11 @@ const breadcrumbs: BreadcrumbItem[] = [
 const Lesson = () => {
     const { lesson } = usePage<{ lesson: LessonResponse }>().props;
 
-    console.log(lesson);
+    console.log(usePage());
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Current Lesson" />
-            <main className="mx-auto my-4 max-w-screen-lg space-y-8">
+            <main className="mx-auto max-w-screen-lg space-y-8 p-4">
                 <header className="flex items-center gap-2">
                     <BookText className="text-primary-green" size={40} />
                     <h1>
@@ -39,7 +40,11 @@ const Lesson = () => {
                 </section>
 
                 {/* Flashcards */}
-                <section></section>
+                <section>
+                    {lesson.flashcard.map((flashcard) => (
+                        <Flashcard frontcard={flashcard.question} backcard={flashcard.answer} key={flashcard.id} />
+                    ))}
+                </section>
             </main>
         </AppLayout>
     );

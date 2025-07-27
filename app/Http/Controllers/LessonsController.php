@@ -50,6 +50,7 @@ class LessonsController extends Controller
      */
     public function show(Lessons $lesson)
     {
+        $lesson->load('flashcard');
         return Inertia::render('lesson', ['lesson' => $lesson]);
     }
 

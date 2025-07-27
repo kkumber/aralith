@@ -58,7 +58,7 @@ const Main = () => {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Upload Lessons" />
-            <div className="mx-auto my-4 flex h-full max-w-screen-lg flex-1 flex-col gap-4 rounded-xl">
+            <div className="mx-auto flex h-full max-w-screen-lg flex-1 flex-col gap-4 rounded-xl p-4">
                 {user && (
                     <div className="mb-8">
                         <h2>
