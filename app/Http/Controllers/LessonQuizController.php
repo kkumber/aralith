@@ -44,7 +44,6 @@ class LessonQuizController extends Controller
         // Generate summary from lesson content
         $summary = json_decode($aiService->generateSummary($validated['lesson']['content']), true);
 
-        // Validate that AI service returned valid data
         if (empty($summary) || !is_array($summary)) {
             return back()->with('error', 'Failed to generate summary from AI');
         }
@@ -52,14 +51,12 @@ class LessonQuizController extends Controller
         // Generate flashcard from lesson content
         $flashcards = json_decode($aiService->generateFlashcards($validated['lesson']['content']));
 
-        // Validate that AI service returned valid data
         if (empty($flashcards) || !is_array($flashcards)) {
             return back()->with('error', 'Failed to generate flashcards from AI');
         }
         // Generate questions data first from AI
         $questionsData = json_decode($aiService->generateQuestions($validated['quiz_config'], $validated['lesson']['content']));
 
-        // Validate that AI service returned valid data
         if (empty($questionsData) || !is_array($questionsData)) {
             return back()->with('error', 'Failed to generate questions from AI');
         }

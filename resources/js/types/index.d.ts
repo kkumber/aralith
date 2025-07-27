@@ -75,7 +75,9 @@ export interface PaginationLink {
 export interface LessonResponse {
     title: string;
     content: string;
+    summary: string;
     id: number;
+    created_at: string;
     updated_at: string;
     user_id: number;
 }

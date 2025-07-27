@@ -1,7 +1,7 @@
 export interface Configuration {
     title: string;
-    question_types: string[];
-    difficulty: string;
+    question_types: QuestionType[];
+    difficulty: Difficulty;
     total_number_of_questions: number;
     random_order: boolean;
 }

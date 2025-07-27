@@ -34,7 +34,7 @@ const History = () => {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="History" />
-            <main className="mx-auto flex h-full w-full max-w-screen-lg flex-col p-4">
+            <main className="mx-auto my-4 flex h-full w-full max-w-screen-lg flex-col">
                 {/* Header start */}
                 <div className="flex items-center justify-between">
                     <h1 className="self-start text-start font-medium">Your previous lessons</h1>

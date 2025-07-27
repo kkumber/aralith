@@ -58,10 +58,12 @@ const Main = () => {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Upload Lessons" />
-            <div className="mx-auto flex h-full max-w-screen-lg flex-1 flex-col gap-4 rounded-xl p-4">
+            <div className="mx-auto my-4 flex h-full max-w-screen-lg flex-1 flex-col gap-4 rounded-xl">
                 {user && (
-                    <div>
-                        <h2>Welcome back, {user.name}!</h2>
+                    <div className="mb-8">
+                        <h2>
+                            Welcome back, <span className="text-primary-green">{user.name}!</span>
+                        </h2>
                         <small>Ready to create your next quiz?</small>
                     </div>
                 )}

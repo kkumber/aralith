@@ -1,6 +1,8 @@
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
-import { BreadcrumbItem } from '@/types';
+import { BreadcrumbItem, LessonResponse } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
+import { BookText } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -10,11 +12,35 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 const Lesson = () => {
-    const { lesson } = usePage().props;
-    console.log(usePage());
+    const { lesson } = usePage<{ lesson: LessonResponse }>().props;
+
+    console.log(lesson);
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Current Lesson" />
+            <main className="mx-auto my-4 max-w-screen-lg space-y-8">
+                <header className="flex items-center gap-2">
+                    <BookText className="text-primary-green" size={40} />
+                    <h1>
+                        Lesson: <span className="text-primary-green">'{lesson.title}'</span>
+                    </h1>
+                </header>
+
+                {/* Sumamry */}
+                <section>
+                    <Card className="bg-sidebar shadow-md">
+                        <CardHeader>
+                            <CardTitle className="text-primary-green text-xl">Summary</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <p>{lesson.summary}</p>
+                        </CardContent>
+                    </Card>
+                </section>
+
+                {/* Flashcards */}
+                <section></section>
+            </main>
         </AppLayout>
     );
 };
