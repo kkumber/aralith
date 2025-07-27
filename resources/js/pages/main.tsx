@@ -22,7 +22,6 @@ const breadcrumbs: BreadcrumbItem[] = [
 const Main = () => {
     const { uploadError, lessonContent, setLessonContent, isLoading, files, setFiles, handleFilesSubmit } = useFileProcessor();
     const [wordCount, setWordCount] = useState<number>(0);
-    console.log(usePage());
     const { user } = usePage().props.auth as { user: User };
 
     const handleSetLessonContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {

@@ -3,7 +3,7 @@ import Flashcard from '@/components/ui/flashcard';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem, LessonResponse } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
-import { BookText } from 'lucide-react';
+import { BookText, Brain } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -40,7 +40,11 @@ const Lesson = () => {
                 </section>
 
                 {/* Flashcards */}
-                <section className="space-y-4">
+                <section className="mt-20 space-y-4">
+                    <div className="flex items-center gap-2">
+                        <Brain className="text-primary-green" size={40} /> <h2>Flashcards</h2>
+                    </div>
+
                     {lesson.flashcard &&
                         lesson.flashcard.map((flashcard) => (
                             <Flashcard frontcard={flashcard.question} backcard={flashcard.answer} key={flashcard.id} />

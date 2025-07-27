@@ -22,7 +22,6 @@ const History = () => {
     }>().props;
 
     const { selected, setSelection, handleSelected, handleDeleteItems, handleConfirmDialog } = useLessonDelete();
-    console.log(selected);
 
     // Select all items that exists
     const selectAllItems = () => {
