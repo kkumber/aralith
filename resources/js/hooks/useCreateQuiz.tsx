@@ -1,6 +1,7 @@
 import { removeFromSessionStorage } from '@/lib/utils';
 import { Difficulty, QuestionType } from '@/pages/quiz/config/config';
 import { router } from '@inertiajs/react';
+import { useState } from 'react';
 import { toast } from 'sonner';
 
 interface Values {
@@ -12,6 +13,14 @@ interface Values {
 }
 
 const useCreateQuiz = () => {
+    const [configErrors, setConfigErrors] = useState<Record<string, string>>({
+        title: '',
+        types: '',
+        numOfQuestions: '',
+        difficulty: '',
+        randomOrder: '',
+    });
+
     /*
      * Submit Config to generate quiz
      * Also submit the lesson with title and content
@@ -48,33 +57,26 @@ const useCreateQuiz = () => {
 
     // Check if values are valid
     const validateValues = (values: Values) => {
-        const errors: string[] = [];
+        const errors: Record<string, string> = {};
 
-        if (!values.title) errors.push('Please enter a title for your quiz.');
-        if (!values.selectedTypes.length) errors.push('Please select at least one question type.');
-        if (!values.difficulty) errors.push('Please select a difficulty level.');
-        if (!values.numOfQuestions || values.numOfQuestions < 1) errors.push('Please select the number of questions.');
-
-        if (errors.length > 0) {
-            toast.error(
-                <div>
-                    <strong>Error:</strong>
-                    <ul className="mt-1 ml-4">
-                        {errors.map((error, index) => (
-                            <li key={index} className="list-disc">
-                                {error}
-                            </li>
-                        ))}
-                    </ul>
-                </div>,
-            );
-            return false;
+        if (!values.title) {
+            errors.title = 'Please enter a title for your quiz.';
+        }
+        if (!values.selectedTypes.length) {
+            errors.types = 'Please select at least one question type.';
+        }
+        if (!values.difficulty) {
+            errors.difficulty = 'Please select a difficulty level.';
+        }
+        if (!values.numOfQuestions || values.numOfQuestions < 1) {
+            errors.numOfQuestions = 'Please select the number of questions.';
         }
 
-        return true;
+        setConfigErrors(errors);
+        return Object.keys(errors).length === 0;
     };
 
-    return { saveLessonQuiz, validateValues };
+    return { saveLessonQuiz, configErrors };
 };
 
 export default useCreateQuiz;

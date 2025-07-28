@@ -27,7 +27,7 @@ const Create = () => {
     const { values, handlers } = useQuizConfig();
     const [showModal, setShowModal] = useState<boolean>(false);
     const [lesson, setLesson] = useState<string>('');
-    const { saveLessonQuiz } = useCreateQuiz();
+    const { saveLessonQuiz, configErrors } = useCreateQuiz();
 
     /* Check if there is lesson on mount, redirect to main if not found */
     useEffect(() => {
@@ -61,9 +61,10 @@ const Create = () => {
                             handleDifficulty={handlers.handleDifficulty}
                             randomOrder={values.randomOrder}
                             handleRandomOrder={handlers.handleRandomOrder}
+                            configErrors={configErrors}
                         />
                         <hr />
-                        <QuizTitle lesson={lesson} handleSetTitle={handlers.handleSetTitle} />
+                        <QuizTitle lesson={lesson} handleSetTitle={handlers.handleSetTitle} configErrors={configErrors} />
                         <Button className="w-full" onClick={() => saveLessonQuiz(values, lesson)}>
                             Generate Quiz
                         </Button>

@@ -33,7 +33,7 @@ export function isValidFileType(file: File, acceptedTypes: string[]) {
 
 export function getFriendlyErrorMessage(error: string): string {
     if (error === 'Failed to fetch') {
-        return 'Server is down. Please try again later.';
+        return 'Server is down. Please try again later or directly paste the text.';
     }
     if (error.includes('timeout')) {
         return 'The request timed out. Please try again later.';
