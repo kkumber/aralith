@@ -1,3 +1,4 @@
+import QuizCallToAction from '@/components/quiz/quiz-call-to-action';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Flashcard from '@/components/ui/flashcard';
 import AppLayout from '@/layouts/app-layout';
@@ -15,7 +16,6 @@ const breadcrumbs: BreadcrumbItem[] = [
 const Lesson = () => {
     const { lesson } = usePage<{ lesson: LessonResponse }>().props;
 
-    console.log(usePage());
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Current Lesson" />
@@ -39,8 +39,13 @@ const Lesson = () => {
                     </Card>
                 </section>
 
+                {/* Call to Actions */}
+                <div className="flex flex-wrap items-center justify-center gap-2 md:justify-end">
+                    <QuizCallToAction />
+                </div>
+
                 {/* Flashcards */}
-                <section className="mt-20 space-y-4">
+                <section className="space-y-4">
                     <div className="flex items-center gap-2">
                         <Brain className="text-primary-green" size={40} /> <h2>Flashcards</h2>
                     </div>

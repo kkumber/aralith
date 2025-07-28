@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateQuizzesRequest;
 use Inertia\Inertia;
 use Exception;
 use App\Helpers\ApiResponse;
+use App\Models\Lessons;
 
 class QuizzesController extends Controller
 {
@@ -35,9 +36,14 @@ class QuizzesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Quizzes $quizzes)
+    public function show(Lessons $lesson)
     {
-        //
+        $quiz = $lesson->quizzes()->with('questions')->first();
+
+        if (!$quiz) {
+            return redirect()->back()->with('error', 'No quiz found for this lesson');
+        }
+        return Inertia::render('quiz/show', ['quiz' => $quiz]);
     }
 
     /**
