@@ -19,7 +19,7 @@ const LessonInput = ({ lessonContent, handleSetLessonContent, wordCount }: Lesso
                     name="extracted_texts"
                     id="lessonContent"
                     value={lessonContent}
-                    className="text-text-primary dark:text-dark-text-primary h-80 w-full rounded-sm border p-3 focus:outline-0"
+                    className="text-text-primary dark:text-dark-text-primary scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-primary scrollbar-track-muted h-80 w-full rounded-sm border p-3 focus:outline-0"
                     placeholder="E=mc^2"
                     onChange={handleSetLessonContent}
                 ></textarea>
