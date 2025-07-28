@@ -1,4 +1,3 @@
-import InputError from '@/components/input-error';
 import LessonInput from '@/components/lesson/lesson-input';
 import { Button } from '@/components/ui/button';
 import { Card, CardFooter } from '@/components/ui/card';
@@ -20,7 +19,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 const Main = () => {
-    const { uploadError, lessonContent, setLessonContent, isLoading, files, setFiles, handleFilesSubmit } = useFileProcessor();
+    const { lessonContent, setLessonContent, isLoading, files, setFiles, handleFilesSubmit } = useFileProcessor();
     const [wordCount, setWordCount] = useState<number>(0);
     const { user } = usePage().props.auth as { user: User };
 
@@ -66,8 +65,6 @@ const Main = () => {
                         <small>Ready to create your next quiz?</small>
                     </div>
                 )}
-                {/* Upload Error */}
-                {uploadError && <InputError message={uploadError} />}
 
                 {/* Drag and Drop */}
                 <DragAndDrop files={files} setFiles={setFiles} handleFilesSubmit={handleFilesSubmit} isLoading={isLoading} />

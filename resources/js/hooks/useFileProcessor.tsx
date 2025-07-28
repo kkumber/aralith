@@ -2,6 +2,7 @@ import { getFriendlyErrorMessage, truncateStringByMaxCount } from '@/lib/utils';
 import { wordCountLimit } from '@/pages/quiz/config/config';
 import { UsePost } from '@/types';
 import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 import * as z from 'zod/v4';
 import usePost from './usePost';
 
@@ -80,8 +81,9 @@ export const useFileProcessor = () => {
     // Clear error after 5 seconds
     useEffect(() => {
         if (uploadError) {
-            const timeout = setTimeout(() => setUploadError(null), 5000);
-            return () => clearTimeout(timeout);
+            toast.error(uploadError, {
+                duration: 5000,
+            });
         }
     }, [uploadError]);
 
