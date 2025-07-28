@@ -29,7 +29,7 @@ const PreviousLessons = ({ lessons, selected, handleSelected, handleDeleteItems,
                     {lessons.map((lesson: LessonResponse) => (
                         // Parent container
                         <Card
-                            className={`relative gap-1 ${selected.includes(lesson.id) ? 'border-primary-green bg-primary-green/5' : ''} hover:border-primary-green z-0 w-full pt-2 pl-5 transition-all duration-300 ease-out hover:cursor-pointer hover:bg-black/5 dark:hover:bg-white/5`}
+                            className={`relative gap-1 ${selected.includes(lesson.id) ? 'border-primary-green bg-primary-green/5' : ''} hover:border-primary-green z-0 w-full pt-2 pl-5 transition-all duration-200 ease-out hover:cursor-pointer hover:bg-black/5 dark:hover:bg-white/5`}
                             key={lesson.id}
                             onClick={() => handleSelected(lesson.id)}
                             onMouseEnter={() => setShowCheckbox((prev: number[]) => [...prev, lesson.id])}
@@ -37,7 +37,7 @@ const PreviousLessons = ({ lessons, selected, handleSelected, handleDeleteItems,
                         >
                             {/* Checkbox with animation start */}
                             <div
-                                className={`absolute top-10 -left-2 z-10 transform transition-all duration-300 ease-out ${
+                                className={`absolute top-10 -left-2 z-10 transform transition-all duration-200 ease-out ${
                                     selected.includes(lesson.id) || showCheckbox.includes(lesson.id) || selected.length > 0
                                         ? 'translate-x-0 scale-100 opacity-100'
                                         : 'pointer-events-none -translate-x-2 scale-75 opacity-0'
@@ -52,7 +52,7 @@ const PreviousLessons = ({ lessons, selected, handleSelected, handleDeleteItems,
                                 >
                                     {/* Ripple effect on hover */}
                                     <div
-                                        className={`bg-primary-green/20 absolute inset-0 transform rounded-sm transition-all duration-300 ease-out ${
+                                        className={`bg-primary-green/20 absolute inset-0 transform rounded-sm transition-all duration-200 ease-out ${
                                             showCheckbox.includes(lesson.id) && !selected.includes(lesson.id)
                                                 ? 'scale-150 opacity-0'
                                                 : 'scale-100 opacity-0'
@@ -87,7 +87,7 @@ const PreviousLessons = ({ lessons, selected, handleSelected, handleDeleteItems,
                                                 config={{
                                                     triggerContent: (
                                                         <Trash
-                                                            className={`absolute top-4 right-4 z-50 origin-right rounded-md opacity-0 transition-all duration-300 ease-out hover:scale-110 hover:rotate-3 hover:cursor-pointer active:scale-95 ${showCheckbox.includes(lesson.id) ? 'opacity-100' : ''}`}
+                                                            className={`absolute top-4 right-4 z-50 origin-right rounded-md opacity-0 transition-all duration-200 ease-out hover:scale-110 hover:rotate-3 hover:cursor-pointer active:scale-95 ${showCheckbox.includes(lesson.id) ? 'opacity-100' : ''}`}
                                                             size={15}
                                                         />
                                                     ),

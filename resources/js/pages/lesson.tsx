@@ -23,7 +23,7 @@ const Lesson = () => {
                 <header className="flex items-center gap-2">
                     <BookText className="text-primary-green" size={40} />
                     <h1>
-                        Lesson: <span className="text-primary-green">'{lesson.title}'</span>
+                        Lesson: <span className="text-primary-green">"{lesson.title}"</span>
                     </h1>
                 </header>
 
