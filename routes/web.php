@@ -17,12 +17,21 @@ Route::get('/welcome', function () {
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
+
+    // Standalone Routes
     Route::get('/', [LessonsController::class, 'home'])->name('main');
+
+    // Quiz Page Route
+    Route::get('/lessons/{lesson}/quiz', [QuizzesController::class, 'show'])
+        ->name('quiz.show');
+
+    // Lesson History Routes
     Route::post('/lessons/bulk-destroy', [LessonsController::class, 'bulkDestroy'])->name('lesson.bulkDestroy');
     Route::post('/lessons/search', [LessonsController::class, 'searchLesson'])->name('lesson.search');
 
+    // Resource Routes
     Route::resource('lesson', LessonsController::class);
-    Route::resource('quiz', QuizzesController::class);
+    Route::resource('quiz', QuizzesController::class)->except('show');
     Route::resource('lesson-quiz', LessonQuizController::class);
 });
 

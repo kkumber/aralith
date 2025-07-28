@@ -1,3 +1,4 @@
+import { Configuration } from '@/pages/quiz/config/config';
 import { LucideIcon } from 'lucide-react';
 import type { Config } from 'ziggy-js';
 
@@ -90,4 +91,14 @@ export interface FlashcardResponse {
     created_at: string;
     updated_at: string;
     lesson_id: number;
+}
+
+export interface QuizResponse {
+    id: number;
+    user_id: number;
+    lessons_id: number;
+    title: string;
+    config: Configuration;
+    created_at: string;
+    updated_at: string;
 }

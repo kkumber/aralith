@@ -6,7 +6,7 @@ const QuizCallToAction = ({ lessonId }: any) => {
     return (
         <>
             <Button asChild>
-                <Link href={route('quiz.show', { lessonId: lessonId })}>
+                <Link href={route('quiz.show', { lesson: lessonId })}>
                     <Pencil />
                     Take Quiz
                 </Link>

@@ -38,7 +38,7 @@ class QuizzesController extends Controller
      */
     public function show(Lessons $lesson)
     {
-        $quiz = $lesson->quizzes()->with('questions')->first();
+        $quiz = $lesson->quizzes()->with('questions:id,quizzes_id,type,question_text')->firstOrFail();
 
         if (!$quiz) {
             return redirect()->back()->with('error', 'No quiz found for this lesson');

@@ -6,19 +6,19 @@ import { BreadcrumbItem, LessonResponse } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 import { BookText, Brain } from 'lucide-react';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Current Lesson',
-        href: route('lesson.index'),
-    },
-];
-
 const Lesson = () => {
     const { lesson } = usePage<{ lesson: LessonResponse }>().props;
 
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: lesson.title,
+            href: route('lesson.index'),
+        },
+    ];
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Current Lesson" />
+            <Head title={lesson.title} />
             <main className="mx-auto max-w-screen-lg space-y-8 p-4">
                 <header className="flex items-center gap-2">
                     <BookText className="text-primary-green" size={40} />
@@ -41,7 +41,7 @@ const Lesson = () => {
 
                 {/* Call to Actions */}
                 <div className="flex flex-wrap items-center justify-center gap-2 md:justify-end">
-                    <QuizCallToAction />
+                    <QuizCallToAction lessonId={lesson.id} />
                 </div>
 
                 {/* Flashcards */}
