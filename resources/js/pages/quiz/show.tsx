@@ -1,3 +1,4 @@
+import IdentificationQuestion from '@/components/quiz-types/identification';
 import MultipleAnswerQuestion from '@/components/quiz-types/multiple-answer';
 import MultipleChoiceQuestion from '@/components/quiz-types/multiple-choice';
 import TrueOrFalseQuestion from '@/components/quiz-types/true-false';
@@ -66,7 +67,20 @@ const Show = () => {
                         );
                     }
 
-                    return null; // fallback
+                    // Identification questions
+                    if (question.type === 'Identification') {
+                        return (
+                            <IdentificationQuestion
+                                key={question.id}
+                                id={question.id}
+                                number={index + 1}
+                                question={question.question_text}
+                                options={question.options}
+                            />
+                        );
+                    }
+
+                    return null; // fallback to unknown question type
                 })}
             </main>
         </AppLayout>
