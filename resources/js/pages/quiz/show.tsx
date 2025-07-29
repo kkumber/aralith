@@ -1,3 +1,4 @@
+import FillInTheBlankQuestion from '@/components/quiz-types/fill-in-the-blank';
 import IdentificationQuestion from '@/components/quiz-types/identification';
 import MultipleAnswerQuestion from '@/components/quiz-types/multiple-answer';
 import MultipleChoiceQuestion from '@/components/quiz-types/multiple-choice';
@@ -71,6 +72,19 @@ const Show = () => {
                     if (question.type === 'Identification') {
                         return (
                             <IdentificationQuestion
+                                key={question.id}
+                                id={question.id}
+                                number={index + 1}
+                                question={question.question_text}
+                                options={question.options}
+                            />
+                        );
+                    }
+
+                    // Fill in the blank questions
+                    if (question.type === 'Fill in the blank') {
+                        return (
+                            <FillInTheBlankQuestion
                                 key={question.id}
                                 id={question.id}
                                 number={index + 1}
