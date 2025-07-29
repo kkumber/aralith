@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem, QuizResponse } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const Show = () => {
     const { quiz } = usePage<{ quiz: QuizResponse }>().props;
@@ -29,15 +29,9 @@ const Show = () => {
 
         setAnswers((prev) => ({
             ...prev,
-            [questionId]: typeof answer === 'string' ? answer.trim() : [],
+            [questionId]: typeof answer === 'string' ? answer.trim() : answer,
         }));
     };
-
-    useEffect(() => {
-        if (answers) {
-            console.log(answers);
-        }
-    }, [answers]);
 
     const handleSubmit = () => {
         // validate user answers against correct answers

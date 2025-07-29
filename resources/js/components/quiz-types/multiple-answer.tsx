@@ -1,24 +1,24 @@
 import { QuestionProp } from '@/types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Checkbox } from '../ui/checkbox';
 import { Label } from '../ui/label';
 const MultipleAnswerQuestion = ({ id, question, options, number, onChange }: QuestionProp) => {
-    const [isChecked, setIsChecked] = useState(false);
+    const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
 
     const handleCheckboxChange = (option: string, checked: boolean | string) => {
         if (!option) return;
 
-        let newValue: string[] = [];
         if (checked) {
-            setIsChecked(true);
-            newValue = [...newValue, option];
+            setSelectedOptions((prev) => [...prev, option]);
         } else {
-            setIsChecked(false);
-            newValue = newValue.filter((o) => o !== option);
+            setSelectedOptions((prev) => prev.filter((prevOption) => prevOption !== option));
         }
-
-        onChange?.(id, newValue);
     };
+
+    // Update user answers
+    useEffect(() => {
+        onChange?.(id, selectedOptions);
+    }, [selectedOptions]);
 
     return (
         <div className="flex flex-col gap-1">
@@ -31,7 +31,7 @@ const MultipleAnswerQuestion = ({ id, question, options, number, onChange }: Que
                         id={option}
                         value={option}
                         className="data-[state=checked]:bg-primary-green data-[state=checked]:border-primary-green"
-                        checked={isChecked}
+                        checked={selectedOptions.includes(option)}
                         onCheckedChange={(checked) => handleCheckboxChange(option, checked)}
                     />
                     <Label htmlFor={option} className="text-base font-normal">
