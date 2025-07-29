@@ -7,7 +7,7 @@ const FillInTheBlankQuestion = ({ id, question, options, number }: QuestionProp)
             <p className="font-semibold">
                 <span>{number}.</span> {question}
             </p>
-            <Input placeholder="Answer..." className="ml-8 w-40 font-normal" />
+            <Input placeholder="Answer..." className="w-40 font-normal" />
         </div>
     );
 };

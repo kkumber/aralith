@@ -8,7 +8,7 @@ const MultipleAnswerQuestion = ({ id, question, options, number }: QuestionProp)
                 <span className="text-sm">{number}.</span> {question}
             </p>
             {options.map((option, index) => (
-                <div key={index} className="ml-8 flex items-center gap-2">
+                <div key={index} className="flex items-center gap-2">
                     <Checkbox
                         id={option}
                         value={option}

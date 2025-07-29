@@ -11,7 +11,7 @@ const TrueOrFalseQuestion = ({ id, question, options, number }: QuestionProp) =>
 
             <RadioGroup>
                 {options.map((option, index) => (
-                    <div key={index} className="ml-8 flex items-center gap-2">
+                    <div key={index} className="flex items-center gap-2">
                         <RadioGroupItem id={option} value={option} />
                         <Label htmlFor={id.toString()} className="text-base font-normal">
                             {option}

@@ -3,6 +3,7 @@ import IdentificationQuestion from '@/components/quiz-types/identification';
 import MultipleAnswerQuestion from '@/components/quiz-types/multiple-answer';
 import MultipleChoiceQuestion from '@/components/quiz-types/multiple-choice';
 import TrueOrFalseQuestion from '@/components/quiz-types/true-false';
+import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem, QuizResponse } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
@@ -21,13 +22,18 @@ const Show = () => {
         },
     ];
 
-    console.log(usePage());
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        // validate user answers against correct answers
+        const formData = new FormData(this);
+        console.log(formData);
+    };
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Quiz Attempt" />
 
-            <main className="mx-auto flex h-full max-w-screen-lg flex-col gap-6 p-4">
+            <form className="mx-auto flex h-full max-w-screen-lg flex-col gap-6 p-4" onSubmit={(e) => handleSubmit(e)}>
                 {quiz.questions?.map((question, index) => {
                     // Multiple choice questions
                     if (question.type === 'Multiple Choice') {
@@ -96,7 +102,11 @@ const Show = () => {
 
                     return null; // fallback to unknown question type
                 })}
-            </main>
+
+                <div className="flex items-center justify-end">
+                    <Button>Submit Attempt</Button>
+                </div>
+            </form>
         </AppLayout>
     );
 };
