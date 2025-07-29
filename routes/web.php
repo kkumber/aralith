@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\LessonQuizController;
 use App\Http\Controllers\LessonsController;
+use App\Http\Controllers\QuizAttemptsController;
 use App\Http\Controllers\QuizzesController;
 use App\Models\Lessons;
 use Illuminate\Support\Facades\Route;
@@ -24,6 +25,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Quiz Page Route
     Route::get('/lessons/{lesson}/quiz', [QuizzesController::class, 'show'])
         ->name('quiz.show');
+
+    // User Attempt Route
+    Route::post('/quiz/{quiz}/attempt', [QuizAttemptsController::class, 'store'])->name('quizAttempt.store');
 
     // Lesson History Routes
     Route::post('/lessons/bulk-destroy', [LessonsController::class, 'bulkDestroy'])->name('lesson.bulkDestroy');

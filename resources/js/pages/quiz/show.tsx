@@ -7,13 +7,12 @@ import { Button } from '@/components/ui/button';
 import DialogSubmit from '@/components/ui/dialog-submit';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem, QuizResponse } from '@/types';
-import { Head, usePage } from '@inertiajs/react';
+import { Head, router, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 
 const Show = () => {
     const { quiz } = usePage<{ quiz: QuizResponse }>().props;
     const [answers, setAnswers] = useState({});
-    const [submitDialog, setSubmitDialog] = useState<boolean>(false);
 
     const breadcrumbs: BreadcrumbItem[] = [
         {
@@ -37,8 +36,9 @@ const Show = () => {
     };
 
     const handleSubmit = () => {
-        console.log(answers);
-        // validate user answers against correct answers
+        router.post(route('quizAttempt.store', { quiz: quiz.lessons_id }), {
+            answers,
+        });
     };
 
     return (

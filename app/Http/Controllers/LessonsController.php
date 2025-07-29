@@ -29,7 +29,7 @@ class LessonsController extends Controller
     public function index()
     {
         $userId = auth()->user()->id;
-        $lessons = Lessons::where('user_id', $userId)->latest()->paginate(10);
+        $lessons = Lessons::where('user_id', $userId)->latest()->paginate(20);
         return Inertia::render('history', ['lessons' => $lessons]);
     }
 
