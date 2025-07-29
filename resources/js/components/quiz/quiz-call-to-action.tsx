@@ -2,7 +2,11 @@ import { Link } from '@inertiajs/react';
 import { Download, Pencil, Share2 } from 'lucide-react';
 import { Button } from '../ui/button';
 
-const QuizCallToAction = ({ lessonId }: any) => {
+interface Props {
+    lessonId: number;
+}
+
+const QuizCallToAction = ({ lessonId }: Props) => {
     return (
         <>
             <Button asChild>
