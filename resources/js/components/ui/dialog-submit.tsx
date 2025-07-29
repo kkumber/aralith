@@ -35,7 +35,7 @@ const DialogSubmit = ({ submitFn, cancelFn, config }: DialogSubmitProps<number>)
             <DialogContent>
                 <DialogHeader>
                     {/* Dialog title */}
-                    <DialogTitle>{config.titleContent}</DialogTitle>
+                    <DialogTitle className='text-start'>{config.titleContent}</DialogTitle>
                 </DialogHeader>
                 <DialogDescription>
                     {/* Dialog description */}
@@ -43,12 +43,12 @@ const DialogSubmit = ({ submitFn, cancelFn, config }: DialogSubmitProps<number>)
 
                     {/* Warning text. Optional */}
                     {config.showWarningText && (
-                        <small className="mt-4 inline-block text-red-400">
+                        <small className="mt-4 inline-block text-red-400 font-semibold">
                             {config.warningTextContent}
                         </small>
                     )}
                 </DialogDescription>
-                <DialogFooter>
+                <DialogFooter className='flex flex-row items-center justify-end'>
                     {/* Cancel and submit buttons */}
                     <Button variant={'outline'} onClick={() => handleCloseModal()}>
                         {config.closeBtn}

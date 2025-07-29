@@ -4,6 +4,7 @@ import MultipleAnswerQuestion from '@/components/quiz-types/multiple-answer';
 import MultipleChoiceQuestion from '@/components/quiz-types/multiple-choice';
 import TrueOrFalseQuestion from '@/components/quiz-types/true-false';
 import { Button } from '@/components/ui/button';
+import DialogSubmit from '@/components/ui/dialog-submit';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem, QuizResponse } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
@@ -12,6 +13,7 @@ import { useState } from 'react';
 const Show = () => {
     const { quiz } = usePage<{ quiz: QuizResponse }>().props;
     const [answers, setAnswers] = useState({});
+    const [submitDialog, setSubmitDialog] = useState<boolean>(false);
 
     const breadcrumbs: BreadcrumbItem[] = [
         {
@@ -24,6 +26,7 @@ const Show = () => {
         },
     ];
 
+    // Update user answers
     const handleAnswerChange = (questionId: number, answer: string | string[]) => {
         if (!questionId || !answer) return;
 
@@ -34,6 +37,7 @@ const Show = () => {
     };
 
     const handleSubmit = () => {
+        console.log(answers);
         // validate user answers against correct answers
     };
 
@@ -113,11 +117,23 @@ const Show = () => {
                         );
                     }
 
-                    return null; // fallback to unknown question type
+                    return null; // return if question type is not supported
                 })}
 
                 <div className="flex items-center justify-end">
-                    <Button>Submit Attempt</Button>
+                    <DialogSubmit
+                        submitFn={handleSubmit}
+                        config={{
+                            triggerContent: <Button>Submit Answers</Button>,
+                            titleContent: 'Submit Answers?',
+                            descriptionContent: 'Are you sure you want to submit your answers?',
+                            showWarningText: true,
+                            warningTextContent: 'Please check your answers before submitting. This action cannot be undone.',
+                            closeBtn: 'Cancel',
+                            submitBtn: 'Submit',
+                            submitBtnVariant: 'default',
+                        }}
+                    />
                 </div>
             </main>
         </AppLayout>
