@@ -7,9 +7,11 @@ import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem, QuizResponse } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
 
 const Show = () => {
     const { quiz } = usePage<{ quiz: QuizResponse }>().props;
+    const [answers, setAnswers] = useState({});
 
     const breadcrumbs: BreadcrumbItem[] = [
         {
@@ -22,18 +24,30 @@ const Show = () => {
         },
     ];
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
+    const handleAnswerChange = (questionId: number, answer: string | string[]) => {
+        if (!questionId || !answer) return;
+
+        setAnswers((prev) => ({
+            ...prev,
+            [questionId]: typeof answer === 'string' ? answer.trim() : [],
+        }));
+    };
+
+    useEffect(() => {
+        if (answers) {
+            console.log(answers);
+        }
+    }, [answers]);
+
+    const handleSubmit = () => {
         // validate user answers against correct answers
-        const formData = new FormData(this);
-        console.log(formData);
     };
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Quiz Attempt" />
 
-            <form className="mx-auto flex h-full max-w-screen-lg flex-col gap-6 p-4" onSubmit={(e) => handleSubmit(e)}>
+            <main className="mx-auto flex h-full max-w-screen-lg flex-col gap-6 p-4">
                 {quiz.questions?.map((question, index) => {
                     // Multiple choice questions
                     if (question.type === 'Multiple Choice') {
@@ -44,6 +58,7 @@ const Show = () => {
                                 question={question.question_text}
                                 options={question.options}
                                 id={question.id}
+                                onChange={handleAnswerChange}
                             />
                         );
                     }
@@ -57,6 +72,7 @@ const Show = () => {
                                 number={index + 1}
                                 question={question.question_text}
                                 options={question.options}
+                                onChange={handleAnswerChange}
                             />
                         );
                     }
@@ -70,6 +86,7 @@ const Show = () => {
                                 number={index + 1}
                                 question={question.question_text}
                                 options={question.options}
+                                onChange={handleAnswerChange}
                             />
                         );
                     }
@@ -83,6 +100,7 @@ const Show = () => {
                                 number={index + 1}
                                 question={question.question_text}
                                 options={question.options}
+                                onChange={handleAnswerChange}
                             />
                         );
                     }
@@ -96,6 +114,7 @@ const Show = () => {
                                 number={index + 1}
                                 question={question.question_text}
                                 options={question.options}
+                                onChange={handleAnswerChange}
                             />
                         );
                     }
@@ -106,7 +125,7 @@ const Show = () => {
                 <div className="flex items-center justify-end">
                     <Button>Submit Attempt</Button>
                 </div>
-            </form>
+            </main>
         </AppLayout>
     );
 };

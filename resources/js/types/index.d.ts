@@ -117,4 +117,5 @@ export interface QuestionProp {
     question: string;
     options: string[];
     number: number;
+    onChange?: (id: number, answer: string | string[]) => void;
 }
