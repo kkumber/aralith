@@ -6,7 +6,7 @@ const MultipleChoiceQuestion = ({ id, question, options, number }: QuestionProp)
     return (
         <div className="flex flex-col gap-1">
             <p>
-                {number}. {question}
+                <span className="text-sm">{number}.</span> {question}
             </p>
             <RadioGroup>
                 {options.map((option, index) => (

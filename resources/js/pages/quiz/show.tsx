@@ -1,5 +1,6 @@
 import MultipleAnswerQuestion from '@/components/quiz-types/multiple-answer';
 import MultipleChoiceQuestion from '@/components/quiz-types/multiple-choice';
+import TrueOrFalseQuestion from '@/components/quiz-types/true-false';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem, QuizResponse } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
@@ -24,7 +25,7 @@ const Show = () => {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Quiz Attempt" />
 
-            <main className="mx-auto flex h-full max-w-screen-lg flex-col gap-6">
+            <main className="mx-auto flex h-full max-w-screen-lg flex-col gap-6 p-4">
                 {quiz.questions?.map((question, index) => {
                     // Multiple choice questions
                     if (question.type === 'Multiple Choice') {
@@ -43,6 +44,19 @@ const Show = () => {
                     if (question.type === 'Multiple Answers') {
                         return (
                             <MultipleAnswerQuestion
+                                key={question.id}
+                                id={question.id}
+                                number={index + 1}
+                                question={question.question_text}
+                                options={question.options}
+                            />
+                        );
+                    }
+
+                    // True or false questions
+                    if (question.type === 'True/False') {
+                        return (
+                            <TrueOrFalseQuestion
                                 key={question.id}
                                 id={question.id}
                                 number={index + 1}

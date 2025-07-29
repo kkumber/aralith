@@ -5,11 +5,15 @@ const MultipleAnswerQuestion = ({ id, question, options, number }: QuestionProp)
     return (
         <div className="flex flex-col gap-1">
             <p>
-                {number}. {question}
+                <span className="text-sm">{number}.</span> {question}
             </p>
             {options.map((option, index) => (
                 <div key={index} className="ml-8 flex items-center gap-2">
-                    <Checkbox id={option} value={option} />
+                    <Checkbox
+                        id={option}
+                        value={option}
+                        className="data-[state=checked]:bg-primary-green data-[state=checked]:border-primary-green"
+                    />
                     <Label htmlFor={option} className="text-base">
                         {option}
                     </Label>
