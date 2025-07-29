@@ -1,24 +1,20 @@
+import { QuestionProp } from '@/types';
 import { Label } from '../ui/label';
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
 
-interface Question {
-    id: number;
-    question: string;
-    options: string[];
-    number: number;
-}
-
-const MultipleChoiceQuestion = ({ id, question, options, number }: Question) => {
+const MultipleChoiceQuestion = ({ id, question, options, number }: QuestionProp) => {
     return (
-        <div>
+        <div className="flex flex-col gap-1">
             <p>
                 {number}. {question}
             </p>
             <RadioGroup>
                 {options.map((option, index) => (
-                    <div key={index} className="ml-4 flex items-center gap-2">
+                    <div key={index} className="ml-8 flex items-center gap-2">
                         <RadioGroupItem id={option} value={option} />
-                        <Label htmlFor={id.toString()}>{option}</Label>
+                        <Label htmlFor={id.toString()} className="text-base">
+                            {option}
+                        </Label>
                     </div>
                 ))}
             </RadioGroup>

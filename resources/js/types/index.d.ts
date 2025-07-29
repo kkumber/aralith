@@ -111,3 +111,10 @@ export interface QuestionResponse {
     quizzes_id: number;
     type: QuestionType
 }
+
+export interface QuestionProp {
+    id: number;
+    question: string;
+    options: string[];
+    number: number;
+}
