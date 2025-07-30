@@ -88,12 +88,12 @@ class LessonsController extends Controller
 
     public function bulkDestroy(Request $request, LessonQuizService $lessonQuizService)
     {
-        $validated = $request->validate([
-            'lesson_ids' => ['required', 'array'],
-            'lesson_ids.*' => ['exists:lessons,id']
-        ]);
-
         try {
+            $validated = $request->validate([
+                'lesson_ids' => ['required', 'array'],
+                'lesson_ids.*' => ['exists:lessons,id']
+            ]);
+
             $deleted = $lessonQuizService->bulkDestroyLessonQuiz(auth()->user(), $validated['lesson_ids']);
             return back();
         } catch (AuthorizationException $e) {

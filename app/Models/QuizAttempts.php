@@ -11,7 +11,8 @@ class QuizAttempts extends Model
     //
 
     protected $fillable = [
-        'quiz_id',
+        'quizzes_id',
+        'user_id',
         'score'
     ];
 

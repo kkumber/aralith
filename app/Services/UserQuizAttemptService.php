@@ -2,6 +2,10 @@
 
 namespace App\Services;
 
+use App\Models\QuizAttempts;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
+
 class UserQuizAttemptService
 {
     public function checkAnswers(array $answers, array $correct_answers)
@@ -19,7 +23,6 @@ class UserQuizAttemptService
                 $is_correct[$key] = false;
             }
         }
-
         return $is_correct;
     }
 
@@ -33,5 +36,31 @@ class UserQuizAttemptService
             }
         }
         return $score;
+    }
+
+    public function saveUserAnswersAndAttempt(int $quizId, int $score, array $isCorrectData, User $user, array $questionsData, array $answersData)
+    {
+        return DB::transaction(function () use ($quizId, $score, $isCorrectData, $user, $questionsData, $answersData) {
+            $userId = $user->id;
+            $quizAttempt = QuizAttempts::create([
+                'user_id' => $userId,
+                'quizzes_id' => $quizId,
+                'score' => $score,
+            ]);
+
+            $userAnswers = [];
+            foreach ($questionsData as $key => $value) {
+                $userAnswers[] = $quizAttempt->userAnswers()->create([
+                    'questions_id' => $key,
+                    'answer_text' => array_key_exists($key, $answersData) ? implode(', ', $answersData[$key]) : 'N/A',
+                    'is_correct' => $isCorrectData[$key] ?? false,
+                ]);
+            };
+
+            return [
+                'quizAttempt' => $quizAttempt,
+                'userAnswers' => $userAnswers
+            ];
+        });
     }
 }

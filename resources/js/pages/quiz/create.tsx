@@ -74,7 +74,7 @@ const Create = () => {
 
             {/* Dialog Alert if no lesson is found */}
             <Dialog open={showModal} onOpenChange={setShowModal}>
-                <DialogContent>
+                <DialogContent onInteractOutside={(e) => e.preventDefault()} onEscapeKeyDown={(e) => e.preventDefault()} hideCloseButton={true}>
                     <DialogHeader>
                         <DialogTitle>No Lesson found</DialogTitle>
                     </DialogHeader>

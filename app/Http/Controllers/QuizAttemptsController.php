@@ -14,6 +14,12 @@ class QuizAttemptsController extends Controller
             'answers' => ['required', 'array', 'min:1'],
         ]);
 
+        $user = auth()->user();
+
+        if (!$user) {
+            return back()->with('error', 'Unauthorized');
+        }
+
         $answers = $request->input('answers');
 
         $questions = $quiz->questions()->select('id', 'correct_answer')->get();
@@ -26,10 +32,9 @@ class QuizAttemptsController extends Controller
         $is_correct = $attempt->checkAnswers($answers, $questionsArray);
 
         $score = $attempt->countScore($is_correct);
-        dd($answers, $questionsArray, $is_correct, $score);
 
+        $result = $attempt->saveUserAnswersAndAttempt($quiz->id, $score, $is_correct, $user, $questionsArray, $answers);
 
-        // set score by counting true correct answers.
-        $user = auth()->user();
+        dd($result);
     }
 }
