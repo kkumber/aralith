@@ -108,6 +108,7 @@ class LessonsController extends Controller
         $searchedItem = $request->input('search');
         $userId = auth()->user()->id;
 
+        // Select * from Lessons WHERE user_id = $userId AND title LIKE '%searchedItem%'
         $lessons = Lessons::where('user_id', $userId)
             ->where('title', 'like', '%' . $searchedItem . '%')
             ->latest()

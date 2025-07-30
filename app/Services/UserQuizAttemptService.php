@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
-class QuizAnswerCheckerService
+class UserQuizAttemptService
 {
-    public function checkAnswers($answers, $correct_answers)
+    public function checkAnswers(array $answers, array $correct_answers)
     {
         $is_correct = [];
         // Loop through both answers and questions array and compare their values via key
@@ -21,5 +21,17 @@ class QuizAnswerCheckerService
         }
 
         return $is_correct;
+    }
+
+    public function countScore(array $is_correct)
+    {
+        $score = 0;
+        // Increment score if value is true
+        foreach ($is_correct as $value) {
+            if ($value) {
+                $score++;
+            }
+        }
+        return $score;
     }
 }
