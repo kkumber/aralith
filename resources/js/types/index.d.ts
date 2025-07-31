@@ -105,8 +105,10 @@ export interface QuizResponse {
 }
 
 export interface QuestionResponse {
+    explanation: string;
     question_text: string;
     options: string[];
+    correct_answer: string | string[];
     id: number;
     quizzes_id: number;
     type: QuestionType
@@ -139,5 +141,5 @@ export interface UserAnswersResponse {
     is_correct: boolean;
     created_at: string;
     updated_at: string;
-    questions?: QuestionProp[]
+    questions?: QuestionResponse
 }

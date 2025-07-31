@@ -8,7 +8,7 @@ interface Props {
 
 const ResultSummary = ({ score, totalNumOfQuestions }: Props) => {
     return (
-        <section className="bg-sidebar flex gap-8 rounded-md p-4">
+        <section className="bg-sidebar flex items-center justify-center gap-8 rounded-md border p-4 shadow-md">
             <div className="flex flex-col space-y-4">
                 <h1>Quiz Results</h1>
                 <div className="flex items-center gap-2">
