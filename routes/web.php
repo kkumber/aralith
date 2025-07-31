@@ -28,6 +28,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // User Attempt Route
     Route::post('/quiz/{quiz}/attempt', [QuizAttemptsController::class, 'store'])->name('quizAttempt.store');
+    Route::get('/quiz/{quiz}/attempt/result', [QuizAttemptsController::class, 'show'])->name('quizAttempt.show');
 
     // Lesson History Routes
     Route::post('/lessons/bulk-destroy', [LessonsController::class, 'bulkDestroy'])->name('lesson.bulkDestroy');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Lessons;
 use App\Http\Requests\StoreLessonsRequest;
 use App\Http\Requests\UpdateLessonsRequest;
+use App\Models\QuizAttempts;
 use App\Services\LessonQuizService;
 use Exception;
 use Illuminate\Http\Request;
@@ -34,42 +35,29 @@ class LessonsController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreLessonsRequest $request) {}
-
-    /**
      * Display the specified resource.
      */
     public function show(Lessons $lesson)
     {
+        $user = auth()->user();
+
+        if (!$user) {
+            return back()->with('error', 'Unauthorized');
+        }
+
+        if ($user->id !== $lesson->user_id) {
+            return back()->with('error', 'Unauthorized access to this lesson');
+        }
+
         $lesson->load('flashcard');
-        return Inertia::render('lesson', ['lesson' => $lesson]);
+        $quizAttempts = QuizAttempts::whereHas('quizzes', function ($query) use ($lesson) {
+            $query->where('lessons_id', $lesson->id);
+        })->where('user_id', $user->id)->get();
+        $quizAttempts->load('userAnswers');
+
+        return Inertia::render('lesson', ['lesson' => $lesson, 'quizAttempts' => $quizAttempts]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Lessons $lesson)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateLessonsRequest $request, Lessons $lesson)
-    {
-        //
-    }
 
     /**
      * Remove the specified resource from storage.

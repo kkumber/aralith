@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Quizzes;
 use App\Services\UserQuizAttemptService;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class QuizAttemptsController extends Controller
 {
@@ -36,5 +37,11 @@ class QuizAttemptsController extends Controller
         $result = $attempt->saveUserAnswersAndAttempt($quiz->id, $score, $is_correct, $user, $questionsArray, $answers);
 
         dd($result);
+    }
+
+    public function show(Quizzes $quiz)
+    {
+
+        return Inertia::render('quiz/attempts/show');
     }
 }

@@ -16,6 +16,8 @@ const Lesson = () => {
         },
     ];
 
+    console.log(usePage());
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={lesson.title} />
