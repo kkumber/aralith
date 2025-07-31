@@ -42,6 +42,7 @@ class QuizAttemptsController extends Controller
 
     public function show(Quizzes $quiz, QuizAttempts $quizAttempt)
     {
+
         $userAnswers = $quizAttempt->userAnswers()->select([
             'id',
             'quiz_attempts_id',
@@ -49,6 +50,11 @@ class QuizAttemptsController extends Controller
             'answer_text',
             'is_correct',
         ])->with('questions:id,quizzes_id,type,question_text,explanation')->get();
-        return Inertia::render('quiz/attempts/show', ['userAnswers' => $userAnswers]);
+
+        return Inertia::render('quiz/attempts/show', [
+            'userAnswers' => $userAnswers,
+            'quiz' => $quiz->only(['id', 'title', 'lessons_id']),
+            'quizAttempt' => $quizAttempt->only(['id', 'score'])
+        ]);
     }
 }

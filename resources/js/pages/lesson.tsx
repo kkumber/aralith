@@ -1,9 +1,9 @@
-import QuizAttemptsList from '@/components/quiz/quiz-attempts';
 import QuizCallToAction from '@/components/quiz/quiz-call-to-action';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Flashcard from '@/components/ui/flashcard';
 import AppLayout from '@/layouts/app-layout';
 import { isScorePassed } from '@/lib/utils';
+import QuizAttemptsList from '@/pages/quiz/attempts/quiz-attempts';
 import { BreadcrumbItem, LessonResponse, QuizAttemptsResponse } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 import { BookText, Brain, ClipboardList } from 'lucide-react';
@@ -17,7 +17,6 @@ const Lesson = () => {
             href: route('lesson.index'),
         },
     ];
-    console.log(quizAttempts);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -56,7 +55,7 @@ const Lesson = () => {
 
                     <Card className="bg-primary-green/5 rounded-sm shadow-md">
                         <CardContent>
-                            {quizAttempts &&
+                            {quizAttempts.length > 0 ? (
                                 quizAttempts.map((quizAttempt, index) => (
                                     <QuizAttemptsList
                                         key={quizAttempt.id}
@@ -68,7 +67,10 @@ const Lesson = () => {
                                         totalNumOfQuestions={quizAttempt.user_answers.length}
                                         date={quizAttempt.created_at}
                                     />
-                                ))}
+                                ))
+                            ) : (
+                                <p>No attempts yet.</p>
+                            )}
                         </CardContent>
                     </Card>
                 </section>

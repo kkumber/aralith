@@ -1,7 +1,7 @@
 import { convertDateToHumanReadable } from '@/lib/utils';
 import { Link } from '@inertiajs/react';
 import { Calendar, CheckCircle, ListCheck, XCircle } from 'lucide-react';
-import { Button } from '../ui/button';
+import { Button } from '../../../components/ui/button';
 
 interface Props {
     quizId: number;

@@ -120,3 +120,7 @@ export function isScorePassed(score: number, totalNumOfQuestions: number) {
 
     return score >= passingScore;
 }
+
+export function scoreToPercentage(num: number, total: number) {
+    return Math.round((num / total) * 100);
+}

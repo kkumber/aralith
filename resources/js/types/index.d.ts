@@ -139,4 +139,5 @@ export interface UserAnswersResponse {
     is_correct: boolean;
     created_at: string;
     updated_at: string;
+    questions?: QuestionProp[]
 }
