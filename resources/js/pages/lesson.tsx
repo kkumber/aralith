@@ -1,13 +1,15 @@
+import QuizAttemptsList from '@/components/quiz/quiz-attempts';
 import QuizCallToAction from '@/components/quiz/quiz-call-to-action';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Flashcard from '@/components/ui/flashcard';
 import AppLayout from '@/layouts/app-layout';
-import { BreadcrumbItem, LessonResponse } from '@/types';
+import { isScorePassed } from '@/lib/utils';
+import { BreadcrumbItem, LessonResponse, QuizAttemptsResponse } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
-import { BookText, Brain } from 'lucide-react';
+import { BookText, Brain, ClipboardList } from 'lucide-react';
 
 const Lesson = () => {
-    const { lesson } = usePage<{ lesson: LessonResponse }>().props;
+    const { lesson, quizAttempts } = usePage<{ lesson: LessonResponse; quizAttempts: QuizAttemptsResponse[] }>().props;
 
     const breadcrumbs: BreadcrumbItem[] = [
         {
@@ -16,7 +18,7 @@ const Lesson = () => {
         },
     ];
 
-    console.log(usePage());
+    console.log(quizAttempts);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -45,6 +47,30 @@ const Lesson = () => {
                 <div className="flex flex-wrap items-center justify-center gap-2 md:justify-end">
                     <QuizCallToAction lessonId={lesson.id} />
                 </div>
+
+                {/* Quiz Attempts */}
+                <section className="space-y-4">
+                    <div className="flex items-center gap-2">
+                        <ClipboardList className="text-primary-green" size={40} />
+                        <h2>Quiz Attempts</h2>
+                    </div>
+
+                    <Card className="bg-primary-green/5 rounded-sm shadow-md">
+                        <CardContent>
+                            {quizAttempts &&
+                                quizAttempts.map((quizAttempt, index) => (
+                                    <QuizAttemptsList
+                                        key={quizAttempt.id}
+                                        quizAttemptNumber={index + 1}
+                                        passed={isScorePassed(quizAttempt.score, quizAttempt.user_answers.length)}
+                                        score={quizAttempt.score}
+                                        totalNumOfQuestions={quizAttempt.user_answers.length}
+                                        date={quizAttempt.created_at}
+                                    />
+                                ))}
+                        </CardContent>
+                    </Card>
+                </section>
 
                 {/* Flashcards */}
                 <section className="space-y-4">

@@ -119,3 +119,24 @@ export interface QuestionProp {
     number: number;
     onChange?: (id: number, answer: string | string[]) => void;
 }
+
+export interface QuizAttemptsResponse {
+    id: number;
+    user_id: number;
+    quizzes_id: number;
+    score: number;
+    user_answers: UserAnswersResponse[];
+    created_at: string;
+    updated_at: string;
+}
+
+export interface UserAnswersResponse {
+    id: number;
+    user_id: number;
+    quiz_attempts_id: number;
+    questions_id: number;
+    answer_text: string;
+    is_correct: boolean;
+    created_at: string;
+    updated_at: string;
+}

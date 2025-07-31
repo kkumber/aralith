@@ -108,3 +108,15 @@ export function getCurrentTimeCustom() {
     const now = dayjs();
     return `${now.format('dddd, MMMM DD, YYYY')} at ${now.format('h:mm A')}`;
 };
+
+export function convertDateToHumanReadable(date: string) {
+    return dayjs(date).format('MMMM D, YYYY h:mm A');
+}
+
+export function isScorePassed(score: number, totalNumOfQuestions: number) {
+    if (totalNumOfQuestions <= 0) return false;
+
+    const passingScore = totalNumOfQuestions * 0.75
+
+    return score >= passingScore;
+}
