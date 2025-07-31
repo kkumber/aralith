@@ -1,8 +1,11 @@
 import { convertDateToHumanReadable } from '@/lib/utils';
+import { Link } from '@inertiajs/react';
 import { Calendar, CheckCircle, ListCheck, XCircle } from 'lucide-react';
 import { Button } from '../ui/button';
 
 interface Props {
+    quizId: number;
+    quizAttemptId: number;
     quizAttemptNumber: number;
     passed: boolean;
     score: number;
@@ -10,7 +13,7 @@ interface Props {
     date: string;
 }
 
-const QuizAttemptsList = ({ quizAttemptNumber, passed, score, totalNumOfQuestions, date }: Props) => {
+const QuizAttemptsList = ({ quizId, quizAttemptId, quizAttemptNumber, passed, score, totalNumOfQuestions, date }: Props) => {
     return (
         <div className="border-muted flex flex-col items-start justify-between gap-2 border p-4 md:flex-row md:items-center">
             {/* Header */}
@@ -38,8 +41,8 @@ const QuizAttemptsList = ({ quizAttemptNumber, passed, score, totalNumOfQuestion
 
             {/* Actions */}
             <div className="">
-                <Button variant={'secondary'} size={'sm'}>
-                    Review
+                <Button variant={'secondary'} size={'sm'} asChild>
+                    <Link href={route('quizAttempt.show', { quiz: quizId, quizAttempt: quizAttemptId })}>Review</Link>
                 </Button>
             </div>
         </div>

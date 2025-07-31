@@ -17,7 +17,6 @@ const Lesson = () => {
             href: route('lesson.index'),
         },
     ];
-
     console.log(quizAttempts);
 
     return (
@@ -61,6 +60,8 @@ const Lesson = () => {
                                 quizAttempts.map((quizAttempt, index) => (
                                     <QuizAttemptsList
                                         key={quizAttempt.id}
+                                        quizId={quizAttempt.quizzes_id}
+                                        quizAttemptId={quizAttempt.id}
                                         quizAttemptNumber={index + 1}
                                         passed={isScorePassed(quizAttempt.score, quizAttempt.user_answers.length)}
                                         score={quizAttempt.score}
