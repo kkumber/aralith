@@ -41,8 +41,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('lesson-quiz', LessonQuizController::class);
 
     // Google Form Routes
-    Route::post('/quizzes/{quiz}/export-google-forms', [QuizzesController::class, 'exportQuizToGoogleForms']);
-    Route::get('/quizzes/{quiz}/google-form-responses', [QuizzesController::class, 'getFormResponses']);
+    Route::get('/quizzes/{lesson}/export-google-forms', [QuizzesController::class, 'exportQuizToGoogleForms'])->name('quiz.exportGoogleFormsInstructions');
+    Route::get('/quizzes/{lesson}/google-form-script-download', [QuizzesController::class, 'getFormResponses']);
+    Route::get('/quizzes/{lesson}/google-form-script-preview', [QuizzesController::class, 'previewGoogleScript']);
 });
 
 

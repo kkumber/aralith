@@ -15,9 +15,11 @@ const QuizCallToAction = ({ lessonId }: Props) => {
                     Take Quiz
                 </Link>
             </Button>
-            <Button variant={'outline'}>
-                <Share2 />
-                Export to Google Form
+            <Button variant={'outline'} asChild>
+                <Link href={route('quiz.exportGoogleFormsInstructions', { lesson: lessonId })}>
+                    <Share2 />
+                    Export to Google Form
+                </Link>
             </Button>
             <Button variant={'outline'}>
                 <Download />

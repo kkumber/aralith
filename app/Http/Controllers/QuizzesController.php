@@ -40,114 +40,76 @@ class QuizzesController extends Controller
     /**
      * Export quiz to Google Forms
      * 
-     * @param Quizzes $quiz
+     * @param Lessons $lesson
      * @param GoogleFormService $googleFormService
      * @return \Illuminate\Http\JsonResponse
      */
-    public function exportQuizToGoogleForms(Quizzes $quiz, GoogleFormService $googleFormService)
+    public function exportQuizToGoogleForms(Lessons $lesson, GoogleFormService $googleFormService)
     {
         try {
-            // Authorization checks
-            if (!auth()->user()) {
-                return response()->json(['error' => 'Unauthorized'], 401);
-            }
+            // Generate the Apps Script code
+            $scriptData = $googleFormService->generateAppsScript($lesson);
 
-            // Check quiz ownership
-            if ($quiz->user_id !== auth()->id()) {
-                return response()->json(['error' => 'You do not have permission to export this quiz'], 403);
-            }
-
-            // Check if quiz has questions
-            if ($quiz->questions->isEmpty()) {
-                return response()->json(['error' => 'Cannot export quiz without questions'], 400);
-            }
-
-            // Export to Google Forms
-            $result = $googleFormService->sendQuizToGoogleForm($quiz);
-
-            // Update quiz config with Google Form details
-            $config = $quiz->config ?? [];
-            $config['google_form_id'] = $result['formId'] ?? null;
-            $config['google_form_url'] = $result['formUrl'] ?? null;
-            $config['google_form_edit_url'] = $result['editUrl'] ?? null;
-            $config['exported_at'] = now()->toISOString();
-
-            $quiz->update(['config' => $config]);
-
-            return response()->json([
-                'success' => true,
-                'data' => [
-                    'message' => 'Quiz successfully exported to Google Forms',
-                    'form_id' => $result['formId'] ?? null,
-                    'form_url' => $result['formUrl'] ?? null,
-                    'edit_url' => $result['editUrl'] ?? null,
+            // Return the script and instructions to the frontend
+            return Inertia::render('quiz/google-form-export-instructions', [
+                'lesson' => [
+                    'id' => $lesson->id,
+                    'title' => $lesson->title,
+                    'created_at' => $lesson->created_at->format('M d, Y')
+                ],
+                'script' => $scriptData['script'],
+                'instructions' => $scriptData['instructions'],
+                'metadata' => [
+                    'lesson_title' => $scriptData['lesson_title'],
+                    'quiz_count' => $scriptData['quiz_count'],
+                    'total_questions' => $scriptData['total_questions'],
+                    'generated_at' => now()->format('M d, Y \a\t g:i A')
                 ]
             ]);
-        } catch (Exception $e) {
-            Log::error('Quiz export error', [
-                'quiz_id' => $quiz->id,
-                'user_id' => auth()->id(),
-                'error' => $e->getMessage()
-            ]);
-
-            return response()->json([
-                'success' => false,
-                'error' => 'Failed to export quiz: ' . $e->getMessage()
-            ], 500);
+        } catch (\Exception $e) {
+            return back()->with('error', 'Failed to generate Google Forms script: ' . $e->getMessage());
         }
     }
 
     /**
-     * Get responses from Google Forms
-     * 
-     * @param Quizzes $quiz
-     * @param GoogleFormService $googleFormService
-     * @return \Illuminate\Http\JsonResponse
+     * Download the Apps Script as a .gs file
      */
-    public function getFormResponses(Quizzes $quiz, GoogleFormService $googleFormService)
+    public function downloadGoogleScript(Lessons $lesson, GoogleFormService $googleFormService)
     {
         try {
-            $config = $quiz->config ?? [];
-            $formId = $config['google_form_id'] ?? null;
+            $scriptData = $googleFormService->generateAppsScript($lesson);
 
-            if (!$formId) {
-                return response()->json(['error' => 'Quiz has not been exported to Google Forms'], 400);
-            }
+            $filename = 'Quiz_' . str_replace(' ', '_', $lesson->title) . '_GoogleScript.gs';
 
-            $responses = $googleFormService->getFormResponses($formId);
+            return response($scriptData['script'])
+                ->header('Content-Type', 'application/javascript')
+                ->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Failed to download Google Forms script: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Get script preview via AJAX
+     */
+    public function previewGoogleScript(Lessons $lesson, GoogleFormService $googleFormService)
+    {
+        try {
+            $scriptData = $googleFormService->generateAppsScript($lesson);
 
             return response()->json([
                 'success' => true,
-                'data' => $responses
+                'script' => $scriptData['script'],
+                'metadata' => [
+                    'quiz_count' => $scriptData['quiz_count'],
+                    'total_questions' => $scriptData['total_questions']
+                ]
             ]);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'error' => $e->getMessage()
-            ], 500);
+                'message' => $e->getMessage()
+            ], 422);
         }
     }
 }
-
-/* 
-// Export quiz (POST)
-fetch('/quizzes/123/export-google-forms', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': document.meta['csrf-token']
-    }
-})
-.then(response => response.json())
-.then(data => {
-    if (data.success) {
-        console.log('Form URL:', data.data.form_url);
-    }
-});
-
-// Get responses (GET)
-fetch('/quizzes/123/google-form-responses')
-.then(response => response.json())
-.then(data => console.log(data));
-
-*/
