@@ -22,6 +22,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Standalone Routes
     Route::get('/', [LessonsController::class, 'home'])->name('main');
 
+
     // Quiz Page Route
     Route::get('/lessons/{lesson}/quiz', [QuizzesController::class, 'show'])
         ->name('quiz.show');
@@ -38,6 +39,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('lesson', LessonsController::class);
     Route::resource('quiz', QuizzesController::class)->except('show');
     Route::resource('lesson-quiz', LessonQuizController::class);
+
+    // Google Form Routes
+    Route::post('/quizzes/{quiz}/export-google-forms', [QuizzesController::class, 'exportQuizToGoogleForms']);
+    Route::get('/quizzes/{quiz}/google-form-responses', [QuizzesController::class, 'getFormResponses']);
 });
 
 

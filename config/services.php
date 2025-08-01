@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'google_apps_script' => [
+        'url' => env('GOOGLE_APPS_SCRIPT_URL'),
+        'timeout' => env('GOOGLE_APPS_SCRIPT_TIMEOUT', 60),
+    ],
+
 ];
