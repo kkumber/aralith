@@ -37,7 +37,10 @@ class QuizAttemptsController extends Controller
 
         $result = $attempt->saveUserAnswersAndAttempt($quiz->id, $score, $is_correct, $user, $questionsArray, $answers);
 
-        return Inertia::render('quiz/attempts/show', ['userAnswers' => $result]);
+        return redirect()->route('quizAttempt.show', [
+            'quiz' => $quiz->id,
+            'quizAttempt' => $result['quizAttempt']->id
+        ]);
     }
 
     public function show(Quizzes $quiz, QuizAttempts $quizAttempt)
@@ -49,7 +52,7 @@ class QuizAttemptsController extends Controller
             'questions_id',
             'answer_text',
             'is_correct',
-        ])->with('questions:id,quizzes_id,type,question_text,explanation')->get();
+        ])->with('questions:id,quizzes_id,type,question_text,explanation,correct_answer')->get();
 
         return Inertia::render('quiz/attempts/show', [
             'userAnswers' => $userAnswers,

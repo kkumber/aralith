@@ -7,9 +7,10 @@ interface Props {
     userAnswer: string;
     explanation: string | undefined;
     isCorrect: boolean;
+    correctAnswer: string | string[] | undefined;
 }
 
-const QuestionBreakdown = ({ questionNumber, question, userAnswer, explanation, isCorrect }: Props) => {
+const QuestionBreakdown = ({ questionNumber, question, userAnswer, explanation, isCorrect, correctAnswer }: Props) => {
     return (
         <Card>
             <CardHeader>
@@ -29,6 +30,12 @@ const QuestionBreakdown = ({ questionNumber, question, userAnswer, explanation, 
                     <div className="">
                         <small>
                             <span className="text-primary-green">User answer: </span> {userAnswer ? userAnswer : 'N/A'}
+                        </small>
+                    </div>
+                    <div className="">
+                        <small>
+                            <span className="text-primary-green">Correct answer: </span>{' '}
+                            {Array.isArray(correctAnswer) ? correctAnswer?.join(', ') : correctAnswer}
                         </small>
                     </div>
                     <div className="">

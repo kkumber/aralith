@@ -52,7 +52,9 @@ class UserQuizAttemptService
             foreach ($questionsData as $key => $value) {
                 $userAnswers[] = $quizAttempt->userAnswers()->create([
                     'questions_id' => $key,
-                    'answer_text' => array_key_exists($key, $answersData) ? implode(', ', $answersData[$key]) : 'N/A',
+                    'answer_text' => isset($answersData[$key])
+                        ? (is_array($answersData[$key]) ? implode(', ', $answersData[$key]) : $answersData[$key])
+                        : 'N/A',
                     'is_correct' => $isCorrectData[$key] ?? false,
                 ]);
             };

@@ -47,6 +47,7 @@ const QuizAttemptShow = () => {
                                 userAnswer={userAnswer.answer_text}
                                 explanation={userAnswer.questions?.explanation}
                                 isCorrect={userAnswer.is_correct}
+                                correctAnswer={userAnswer.questions?.correct_answer}
                             />
                         ))}
                     </div>

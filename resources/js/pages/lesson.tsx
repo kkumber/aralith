@@ -54,7 +54,7 @@ const Lesson = () => {
                     </div>
 
                     <Card className="bg-primary-green/5 rounded-sm shadow-md">
-                        <CardContent>
+                        <CardContent className="space-y-4">
                             {quizAttempts.length > 0 ? (
                                 quizAttempts.map((quizAttempt, index) => (
                                     <QuizAttemptsList
