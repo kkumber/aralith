@@ -49,7 +49,7 @@ class GoogleFormService
  * 2. Create a new project
  * 3. Replace the default code with this script
  * 4. Run the 'createQuizForms' function
- * 5. Check your Google Drive for the created forms
+ * 5. Check your Google Drive for the created forms or copy and paste the links
  */
 
 function createQuizForms() {
@@ -454,7 +454,7 @@ JAVASCRIPT;
         'Releases grades immediately after submission'
       ],
       'notes' => [
-        'Fill-in-the-blank and identification questions support auto-grading',
+        'Fill-in-the-blank and identification questions DOES NOT support auto-grading',
         'Multiple choice and true/false questions are auto-graded',
         'Each form is linked to a response spreadsheet',
         'You can share the form URLs with students',

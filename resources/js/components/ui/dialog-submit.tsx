@@ -43,7 +43,7 @@ const DialogSubmit = ({ submitFn, cancelFn, config }: DialogSubmitProps<number>)
 
                     {/* Warning text. Optional */}
                     {config.showWarningText && (
-                        <small className="mt-4 inline-block text-red-400 font-semibold">
+                        <small className="mt-4 inline-block text-red-600 dark:text-red-400 font-semibold">
                             {config.warningTextContent}
                         </small>
                     )}

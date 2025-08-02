@@ -84,7 +84,7 @@ const Main = () => {
                                 titleContent: 'Submit Lesson',
                                 descriptionContent: 'Please make sure that the lesson is easily understandable for accurate quiz generation.',
                                 showWarningText: wordCount > wordCountLimit,
-                                warningTextContent: `The lesson exceeds the word limit. It will be automatically truncated to be below ${wordCountLimit} words.`,
+                                warningTextContent: `The lesson exceeded the word limit. It will be automatically truncated to be below ${wordCountLimit} words.`,
                                 closeBtn: 'Close',
                                 submitBtn: 'Confirm',
                                 submitBtnVariant: 'default',

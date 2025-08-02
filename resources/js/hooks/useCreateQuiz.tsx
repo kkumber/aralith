@@ -20,6 +20,7 @@ const useCreateQuiz = () => {
         difficulty: '',
         randomOrder: '',
     });
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     /*
      * Submit Config to generate quiz
@@ -45,12 +46,16 @@ const useCreateQuiz = () => {
             },
         };
 
+        setIsLoading(true);
         router.post(route('lesson-quiz.store'), payload, {
             onSuccess: () => {
                 removeFromSessionStorage('lesson');
             },
             onError: (errors) => {
                 toast.error(errors?.message || errors?.general || 'Failed to generate quiz. Please try again.');
+            },
+            onFinish: () => {
+                setIsLoading(false);
             },
         });
     };
@@ -76,7 +81,7 @@ const useCreateQuiz = () => {
         return Object.keys(errors).length === 0;
     };
 
-    return { saveLessonQuiz, configErrors };
+    return { saveLessonQuiz, configErrors, isLoading };
 };
 
 export default useCreateQuiz;

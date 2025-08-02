@@ -32,8 +32,9 @@ const LessonInput = ({ lessonContent, handleSetLessonContent, wordCount }: Lesso
                             We restricted the minimum and maximum amount of words to ensure accurate and meaningful quizzes
                         </TooltipContent>
                     </Tooltip>
-                    <small className={`text-end font-semibold ${wordCount > wordCountLimit ? 'text-red-400' : ''}`}>
-                        Word Limit: <b>{wordCount}</b>/{wordCountLimit}
+                    <small className={`text-end font-semibold ${wordCount > wordCountLimit ? 'text-red-600 dark:text-red-400' : ''}`}>
+                        Word Limit: <b className={`${wordCount > wordCountLimit ? 'text-red-600 dark:text-red-400' : ''}`}>{wordCount}</b>/
+                        {wordCountLimit}
                     </small>
                 </div>
                 <small className="text-end">Minimum words: {wordCountMin}</small>
