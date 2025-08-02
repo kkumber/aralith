@@ -66,7 +66,7 @@ const Create = () => {
                         <hr />
                         <QuizTitle lesson={lesson} handleSetTitle={handlers.handleSetTitle} configErrors={configErrors} />
                         <Button className="w-full" onClick={() => saveLessonQuiz(values, lesson)} disabled={isLoading}>
-                            Generate Quiz
+                            {isLoading ? 'Processing...' : 'Generate Quiz'}
                         </Button>
                     </CardContent>
                 </Card>
