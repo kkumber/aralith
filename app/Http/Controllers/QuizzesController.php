@@ -51,7 +51,7 @@ class QuizzesController extends Controller
             $scriptData = $googleFormService->generateAppsScript($lesson);
 
             // Return the script and instructions to the frontend
-            return Inertia::render('quiz/google-form-export-instructions', [
+            return Inertia::render('google-forms/google-form-export-instructions', [
                 'lesson' => [
                     'id' => $lesson->id,
                     'title' => $lesson->title,
