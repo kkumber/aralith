@@ -13,8 +13,12 @@ const Lesson = () => {
 
     const breadcrumbs: BreadcrumbItem[] = [
         {
-            title: lesson.title,
+            title: 'My Lessons',
             href: route('lesson.index'),
+        },
+        {
+            title: lesson.title,
+            href: route('lesson.show', { lesson: lesson }),
         },
     ];
 

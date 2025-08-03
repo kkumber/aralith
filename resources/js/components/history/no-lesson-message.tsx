@@ -8,11 +8,11 @@ const NoLessonMessage = () => {
             <div className="flex flex-col items-center justify-center gap-4 text-center">
                 <FilePlus2 size={80} className="text-text-primary dark:text-dark-text-primary" />
                 <b>Ready for your first quiz?</b>
-                <p>Upload a file and create a new quiz. Uploaded lessons will show up here.</p>
+                <p>Upload a lesson and create a new quiz. Uploaded lessons will show up here.</p>
                 <Button variant={'outline'} asChild>
                     <Link href={route('main')}>
                         <PlusIcon />
-                        New Quiz
+                        New Lesson
                     </Link>
                 </Button>
             </div>

@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, History, Home } from 'lucide-react';
+import { Book, BookOpen, Folder, Home } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -14,9 +14,9 @@ const mainNavItems: NavItem[] = [
         icon: Home,
     },
     {
-        title: 'History',
+        title: 'My Lessons',
         href: route('lesson.index'),
-        icon: History,
+        icon: Book,
     },
 ];
 

@@ -5,16 +5,34 @@ import { useState } from 'react';
 
 import AlertBox from '@/components/ui/alert-box';
 import StepCard from '@/components/ui/step-card';
+import { BreadcrumbItem, LessonResponse } from '@/types';
 import { alternativeSteps, getMainSteps } from './data/stepData';
 
 const GoogleFormExportInstructions = () => {
-    const { script } = usePage<{ script: string }>().props;
+    const { script, lesson } = usePage<{ script: string; lesson: LessonResponse }>().props;
     const [showAlternative, setShowAlternative] = useState(false);
+
+    console.log(usePage().props);
 
     const steps = getMainSteps(script);
 
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: 'My Lessons',
+            href: route('lesson.index'),
+        },
+        {
+            title: lesson.title,
+            href: route('lesson.show', { lesson: lesson }),
+        },
+        {
+            title: 'Google Forms Export',
+            href: '#',
+        },
+    ];
+
     return (
-        <AppLayout>
+        <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Google Forms Setup Instructions" />
             <main className="mx-auto max-w-4xl space-y-8 p-6">
                 {/* Header */}
@@ -33,7 +51,7 @@ const GoogleFormExportInstructions = () => {
 
                 {/* Main Instructions */}
                 <div className="space-y-6">
-                    <h2 className="text-center">Main Instructions</h2>
+                    <h2 className="text-leader">Main Instructions</h2>
                     {steps.map((step, index) => (
                         <StepCard key={index} step={step} index={index} />
                     ))}
@@ -52,7 +70,7 @@ const GoogleFormExportInstructions = () => {
                 {/* Alternative Method */}
                 {showAlternative && (
                     <div className="space-y-6">
-                        <div className="text-center">
+                        <div className="text-leading">
                             <h2>Alternative Method</h2>
                             <p>If you're more comfortable starting from Google Forms interface, you can use this approach:</p>
                         </div>

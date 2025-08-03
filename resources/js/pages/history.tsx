@@ -11,7 +11,7 @@ import { PlusIcon } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'History',
+        title: 'My Lessons',
         href: route('lesson.index'),
     },
 ];
@@ -40,7 +40,7 @@ const History = () => {
                     <Button className="flex items-center justify-center" asChild>
                         <Link href={route('main')}>
                             <PlusIcon />
-                            New Quiz
+                            New Lesson
                         </Link>
                     </Button>
                 </div>
