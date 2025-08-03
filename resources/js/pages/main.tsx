@@ -59,17 +59,18 @@ const Main = () => {
             <div className="mx-auto flex h-full max-w-screen-lg flex-1 flex-col gap-4 rounded-xl p-4">
                 {user && (
                     <div className="mb-8">
-                        <h2>
+                        <h1>
                             Welcome back, <span className="text-primary-green">{user.name}!</span>
-                        </h2>
+                        </h1>
                         <small>Ready to create your next quiz?</small>
                     </div>
                 )}
 
                 {/* Drag and Drop */}
+                <h2 className="text-xl font-semibold">Upload a lesson to automatically generate a quiz</h2>
                 <DragAndDrop files={files} setFiles={setFiles} handleFilesSubmit={handleFilesSubmit} isLoading={isLoading} />
 
-                <h3 className="text-text-tertiary dark:text-dark-text-tertiary my-8 text-center">or copy and paste the text directly</h3>
+                <h3 className="text-text-tertiary dark:text-dark-text-tertiary my-8 text-center">or copy and paste the lesson text directly</h3>
 
                 {/* Extracted text/text area */}
                 <Card className="w-full rounded-md">
