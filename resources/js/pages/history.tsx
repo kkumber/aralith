@@ -37,7 +37,7 @@ const History = () => {
                 {/* Header start */}
                 <div className="flex w-full items-center justify-between">
                     <h1 className="self-start text-start font-medium">Your previous lessons</h1>
-                    <Button className="flex items-center justify-center" asChild>
+                    <Button className="flex items-center justify-center max-md:absolute max-md:top-4 max-md:right-4" asChild>
                         <Link href={route('main')}>
                             <PlusIcon />
                             New Lesson

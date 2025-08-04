@@ -31,9 +31,12 @@ const FileList = ({ files, handleFilesSubmit, handleClearAllFiles, handleRemoveF
                     </div>
 
                     {/* Showcase Files with a button for one item removal */}
-                    <div className="scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-primary scrollbar-track-muted max-h-48 space-y-2 overflow-auto">
+                    <div className="scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-primary scrollbar-track-muted max-h-48 space-y-2 overflow-auto rounded-md border p-4 shadow-md">
                         {files.map((file, index) => (
-                            <div key={`${file.name}-${index}`} className="flex items-center justify-between rounded-lg border p-3 transition-colors">
+                            <div
+                                key={`${file.name}-${index}`}
+                                className="bg-card flex items-center justify-between rounded-lg border p-3 transition-colors"
+                            >
                                 <div className="flex min-w-0 flex-1 items-center space-x-3">
                                     <File className="text-primary-green h-5 w-5 flex-shrink-0" />
                                     <div className="min-w-0 flex-1">

@@ -18,8 +18,6 @@ interface DragAndDropProps<T> {
 }
 
 const DragAndDrop = ({
-    width = '100%',
-    height = 'auto',
     maxFileSize = 10,
     acceptedTypes = defaultAcceptedTypes,
     maxFiles = defaultMaxFiles,
@@ -86,7 +84,7 @@ const DragAndDrop = ({
     };
 
     return (
-        <section className="space-y-4 rounded-xl bg-transparent shadow-md" style={{ width, height }}>
+        <section className="w-full space-y-4 rounded-xl bg-transparent">
             {/* DropZone */}
             <DropZone files={files} handleFiles={handleFiles} hasFiles={files.length > 0} config={{ maxFileSize, acceptedTypes }} />
 

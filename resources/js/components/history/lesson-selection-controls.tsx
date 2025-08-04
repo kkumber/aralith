@@ -27,7 +27,7 @@ const LessonSelectionControls = ({
             {selected.length ? (
                 <div className="flex items-center justify-center gap-2">
                     <CheckCheck className="text-primary-green" />
-                    <p className="text-primary-green">{selected.length} selected lessons</p>
+                    <p className="text-primary-green">{selected.length} selected </p>
                 </div>
             ) : (
                 <small>You have {lessons.data.length} previous lesson with Aralith</small>
@@ -51,7 +51,7 @@ const LessonSelectionControls = ({
                             config={{
                                 triggerContent: (
                                     <Button variant={'destructive'} size={'sm'}>
-                                        Delete Selected
+                                        Delete
                                     </Button>
                                 ),
                                 titleContent: 'Delete selected lessons?',

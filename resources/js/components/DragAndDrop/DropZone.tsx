@@ -57,7 +57,7 @@ const DropZone = ({ handleFiles, hasFiles, config }: DragAndDropProps) => {
         <div
             role="region"
             aria-label="file dropzone"
-            className={`${isDragOver ? 'border-primary-green scale-[1.02]' : hasFiles ? 'bg-green-50 dark:bg-green-950' : ''} hover:border-primary-green/80 relative cursor-pointer rounded-xl border-2 border-dashed p-8 transition-all duration-200`}
+            className={`${isDragOver ? 'border-primary-green scale-[1.02]' : hasFiles ? 'bg-green-400/10' : ''} relative cursor-pointer rounded-xl border-2 p-8 shadow-md transition-all duration-200`}
             onDrop={handleDrop}
             onDragLeave={handleDragLeave}
             onDragOver={handleDragOver}
@@ -67,15 +67,15 @@ const DropZone = ({ handleFiles, hasFiles, config }: DragAndDropProps) => {
             <div className="flex flex-col items-center justify-center gap-4">
                 <div className="flex flex-col items-center gap-4">
                     <Upload
-                        className={`h-12 w-12 transition-colors ${isDragOver ? 'text-secondary-green' : 'text-text-primary dark:text-dark-text-primary'}`}
+                        className={`h-12 w-12 transition-colors ${isDragOver ? 'text-green-400' : 'text-text-primary dark:text-dark-text-primary'}`}
                     />
 
-                    <div className="space-y-1 text-center">
-                        <p className="text-lg font-semibold text-gray-700 dark:text-gray-300">
+                    <div className={`space-y-1 text-center`}>
+                        <p className={`text-lg font-semibold ${isDragOver ? 'text-green-400' : ''}`}>
                             {isDragOver ? 'Drop files here' : 'Drag and drop your files here'}
                         </p>
-                        <small>
-                            Limit {config.maxFileSize}MB per file • Supported Files: {config.acceptedTypes.join(', ')}
+                        <small className={`${isDragOver ? 'text-green-400' : ''}`}>
+                            Limit {config.maxFileSize}MB per file • Supported files: {config.acceptedTypes.join(', ')}
                         </small>
                     </div>
                 </div>

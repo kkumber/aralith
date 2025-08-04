@@ -73,7 +73,7 @@ const Main = () => {
                 <h3 className="text-text-tertiary dark:text-dark-text-tertiary my-8 text-center">or copy and paste the lesson text directly</h3>
 
                 {/* Extracted text/text area */}
-                <Card className="w-full rounded-md">
+                <Card className="w-full rounded-md shadow-md">
                     {/* Lesson Input */}
                     <LessonInput lessonContent={lessonContent} handleSetLessonContent={handleSetLessonContent} wordCount={wordCount} />
                     <CardFooter>
