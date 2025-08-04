@@ -14,7 +14,7 @@
 </head>
 
 <body class="bg-background">
-  <div class="grid gap-40 mx-auto max-w-screen-lg w-full p-4">
+  <div class="grid gap-40 mx-auto max-w-screen-lg w-full p-4 overflow-x-hidden">
     <header class="flex flex-col gap-4 items-center justify-center text-center md:p-20 w-full" id="about">
       <div className="mb-6 w-full max-w-[335px] text-sm not-has-[nav]:hidden lg:max-w-4xl">
         <nav class="flex items-center justify-end gap-4">
@@ -47,7 +47,7 @@
       <h2 class="text-center text-5xl">Personalized Learning</h2>
   
       <!-- AI-Powered Quiz Generation -->
-      <div class="flex flex-col md:grid md:grid-cols-2 gap-28 items-center">
+      <div class="flex flex-col md:grid md:grid-cols-2 gap-28 items-stretch">
         <div class="grid gap-8"> 
           <div>
             <p class="text-secondary-green font-semibold">From Files to Quizzes - Instantly</p>
@@ -84,13 +84,13 @@
             </li>
           </ul>
         </div>
-        <div>
-          <img src="" alt="Sample">
+        <div class="relative md:-mr-40">
+          <img src="/index/home-page.png" alt="Sample" class="w-full h-full object-cover rounded-sm">
         </div>
       </div>
   
       <!-- Smart Study Tools -->
-      <div class="flex flex-col md:grid md:grid-cols-2 gap-28 items-center">
+      <div class="flex flex-col md:grid md:grid-cols-2 gap-28 items-stretch">
         <div class="grid gap-8">
           <div>
             <p class="text-secondary-green font-semibold">Personalized Study Aids</p>
@@ -127,13 +127,13 @@
             </li>
           </ul>
         </div>
-        <div>
-          <img src="" alt="Sample">
+        <div class="relative md:-mr-40">
+          <img src="/index/quiz-overview.png" alt="Sample" class="w-full h-full object-cover rounded-sm">
         </div>
       </div>
   
       <!-- Seamless Quiz Export -->
-      <div class="flex flex-col md:grid md:grid-cols-2 gap-28 items-center">
+      <div class="flex flex-col md:grid md:grid-cols-2 gap-28 items-stretch">
         <div class="grid gap-8">
           <div>
             <p class="text-secondary-green font-semibold">Flexible Quiz Delivery</p>
@@ -170,8 +170,8 @@
             </li>
           </ul>
         </div>
-        <div>
-          <img src="" alt="Sample">
+        <div class="relative md:-mr-40">
+          <img src="/index/instructions-page.png" alt="Sample" class="w-full h-full object-cover rounded-sm">
         </div>
       </div>
 
