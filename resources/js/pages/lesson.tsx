@@ -25,8 +25,8 @@ const Lesson = () => {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={lesson.title} />
-            <main className="mx-auto max-w-screen-lg space-y-8 p-4">
-                <header className="flex items-center gap-2">
+            <main className="mx-auto w-full max-w-screen-lg space-y-12 p-4">
+                <header className="flex w-full items-center gap-2">
                     <BookText className="text-primary-green" size={40} />
                     <h1>
                         Lesson: <span className="text-primary-green">"{lesson.title}"</span>
@@ -34,7 +34,7 @@ const Lesson = () => {
                 </header>
 
                 {/* Sumamry */}
-                <section>
+                <section className="w-full">
                     <Card className="bg-sidebar shadow-md">
                         <CardHeader>
                             <CardTitle className="text-primary-green text-xl">Summary</CardTitle>
@@ -45,19 +45,20 @@ const Lesson = () => {
                     </Card>
                 </section>
 
-                {/* Call to Actions */}
-                <div className="flex flex-wrap items-center justify-center gap-2 md:justify-end">
-                    <QuizCallToAction lessonId={lesson.id} />
-                </div>
-
-                {/* Quiz Attempts */}
-                <section className="space-y-4">
-                    <div className="flex items-center gap-2">
-                        <ClipboardList className="text-primary-green" size={40} />
-                        <h2>Quiz Attempts</h2>
+                {/* Quiz */}
+                <section className="w-full space-y-4">
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                            <ClipboardList className="text-primary-green" size={40} />
+                            <h2>Quiz Overview</h2>
+                        </div>
+                        {/* Call to Actions */}
+                        <div className="flex items-center justify-center gap-2 md:justify-end">
+                            <QuizCallToAction lessonId={lesson.id} />
+                        </div>
                     </div>
 
-                    <Card className="bg-primary-green/5 rounded-sm shadow-md">
+                    <Card className="bg-primary-green/5 w-full rounded-sm shadow-md">
                         <CardContent className="space-y-4">
                             {quizAttempts.length > 0 ? (
                                 quizAttempts.map((quizAttempt, index) => (
@@ -80,7 +81,7 @@ const Lesson = () => {
                 </section>
 
                 {/* Flashcards */}
-                <section className="space-y-4">
+                <section className="w-full space-y-4">
                     <div className="flex items-center gap-2">
                         <Brain className="text-primary-green" size={40} /> <h2>Flashcards</h2>
                     </div>
