@@ -96,7 +96,7 @@
             <p class="text-secondary-green font-semibold">Personalized Study Aids</p>
             <h2>Smart Study Tools</h2>
           </div>
-          <p>Go beyond quizzes — Aralith enhances your study sessions with tools that adapt to your learning style.</p>
+          <p>Go beyond quizzes. Aralith enhances your study sessions with tools that adapt to your learning style.</p>
           <ul class="flex flex-col gap-4">
             <li class="flex items-start gap-2">
               <span data-lucide="book-open" class="w-10 text-primary-green"></span>
@@ -139,7 +139,7 @@
             <p class="text-secondary-green font-semibold">Flexible Quiz Delivery</p>
             <h2>Seamless Quiz Export</h2>
           </div>
-          <p>Download or share your AI-generated quizzes effortlessly — Aralith adapts to your workflow.</p>
+          <p>Download or share your AI-generated quizzes effortlessly. Aralith adapts to your workflow.</p>
           <ul class="flex flex-col gap-4">
             <li class="flex items-start gap-2">
               <span data-lucide="file-down" class="w-10 text-primary-green"></span>
@@ -188,7 +188,7 @@
               <h3 class="text-lg font-semibold">Students</h3>
             </div>
             <p class="mb-6">
-              Struggling to prepare for quizzes or exams? Aralith saves you hours by turning your class notes, PDFs, and even powerpoint presentations into personalized quizzes and flashcards — instantly. Focus on what matters most and retain more in less time.
+              Struggling to prepare for quizzes or exams? Aralith saves you hours by turning your class notes, PDFs, and even powerpoint presentations into personalized quizzes and flashcards instantly. Focus on what matters most and retain more in less time.
             </p>
             <a href="{{ route(auth()->guest() ? 'register' : 'main') }}" class="text-primary-green hover:text-secondary-green font-semibold flex items-center gap-1">
               Get Started
@@ -203,7 +203,7 @@
               <h3 class="text-lg font-semibold">Educators</h3>
             </div>
             <p class="mb-6">
-              Designing assessments takes time — Aralith gives it back to you. Whether you teach online or in person, generate high-quality quizzes from your materials in seconds, share them with students, and track learning outcomes effortlessly.
+              Designing assessments takes time and effort. Aralith gives it back to you. Whether you teach online or in person, generate high-quality quizzes from your materials in seconds, share them with students, and track learning outcomes effortlessly.
             </p>
             <a href="{{ route(auth()->guest() ? 'register' : 'main') }}" class="text-primary-green hover:text-secondary-green font-semibold flex items-center gap-1">
               Get Started
@@ -218,7 +218,7 @@
               <h3 class="text-lg font-semibold">Lifelong Learners</h3>
             </div>
             <p class="mb-6">
-              Learning something new or reviewing for board exams? Upload any resource — books, presentations, images — and Aralith will create engaging, memory-boosting quizzes and study aids tailored just for you.
+              Learning something new or reviewing for board exams? Upload any resource - books, presentations, images — and Aralith will create engaging, memory-boosting quizzes and study aids tailored just for you.
             </p>
             <a href="{{ route(auth()->guest() ? 'register' : 'main') }}" class="text-primary-green hover:text-secondary-green font-semibold flex items-center gap-1">
               Get Started
@@ -292,7 +292,7 @@
             <a href="#about" class="hover:text-primary-green transition-colors">About</a>
             <a href="#features" class="hover:text-primary-green transition-colors">Features</a>
             <a href="#faqs" class="hover:text-primary-green transition-colors">FAQs</a>
-            <a href="#" class="hover:text-primary-green transition-colors">Contact</a>
+            <a href="https://kkumber.vercel.app" class="hover:text-primary-green transition-colors" target="_blank">About the Developer</a>
           </div>
           <button onclick="toggleDarkMode()" class="p-2 rounded-lg bg-gray-100 dark:bg-dark-surface hover:bg-gray-200 dark:hover:bg-dark-border transition-colors hover:cursor-pointer">
             <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i>

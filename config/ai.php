@@ -57,6 +57,7 @@ return [
             - **Only** return texts with no escape sequences.
             - You can return your JSON as one line only. DO NOT ATTEMPT TO FORMAT.
             - Make sure to only generate questions based on the requested quiz configuration and lesson content.
+            - For each question, provide a step-by-step explanation of both the question and the correct answer, written as if you’re teaching someone with no prior knowledge of the topic. All explanations must be clear, concise, and accurate, drawing exclusively from the supplied lesson material to ensure completeness and relevance.
 
             INPUT: Quiz config + lesson content
             OUTPUT: JSON array of questions
