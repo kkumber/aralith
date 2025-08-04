@@ -12,8 +12,6 @@ const GoogleFormExportInstructions = () => {
     const { script, lesson } = usePage<{ script: string; lesson: LessonResponse }>().props;
     const [showAlternative, setShowAlternative] = useState(false);
 
-    console.log(usePage().props);
-
     const steps = getMainSteps(script);
 
     const breadcrumbs: BreadcrumbItem[] = [
@@ -34,7 +32,7 @@ const GoogleFormExportInstructions = () => {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Google Forms Setup Instructions" />
-            <main className="mx-auto max-w-4xl space-y-8 p-6">
+            <main className="mx-auto w-full max-w-screen-lg space-y-8 p-6">
                 {/* Header */}
                 <div className="space-y-4 text-center">
                     <h1>Google Forms Automation Setup</h1>

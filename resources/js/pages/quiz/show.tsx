@@ -45,8 +45,6 @@ const Show = () => {
         });
     };
 
-    console.log(quiz);
-
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Quiz Attempt" />

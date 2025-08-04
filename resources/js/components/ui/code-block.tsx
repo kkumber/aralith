@@ -13,8 +13,8 @@ interface CodeBlockProps {
 
 const CodeBlock = ({ 
   children, 
-  language = 'javascript', 
   title = '',
+  language = 'js',
   collapsible = true,
   defaultCollapsed = false
 }: CodeBlockProps) => {
@@ -22,15 +22,56 @@ const CodeBlock = ({
   const [isCollapsed, setIsCollapsed] = useState<boolean>(defaultCollapsed);
 
   const copyToClipboard = async (): Promise<void> => {
+  if (!children) {
+    toast.error('No code to copy');
+    return;
+  }
+
+  // Check if Clipboard API is available
+  if (navigator.clipboard && window.isSecureContext) {
     try {
       await navigator.clipboard.writeText(children);
       setCopied(true);
       toast.info('Code copied to clipboard');
       setTimeout(() => setCopied(false), 2000);
+      return;
     } catch (err) {
-      console.error('Failed to copy text: ', err);
+      console.error('Clipboard API failed: ', err);
+      // Fall through to legacy method
     }
-  };
+  }
+
+  // Fallback method using document.execCommand (deprecated but widely supported)
+  try {
+    const textArea = document.createElement('textarea');
+    textArea.value = children;
+    
+    // Make the textarea invisible
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-999999px';
+    textArea.style.top = '-999999px';
+    textArea.setAttribute('readonly', '');
+    textArea.setAttribute('aria-hidden', 'true');
+    
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    const successful = document.execCommand('copy');
+    document.body.removeChild(textArea);
+    
+    if (successful) {
+      setCopied(true);
+      toast.info('Code copied to clipboard');
+      setTimeout(() => setCopied(false), 2000);
+    } else {
+      throw new Error('execCommand failed');
+    }
+  } catch (err) {
+    toast.error('Failed to copy code to clipboard. Please try again');
+    console.error('Failed to copy text: ', err);
+  }
+};
 
   const toggleCollapse = (): void => {
     setIsCollapsed(!isCollapsed);
@@ -44,7 +85,7 @@ const CodeBlock = ({
     <div className="bg-card border border-border rounded-lg overflow-hidden shadow-sm">
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 bg-muted/30 border-b border-border">
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-3 flex-shrink">
           <div className="flex space-x-1.5">
             <div className="w-3 h-3 rounded-full bg-red-500"></div>
             <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
