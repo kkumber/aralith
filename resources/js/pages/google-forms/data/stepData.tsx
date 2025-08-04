@@ -9,6 +9,46 @@ export interface StepData {
     estimatedTime?: string;
 }
 
+const images = {
+    mainSteps: [
+        {
+            src: '/instructions/step3.webp',
+            alt: 'Step 3',
+        },
+        {
+            src: '/instructions/step4.webp',
+            alt: 'Step 4',
+        },
+        {
+            src: '/instructions/step5.webp',
+            alt: 'Step 5',
+        },
+        {
+            src: '/instructions/step6.webp',
+            alt: 'Step 6',
+        },
+        {
+            src: '/instructions/step7.webp',
+            alt: 'Step 7',
+        },
+        {
+            src: '/instructions/step8.webp',
+            alt: 'Step 8',
+        },
+    ],
+
+    alternativeSteps: [
+        {
+            src: '/instructions/alt-step1.webp',
+            alt: 'Step 1',
+        },
+        {
+            src: '/instructions/alt-step2.webp',
+            alt: 'Step 2',
+        },
+    ],
+};
+
 export const getMainSteps = (script: string): StepData[] => [
     {
         title: 'Copy the Script Code',
@@ -65,10 +105,8 @@ export const getMainSteps = (script: string): StepData[] => [
                     with a blank project.
                 </p>
 
-                <div className="bg-muted/30 border-border rounded-xl border-2 border-dashed p-8 text-center">
-                    <p className="text-text-tertiary dark:text-dark-text-tertiary italic">
-                        [Screenshot: Google Apps Script homepage with "New Project" button highlighted]
-                    </p>
+                <div className="bg-muted/30">
+                    <img src={images.mainSteps[0].src} alt={images.mainSteps[0].alt} loading="lazy" className="w-full rounded-xl object-cover" />
                 </div>
             </div>
         ),
@@ -88,8 +126,8 @@ export const getMainSteps = (script: string): StepData[] => [
                     Make sure you replace ALL the existing code. The editor should only contain the code you copied from Step 1.
                 </AlertBox>
 
-                <div className="bg-muted/30 border-border rounded-xl border-2 border-dashed p-8 text-center">
-                    <p className="text-text-tertiary dark:text-dark-text-tertiary italic">[Screenshot: Script editor with code pasted in]</p>
+                <div className="bg-muted/30">
+                    <img src={images.mainSteps[1].src} alt={images.mainSteps[1].alt} loading="lazy" className="w-full rounded-xl object-cover" />
                 </div>
             </div>
         ),
@@ -106,8 +144,8 @@ export const getMainSteps = (script: string): StepData[] => [
                     icon in the toolbar. Give it a descriptive name like "Form Creator for [Your Class/Subject]".
                 </p>
 
-                <div className="bg-muted/30 border-border rounded-xl border-2 border-dashed p-8 text-center">
-                    <p className="text-text-tertiary dark:text-dark-text-tertiary italic">[Screenshot: Save dialog with project name field]</p>
+                <div className="bg-muted/30">
+                    <img src={images.mainSteps[2].src} alt={images.mainSteps[2].alt} loading="lazy" className="w-full rounded-xl object-cover" />
                 </div>
             </div>
         ),
@@ -128,8 +166,8 @@ export const getMainSteps = (script: string): StepData[] => [
                     to proceed. This is normal and safe for scripts you create yourself.
                 </AlertBox>
 
-                <div className="bg-muted/30 border-border rounded-xl border-2 border-dashed p-8 text-center">
-                    <p className="text-text-tertiary dark:text-dark-text-tertiary italic">[Screenshot: Run button and authorization dialog]</p>
+                <div className="bg-muted/30">
+                    <img src={images.mainSteps[3].src} alt={images.mainSteps[3].alt} loading="lazy" className="w-full rounded-xl object-cover" />
                 </div>
             </div>
         ),
@@ -153,8 +191,8 @@ export const getMainSteps = (script: string): StepData[] => [
                     </ul>
                 </AlertBox>
 
-                <div className="bg-muted/30 border-border rounded-xl border-2 border-dashed p-8 text-center">
-                    <p className="text-text-tertiary dark:text-dark-text-tertiary italic">[Screenshot: Execution log showing generated links]</p>
+                <div className="bg-muted/30">
+                    <img src={images.mainSteps[4].src} alt={images.mainSteps[4].alt} loading="lazy" className="w-full rounded-xl object-cover" />
                 </div>
             </div>
         ),
@@ -178,8 +216,8 @@ export const getMainSteps = (script: string): StepData[] => [
                     in a new tab. You should see your newly created Google Forms in your drive, ready to be shared with students.
                 </p>
 
-                <div className="bg-muted/30 border-border rounded-xl border-2 border-dashed p-8 text-center">
-                    <p className="text-text-tertiary dark:text-dark-text-tertiary italic">[Screenshot: Google Drive showing created forms]</p>
+                <div className="bg-muted/30">
+                    <img src={images.mainSteps[5].src} alt={images.mainSteps[5].alt} loading="lazy" className="w-full rounded-xl object-cover" />
                 </div>
             </div>
         ),
@@ -204,10 +242,13 @@ export const alternativeSteps = [
                     and select <strong>Blank form</strong> from the main menu.
                 </p>
 
-                <div className="bg-muted/30 border-border rounded-xl border-2 border-dashed p-8 text-center">
-                    <p className="text-text-tertiary dark:text-dark-text-tertiary italic">
-                        [Screenshot: Google Forms homepage with "Blank form" option]
-                    </p>
+                <div className="bg-muted/30">
+                    <img
+                        src={images.alternativeSteps[0].src}
+                        alt={images.alternativeSteps[0].alt}
+                        loading="lazy"
+                        className="w-full rounded-xl object-cover"
+                    />
                 </div>
             </div>
         ),
@@ -221,10 +262,13 @@ export const alternativeSteps = [
                     picture. Click on it and select <strong>Apps Script</strong> from the dropdown menu.
                 </p>
 
-                <div className="bg-muted/30 border-border rounded-xl border-2 border-dashed p-8 text-center">
-                    <p className="text-text-tertiary dark:text-dark-text-tertiary italic">
-                        [Screenshot: Google Forms menu with Apps Script option highlighted]
-                    </p>
+                <div className="bg-muted/30">
+                    <img
+                        src={images.alternativeSteps[1].src}
+                        alt={images.alternativeSteps[1].alt}
+                        loading="lazy"
+                        className="w-full rounded-xl object-cover"
+                    />
                 </div>
             </div>
         ),
