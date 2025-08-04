@@ -9,18 +9,14 @@ use App\Models\Lessons;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/index', function () {
+Route::get('/', function () {
     return view('landing');
 })->name('home');
-
-Route::get('/welcome', function () {
-    return Inertia::render('welcome');
-});
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
     // Standalone Routes
-    Route::get('/', [LessonsController::class, 'home'])->name('main');
+    Route::get('/home', [LessonsController::class, 'home'])->name('main');
 
 
     // Quiz Page Route
