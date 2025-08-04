@@ -11,10 +11,16 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   {{-- Google font --}}
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    html, body {
+    overflow-x: hidden;
+  }
+  </style>
 </head>
 
-<body class="bg-background">
-  <div class="grid gap-40 mx-auto max-w-screen-lg w-full p-4 overflow-x-hidden">
+<body class="bg-background max-w-full">
+  <div class="grid gap-40 mx-auto max-w-screen-lg w-full p-4">
     <header class="flex flex-col gap-4 items-center justify-center text-center md:p-20 w-full" id="about">
       <div className="mb-6 w-full max-w-[335px] text-sm not-has-[nav]:hidden lg:max-w-4xl">
         <nav class="flex items-center justify-end gap-4">
@@ -84,8 +90,8 @@
             </li>
           </ul>
         </div>
-        <div class="relative md:-mr-40">
-          <img src="/index/home-page.png" alt="Sample" class="w-full h-full object-cover rounded-sm">
+        <div class="relative md:-mr-80">
+          <img src="/index/home-page.webp" alt="Sample" class="w-full h-full object-cover rounded-sm">
         </div>
       </div>
   
@@ -127,8 +133,8 @@
             </li>
           </ul>
         </div>
-        <div class="relative md:-mr-40">
-          <img src="/index/quiz-overview.png" alt="Sample" class="w-full h-full object-cover rounded-sm">
+        <div class="relative md:-mr-80">
+          <img src="/index/quiz-overview.webp" alt="Sample" class="w-full h-full object-cover rounded-sm">
         </div>
       </div>
   
@@ -170,8 +176,8 @@
             </li>
           </ul>
         </div>
-        <div class="relative md:-mr-40">
-          <img src="/index/instructions-page.png" alt="Sample" class="w-full h-full object-cover rounded-sm">
+        <div class="relative md:-mr-80">
+          <img src="/index/instructions-page.webp" alt="Sample" class="w-full h-full object-cover rounded-sm">
         </div>
       </div>
 
@@ -263,7 +269,7 @@
             You can upload:
               PDF documents,
               DOCX files,
-              PNG or JPG images (e.g., handwritten notes or screenshots),
+              webp or JPG images (e.g., handwritten notes or screenshots),
               Text files (e.g., notes or summaries), and
               PPTX files from your lessons
           </p>
