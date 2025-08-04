@@ -120,12 +120,12 @@ export const getMainSteps = (script: string): StepData[] => [
             <div className="space-y-4">
                 <p>
                     Click the <strong>Run</strong> button (▶️ play icon) in the toolbar. The first time you run this script, Google will ask for
-                    permission to access your Google Drive and Forms.
+                    permission to access your Google Drive and Forms. Allow all permissions.
                 </p>
 
                 <AlertBox type="info" title="Authorization Required" icon={<Play className="h-5 w-5" />}>
-                    Google will show a security warning because this is a custom script. Click "Advanced" then "Go to [project name] (unsafe)" to
-                    proceed. This is normal and safe for scripts you create yourself.
+                    Google will show a security warning because this is a custom script. Click "Review permissions" then log-in to your google account
+                    to proceed. This is normal and safe for scripts you create yourself.
                 </AlertBox>
 
                 <div className="bg-muted/30 border-border rounded-xl border-2 border-dashed p-8 text-center">
@@ -147,7 +147,7 @@ export const getMainSteps = (script: string): StepData[] => [
 
                 <AlertBox type="success" title="What You'll Get" icon={<CheckCircle className="h-5 w-5" />}>
                     <ul className="mt-2 space-y-1">
-                        <li>• Teacher form link (for configuring form settings)</li>
+                        <li>• Teacher form link (you may need to configure form settings)</li>
                         <li>• Student form link (for answering questions)</li>
                         <li>• Response sheet link (for viewing answers)</li>
                     </ul>
