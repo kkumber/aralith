@@ -12,7 +12,7 @@ const Flashcard = ({className, frontcard, backcard, ...props}: Props) => {
     const [flipped, setFlipped] = useState(false);
 
     return ( 
-        <div className={cn(`p-4 rounded-lg shadow-md border hover:border-primary-green hover:cursor-pointer text-center hover:scale-105 transition-all duration-300 ease-out ${flipped ? 'bg-primary-green/5' : ''}`, className)} {...props} onClick={() => setFlipped(!flipped)}>
+        <div className={cn(`p-4 w-full rounded-lg shadow-md border hover:border-primary-green hover:cursor-pointer text-center hover:scale-105 transition-all duration-300 ease-out ${flipped ? 'bg-primary-green/5' : ''}`, className)} {...props} onClick={() => setFlipped(!flipped)}>
 
         {!flipped ? (
             // Front

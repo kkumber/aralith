@@ -25,7 +25,7 @@ const Lesson = () => {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={lesson.title} />
-            <main className="mx-auto w-full max-w-screen-lg space-y-12 p-4">
+            <main className="mx-auto h-full w-full max-w-screen-lg space-y-12 p-4">
                 <header className="flex w-full items-center gap-2">
                     <BookText className="text-primary-green" size={40} />
                     <h1>
