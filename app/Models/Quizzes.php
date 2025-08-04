@@ -18,6 +18,10 @@ class Quizzes extends Model
         'config',
     ];
 
+    protected $casts = [
+        'config' => 'array',
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

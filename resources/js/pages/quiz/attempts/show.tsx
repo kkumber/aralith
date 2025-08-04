@@ -14,6 +14,10 @@ const QuizAttemptShow = () => {
 
     const breadcrumbs: BreadcrumbItem[] = [
         {
+            title: 'My Lessons',
+            href: route('lesson.index'),
+        },
+        {
             title: quiz.title,
             href: route('lesson.show', { lesson: quiz.lessons_id }),
         },
@@ -23,12 +27,10 @@ const QuizAttemptShow = () => {
         },
     ];
 
-    console.log(usePage());
-
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={`${quiz.title} Quiz Results`} />
-            <main className="mx-auto flex h-full max-w-screen-lg flex-1 flex-col gap-12 rounded-xl p-4">
+            <main className="mx-auto flex h-full w-full max-w-screen-lg flex-1 flex-col gap-12 overflow-x-hidden rounded-xl p-4">
                 {/* Result Summary */}
                 <ResultSummary score={quizAttempt.score} totalNumOfQuestions={userAnswers.length} />
 

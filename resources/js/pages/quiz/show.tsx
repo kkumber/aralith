@@ -45,11 +45,19 @@ const Show = () => {
         });
     };
 
+    console.log(quiz);
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Quiz Attempt" />
 
             <main className="mx-auto flex h-full max-w-screen-lg flex-col gap-6 p-4">
+                <p>
+                    <strong>Instructions: </strong>
+                    This quiz includes <em>{quiz.config.question_types?.join(', ')}</em> questions. Answer each item carefully. Some may require
+                    written responses. A minimum score of 75% is required to pass.
+                </p>
+
                 {quiz.questions?.map((question, index) => {
                     // Multiple choice questions
                     if (question.type === 'Multiple Choice') {

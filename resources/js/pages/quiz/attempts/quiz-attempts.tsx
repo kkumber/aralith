@@ -15,7 +15,7 @@ interface Props {
 
 const QuizAttemptsList = ({ quizId, quizAttemptId, quizAttemptNumber, passed, score, totalNumOfQuestions, date }: Props) => {
     return (
-        <div className="border-muted flex flex-col items-start justify-between gap-2 border p-4 md:flex-row md:items-center">
+        <div className="flex flex-col items-start justify-between gap-2 rounded-sm border p-4 md:flex-row md:items-center">
             {/* Header */}
             <div className="flex items-center gap-2">
                 {passed ? <CheckCircle className="text-primary-green" /> : <XCircle className="text-red-600 dark:text-red-400" />}

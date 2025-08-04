@@ -14,7 +14,7 @@ class LessonQuizService
     {
         return DB::transaction(function () use ($lessonData, $quizData, $questionsData, $flashcardsData, $user) {
             $lesson = $user->lessons()->create($lessonData);
-            $quiz = $user->quizzes()->create(['lessons_id' => $lesson->id, 'title' => $quizData['title'], 'config' => json_encode($quizData['config'])]);
+            $quiz = $user->quizzes()->create(['lessons_id' => $lesson->id, 'title' => $quizData['title'], 'config' => $quizData['config']]);
 
             // Convert each element from questionsData to associative array.
             $questionArray = [];
