@@ -32,9 +32,9 @@ const QuizCallToAction = ({ lessonId }: QuizCallToActionProps) => {
                     </Link>
                 </Button>
 
-                <Button variant="outline" title="Download PDF" aria-label="Download PDF">
+                <Button variant="outline" title="Download DOCX" aria-label="Download DOCX">
                     <Download />
-                    <span className="ml-2">Download PDF</span>
+                    <span className="ml-2">Download DOCX</span>
                 </Button>
             </div>
 
