@@ -7,7 +7,6 @@ use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\Settings;
 use Illuminate\Support\Facades\Response;
 use App\Models\Quizzes;
-use Illuminate\Support\Facades\Log;
 
 class DocxService
 {
@@ -114,7 +113,6 @@ class DocxService
                 'Expires' => '0'
             ])->deleteFileAfterSend(true);
         } catch (\Exception $e) {
-            Log::error('DocxService Error: ' . $e->getMessage());
             throw new \Exception('Failed to generate DOCX: ' . $e->getMessage());
         }
     }

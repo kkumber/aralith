@@ -62,7 +62,6 @@ class LessonQuizController extends Controller
         } catch (\JsonException $e) {
             return back()->with('error', 'Invalid response from AI service');
         } catch (\Exception $e) {
-            Log::error('Failed to create lesson: ' . $e->getMessage());
             return back()->with('error', 'Something went wrong. Please try again.');
         }
     }
