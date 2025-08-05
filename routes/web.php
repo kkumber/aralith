@@ -40,6 +40,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/quizzes/{lesson}/export-google-forms', [QuizzesController::class, 'exportQuizToGoogleForms'])->name('quiz.exportGoogleFormsInstructions');
     Route::get('/quizzes/{lesson}/google-form-script-download', [QuizzesController::class, 'getFormResponses']);
     Route::get('/quizzes/{lesson}/google-form-script-preview', [QuizzesController::class, 'previewGoogleScript']);
+
+    // Downlaod Docx
+    Route::get('/quizzes/{lesson}/download-docx', [QuizzesController::class, 'downloadQuizDocx'])->name('quiz.downloadDocx');
 });
 
 

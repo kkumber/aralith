@@ -9,6 +9,7 @@ use Inertia\Inertia;
 use Exception;
 use App\Helpers\ApiResponse;
 use App\Models\Lessons;
+use App\Services\DocxService;
 use App\Services\GoogleFormService;
 use Illuminate\Support\Facades\Log;
 
@@ -110,6 +111,39 @@ class QuizzesController extends Controller
                 'success' => false,
                 'message' => $e->getMessage()
             ], 422);
+        }
+    }
+
+    /** 
+     * Download Quiz as DOCX
+     * @param Lessons $lesson
+     * @param DocxService $docxService
+     * @return \Illuminate\Http\Response
+     */
+    public function downloadQuizDocx(Lessons $lesson, DocxService $docxService)
+    {
+        try {
+            Log::info('Lesson ID: ' . $lesson->id);
+
+            $quiz = $lesson->quizzes()->with('questions')->first();
+
+            if (!$quiz) {
+                Log::error('No quiz found for lesson: ' . $lesson->id);
+                throw new \Exception('No quiz found for this lesson');
+            }
+
+            Log::info('Quiz ID: ' . $quiz->id);
+            Log::info('Questions count: ' . $quiz->questions->count());
+
+            return $docxService->downloadQuizDocx($quiz);
+        } catch (\Exception $e) {
+            Log::error('Quiz download error: ' . $e->getMessage());
+            Log::error('Stack trace: ' . $e->getTraceAsString());
+
+            return response()->json([
+                'error' => 'Failed to generate quiz document',
+                'message' => $e->getMessage()
+            ], 500);
         }
     }
 }

@@ -2,12 +2,22 @@ import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Link } from '@inertiajs/react';
 import { Download, PencilLine, Plus, Share2 } from 'lucide-react';
+import { useState } from 'react';
 
 interface QuizCallToActionProps {
     lessonId: string | number;
 }
 
 const QuizCallToAction = ({ lessonId }: QuizCallToActionProps) => {
+    const [downloading, setDownloading] = useState(false);
+    const handleDocxDownload = () => {
+        setDownloading(true);
+
+        window.location.href = route('quiz.downloadDocx', { lesson: lessonId });
+
+        setTimeout(() => setDownloading(false), 1500);
+    };
+
     return (
         <>
             {/* Desktop CTAs */}
@@ -32,9 +42,9 @@ const QuizCallToAction = ({ lessonId }: QuizCallToActionProps) => {
                     </Link>
                 </Button>
 
-                <Button variant="outline" title="Download DOCX" aria-label="Download DOCX">
+                <Button variant="outline" title="Download DOCX" aria-label="Download DOCX" disabled={downloading} onClick={handleDocxDownload}>
                     <Download />
-                    <span className="ml-2">Download DOCX</span>
+                    <span className="ml-2">{downloading ? 'Downloading...' : 'Download DOCX'}</span>
                 </Button>
             </div>
 
@@ -64,7 +74,7 @@ const QuizCallToAction = ({ lessonId }: QuizCallToActionProps) => {
                                 Export to Google Form
                             </Link>
                         </DropdownMenuItem>
-                        <DropdownMenuItem>
+                        <DropdownMenuItem onClick={handleDocxDownload}>
                             <Download className="mr-2 h-4 w-4" />
                             Download DOCX
                         </DropdownMenuItem>
