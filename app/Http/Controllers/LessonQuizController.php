@@ -63,6 +63,9 @@ class LessonQuizController extends Controller
             return back()->with('error', 'Invalid response from AI service');
         } catch (\Exception $e) {
             return back()->with('error', 'Something went wrong. Please try again.');
+        } catch (\Throwable $e) {
+            Log::error('Lesson quiz store error: ' . $e->getMessage());
+            return back()->with('error', 'Unexpected error occurred while processing. Please try again later.');
         }
     }
 }
