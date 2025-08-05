@@ -7,6 +7,9 @@
   <title>Aralith | AI Quiz Generator</title>
   @vite(['resources/css/app.css'])
 
+  <!-- AOS CDN -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
   <!-- Lucide Icons CDN -->
   <script src="https://unpkg.com/lucide@latest"></script>
   {{-- Google font --}}
@@ -15,6 +18,18 @@
   <style>
     html, body {
     overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  body::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for Firefox */
+  body {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
   }
   </style>
 </head>
@@ -27,34 +42,36 @@
               <a
                   href="{{ route(auth()->guest() ? 'login' : 'main') }}"
                   class="inline-block rounded-sm border border-transparent px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-secondary-green dark:text-[#EDEDEC]"
+                  data-aos="fade-down" data-aos-delay="700"
               >
                   Log in
               </a>
               <a
                   href="{{ route(auth()->guest() ? 'register' : 'main') }}"
                   class="inline-block rounded-sm px-5 py-1.5 text-sm leading-normal bg-primary-green text-[#EDEDEC] hover:bg-secondary-green transition-all duration-300 ease-out"
+                  data-aos="fade-down" data-aos-delay="700"
               >
                   Register
               </a>
         </nav>
       </div>
-      <p class="text-secondary-green font-semibold">Aralith</p>
-      <h1 class="font-extrabold text-6xl">Optimize Learning with AI</h1>
-      <p class="text-text-primary dark:text-dark-text-primary text-center">
+      <p class="text-secondary-green font-semibold" data-aos="fade-down">Aralith</p>
+      <h1 class="font-extrabold text-6xl" data-aos="fade-up" data-aos-delay="200">Optimize Learning with AI</h1>
+      <p class="text-text-primary dark:text-dark-text-primary text-center" data-aos="fade-up" data-aos-delay="400">
         From PDFs to flashcards in a click—Aralith streamlines quiz creation so learners and educators can focus on what matters.
       </p>
-      <a href="{{ route(auth()->guest() ? 'register' : 'main') }}" class="px-8 py-2 bg-primary-green text-white font-medium rounded-full w-max hover:bg-secondary-green hover:cursor-pointer transition-all duration-300 ease-out hover:shadow-lg flex items-center gap-2">
+      <a href="{{ route(auth()->guest() ? 'register' : 'main') }}" class="px-8 py-2 bg-primary-green text-white font-medium rounded-full w-max hover:bg-secondary-green hover:cursor-pointer transition-all duration-300 ease-out hover:shadow-lg flex items-center gap-2" data-aos="zoom-in" data-aos-delay="600">
         Get Started
         <i data-lucide="arrow-right" class="w-5 h-5"></i>
       </a>
     </header>
   
     <main class="gap-40 grid w-full" id="features">
-      <h2 class="text-center text-5xl">Personalized Learning</h2>
+      <h2 class="text-center text-5xl" data-aos="fade-up">Personalized Learning</h2>
   
       <!-- AI-Powered Quiz Generation -->
       <div class="flex flex-col md:grid md:grid-cols-2 gap-28 items-stretch">
-        <div class="grid gap-8"> 
+        <div class="grid gap-8" data-aos="fade-right"> 
           <div>
             <p class="text-secondary-green font-semibold">From Files to Quizzes - Instantly</p>
             <h2>AI-Powered Quiz Generation</h2>
@@ -90,14 +107,14 @@
             </li>
           </ul>
         </div>
-        <div class="relative md:-mr-80">
+        <div class="relative md:-mr-80" data-aos="zoom-in-left">
           <img src="/index/home-page.webp" alt="Sample" class="w-full h-full object-cover rounded-sm">
         </div>
       </div>
   
       <!-- Smart Study Tools -->
       <div class="flex flex-col md:grid md:grid-cols-2 gap-28 items-stretch">
-        <div class="grid gap-8">
+        <div class="grid gap-8" data-aos="fade-left">
           <div>
             <p class="text-secondary-green font-semibold">Personalized Study Aids</p>
             <h2>Smart Study Tools</h2>
@@ -133,14 +150,14 @@
             </li>
           </ul>
         </div>
-        <div class="relative md:-mr-80">
+        <div class="relative md:-mr-80" data-aos="zoom-in-right">
           <img src="/index/quiz-overview.webp" alt="Sample" class="w-full h-full object-cover rounded-sm">
         </div>
       </div>
   
       <!-- Seamless Quiz Export -->
       <div class="flex flex-col md:grid md:grid-cols-2 gap-28 items-stretch">
-        <div class="grid gap-8">
+        <div class="grid gap-8" data-aos="fade-up">
           <div>
             <p class="text-secondary-green font-semibold">Flexible Quiz Delivery</p>
             <h2>Seamless Quiz Export</h2>
@@ -176,7 +193,7 @@
             </li>
           </ul>
         </div>
-        <div class="relative md:-mr-80">
+        <div class="relative md:-mr-80" data-aos="flip-left">
           <img src="/index/instructions-page.webp" alt="Sample" class="w-full h-full object-cover rounded-sm">
         </div>
       </div>
@@ -184,12 +201,12 @@
   
       {{-- Who is it for --}}
       <section class="w-full gap-40 grid">
-        <h2 class="text-center text-5xl">Who is it for?</h2>
+        <h2 class="text-center text-5xl" data-aos="fade-up">Who is it for?</h2>
     
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           <!-- Students Card -->
           <div class="flex flex-col justify-between p-6 rounded-lg shadow-lg border-[1px] border-light-border dark:border-dark-border">
-            <div class="flex items-center gap-3 mb-4">
+            <div class="flex items-center gap-3 mb-4" data-aos="zoom-in" data-aos-delay="100">
               <span data-lucide="graduation-cap" class="w-6 h-6 text-primary-green"></span>
               <h3 class="text-lg font-semibold">Students</h3>
             </div>
@@ -204,7 +221,7 @@
     
           <!-- Educators Card -->
           <div class="flex flex-col justify-between p-6 rounded-lg shadow-lg border-[1px] border-light-border dark:border-dark-border">
-            <div class="flex items-center gap-3 mb-4">
+            <div class="flex items-center gap-3 mb-4" data-aos="zoom-in" data-aos-delay="300">
               <span data-lucide="presentation" class="w-6 h-6 text-primary-green"></span>
               <h3 class="text-lg font-semibold">Educators</h3>
             </div>
@@ -219,7 +236,7 @@
     
           <!-- Lifelong Learners Card -->
           <div class="flex flex-col justify-between p-6 rounded-lg shadow-lg border-[1px] border-light-border dark:border-dark-border">
-            <div class="flex items-center gap-3 mb-4">
+            <div class="flex items-center gap-3 mb-4" data-aos="zoom-in" data-aos-delay="500">
               <span data-lucide="book-open" class="w-6 h-6 text-primary-green"></span>
               <h3 class="text-lg font-semibold">Lifelong Learners</h3>
             </div>
@@ -237,10 +254,10 @@
   
         <!-- FAQs Section -->
     <section id="faqs" class="px-4 md:px-0 w-full" id="faqs">
-      <h2 class="text-center text-5xl mb-12">Frequently Asked Questions</h2>
+      <h2 class="text-center text-5xl mb-12" data-aos="fade-up">Frequently Asked Questions</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
         <!-- FAQ Item -->
-        <div class="border-[1px] border-light-border dark:border-dark-border rounded-lg shadow-lg p-6">
+        <div class="border-[1px] border-light-border dark:border-dark-border rounded-lg shadow-lg p-6" data-aos="fade-right" data-aos-delay="100">
           <button class="w-full flex justify-between items-center hover:cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden'); this.querySelector('i[data-state]').dataset.state = this.querySelector('i[data-state]').dataset.state === 'open' ? 'closed' : 'open'">
             <p class="font-semibold text-lg">How do I upload my files?</p>
             <i data-lucide="chevron-down" data-state="closed" class="w-6 h-6 transition-transform duration-200 text-primary-green"></i>
@@ -250,7 +267,7 @@
           </p>
         </div>
         <!-- FAQ Item -->
-        <div class="border-[1px] border-light-border dark:border-dark-border rounded-lg shadow-lg p-6">
+        <div class="border-[1px] border-light-border dark:border-dark-border rounded-lg shadow-lg p-6" data-aos="fade-left" data-aos-delay="200">
           <button class="w-full flex justify-between items-center hover:cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden'); this.querySelector('i[data-state]').dataset.state = this.querySelector('i[data-state]').dataset.state === 'open' ? 'closed' : 'open'">
             <p class="font-semibold text-lg">What question types are supported?</p>
             <i data-lucide="chevron-down" data-state="closed" class="w-6 h-6 transition-transform duration-200 text-primary-green"></i>
@@ -260,7 +277,7 @@
           </p>
         </div>
         <!-- FAQ Item -->
-        <div class="border-[1px] border-light-border dark:border-dark-border rounded-lg shadow-lg p-6">
+        <div class="border-[1px] border-light-border dark:border-dark-border rounded-lg shadow-lg p-6" data-aos="fade-right" data-aos-delay="300">
           <button class="w-full flex justify-between items-center hover:cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden'); this.querySelector('i[data-state]').dataset.state = this.querySelector('i[data-state]').dataset.state === 'open' ? 'closed' : 'open'">
             <p class="font-semibold text-lg">What file types are supported?</p>
             <i data-lucide="chevron-down" data-state="closed" class="w-6 h-6 transition-transform duration-200 text-primary-green"></i>
@@ -275,7 +292,7 @@
           </p>
         </div>
         <!-- FAQ Item -->
-        <div class="border-[1px] border-light-border dark:border-dark-border rounded-lg shadow-lg p-6">
+        <div class="border-[1px] border-light-border dark:border-dark-border rounded-lg shadow-lg p-6" data-aos="fade-left" data-aos-delay="400">
           <button class="w-full flex justify-between items-center hover:cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden'); this.querySelector('i[data-state]').dataset.state = this.querySelector('i[data-state]').dataset.state === 'open' ? 'closed' : 'open'">
             <p class="font-semibold text-lg">Is Aralith free?</p>
             <i data-lucide="chevron-down" data-state="closed" class="w-6 h-6 transition-transform duration-200 text-primary-green "></i>
@@ -290,7 +307,7 @@
     </main>
   
     <!-- Footer -->
-    <footer class="border-t border-light-border dark:border-dark-border mt-20 py-8 w-full">
+    <footer class="border-t border-light-border dark:border-dark-border mt-20 py-8 w-full" data-aos="fade-up" data-aos-delay="200">
       <div class="container mx-auto px-4 text-center text-gray-600 dark:text-dark-text-secondary">
         <div class="flex flex-col md:flex-row justify-between items-center gap-4">
           <div class="text-lg font-semibold text-primary-green">Aralith</div>
@@ -326,6 +343,16 @@
     } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
       document.documentElement.classList.add('dark');
     }
+  </script>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 600,
+      easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
+      once: true,
+      mirror: false,
+    });
   </script>
 </body>
 </html>
