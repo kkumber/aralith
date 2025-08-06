@@ -1,3 +1,5 @@
+import { Link } from '@inertiajs/react';
+
 export default function NotFound() {
     return (
         <div className="bg-background text-foreground animate-in fade-in flex min-h-screen flex-col items-center justify-center px-6 text-center duration-700 ease-out">
@@ -25,12 +27,12 @@ export default function NotFound() {
                     The page you are looking for doesn’t exist or has been moved.
                 </p>
 
-                <a
-                    href={route('home')}
-                    className="hover:bg-opacity-90 inline-flex items-center justify-center rounded-md bg-[--color-primary-green] px-6 py-3 font-medium text-white transition duration-200"
+                <Link
+                    href={route('main')}
+                    className="hover:bg-opacity-90 text-primary inline-flex items-center justify-center rounded-md bg-[--color-primary-green] px-6 py-3 font-medium transition duration-200"
                 >
                     ← Back to Homepage
-                </a>
+                </Link>
             </div>
         </div>
     );
