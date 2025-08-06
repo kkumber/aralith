@@ -323,7 +323,7 @@
             <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
           </button>
         </div>
-        <p class="mt-6 text-sm">© 2024 Aralith. All rights reserved.</p>
+        <p class="mt-6 text-sm">© 2025 Aralith. All rights reserved.</p>
       </div>
     </footer>
 

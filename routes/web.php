@@ -45,6 +45,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/quizzes/{lesson}/download-docx', [QuizzesController::class, 'downloadQuizDocx'])->name('quiz.downloadDocx');
 });
 
+Route::fallback(function () {
+    return Inertia::render('notfound');
+});
 
 require __DIR__ . '/settings.php';
 require __DIR__ . '/auth.php';
