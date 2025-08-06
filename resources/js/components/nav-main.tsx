@@ -18,7 +18,8 @@ export function NavMain({ items = [], recentItems }: { items: NavItem[]; recentI
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                 ))}
-                {recentItems?.length && (
+
+                {recentItems && recentItems?.length > 0 && (
                     <>
                         <SidebarGroupLabel className="mt-8">Latest Uploads</SidebarGroupLabel>
                         {recentItems?.map((item) => (

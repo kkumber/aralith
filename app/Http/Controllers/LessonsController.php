@@ -14,6 +14,7 @@ use Inertia\Inertia;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class LessonsController extends Controller
 {
@@ -68,6 +69,7 @@ class LessonsController extends Controller
 
         try {
             $lesson->delete();
+            Cache::forget('recent_lessons_user_' . auth()->id());
             return back();
         } catch (\Exception $e) {
             return back();
@@ -83,6 +85,7 @@ class LessonsController extends Controller
             ]);
 
             $deleted = $lessonQuizService->bulkDestroyLessonQuiz(auth()->user(), $validated['lesson_ids']);
+            Cache::forget('recent_lessons_user_' . auth()->id());
             return back();
         } catch (AuthorizationException $e) {
             abort(403, $e->getMessage());

@@ -30,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
                 if (Auth::check()) {
                     return Cache::remember(
                         'recent_lessons_user_' . Auth::id(),
-                        now()->addMinutes(5),
+                        now()->addMinutes(1),
                         function () {
                             return Lessons::where('user_id', Auth::id())
                                 ->select('id', 'title', 'created_at')

@@ -9,6 +9,7 @@ use App\Services\LessonQuizService;
 use Dotenv\Exception\ValidationException;
 use Illuminate\Http\Request;
 use Exception;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
@@ -64,6 +65,8 @@ class LessonQuizController extends Controller
                     'message' => 'Failed to create lesson. Please try again.'
                 ]);
             }
+
+            Cache::forget('recent_lessons_user_' . auth()->id());
 
             return redirect()->route('lesson.show', $result['lesson']->id)
                 ->with('success', 'Lesson created successfully');
