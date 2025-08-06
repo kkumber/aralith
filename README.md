@@ -1,75 +1,90 @@
 # 📘 Aralith
 
-**Aralith** is an AI-powered educational tool that transforms lesson materials into scope-specific quizzes. Users can upload PDFs, DOCX, images, or plain text files, and Aralith intelligently extracts key concepts to generate multiple types of questions — helping students study smarter and educators prepare faster.
+**Aralith** is an AI-powered educational tool designed to transform lesson materials into quizzes tailored to specific scopes. It supports the upload of PDFs, DOCX files, images, and plain text files, utilizing AI to extract key concepts for generating diverse question types, aiding students in efficient studying and assisting educators in quick preparation.
 
 ---
 
-## 🚀 Features
+## Features
 
-- 📄 Upload support for PDFs, DOCX, images (OCR), and text files
-- 🧠 AI-powered content extraction and quiz generation
-- 📝 Multiple Types of quizzes
-- 🧍 User authentication and quiz history tracking
-- 💡 Clean React interface with Inertia.js and TailwindCSS
-- 🔄 Export quizzes to PDF or Google Forms (soon)
+- User Authentication
+- Support for Uploading PDFs, DOCX, Images (OCR), and Plain Text
+- AI-Driven Content Extraction and Quiz Generation
+- Multiple Quiz Types
+- Quiz History Tracking
+- Quiz Attempt Review
+- Export Quizzes to PDF or Google Forms via Apps Script
+- Download Quizzes as DOCX
+- Lesson Summarization
+- Flashcards Based on Provided Lessons
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
 | Layer             | Tools Used                            |
 | ----------------- | ------------------------------------- |
-| **Frontend**      | React + Inertia.js + TailwindCSS      |
+| **Frontend**      | React, Inertia.js, TailwindCSS        |
 | **Backend**       | Laravel (RESTful Inertia-powered API) |
 | **Database**      | PostgreSQL                            |
-| **AI Services**   | External APIs: Cohere, Gemini, etc.   |
-| **File Handling** | Laravel’s temporary file storage      |
-| **Deployment**    | Render (both backend and frontend)    |
+| **AI Services**   | GroqAPI                               |
+| **File Handling** | FastAPI and Laravel temporary storage |
+| **Deployment**    | Render (Backend and Frontend)         |
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
-/resources/js → React components and pages
-/routes → Laravel web & API routes
-/app → Controllers, Models, Services
-/database → Migrations and seeders
-/public → Public assets
+- `/resources/js` - React Components and Pages
+- `/routes` - Laravel Web & API Routes
+- `/app` - Controllers, Models, Services
+- `/database` - Migrations and Seeders
+- `/public` - Public Assets
 
 ---
 
-## 🧪 Installation & Usage
+## Installation & Usage
 
-### 1. Clone the repository
+### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/kkumber/aralith.git
 cd aralith
 ```
 
-**2. Backend Setup (Laravel)**
+### 2. Backend Setup (Laravel)
 
-```Windows
-# Run as administrator...
+#### Windows
+
+Run as administrator:
+
+```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://php.new/install/windows/8.4'))
 ```
 
-```Linux
+#### Linux
+
+```bash
 /bin/bash -c "$(curl -fsSL https://php.new/install/linux/8.4)"
 ```
 
-```MacOS
+#### macOS
+
+```bash
 /bin/bash -c "$(curl -fsSL https://php.new/install/mac/8.4)"
 ```
 
-# Request an env file from me
+### 3. Request an Environment File
+
+Contact the maintainer for an `.env` file to properly configure the environment variables.
+
+### 4. Run Backend Commands
 
 ```bash
 php artisan migrate
 php artisan serve
 ```
 
-**3. Frontend Setup (React + Inertia)**
+### 5. Frontend Setup (React + Inertia)
 
 ```bash
 npm install
