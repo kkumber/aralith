@@ -30,7 +30,7 @@ class QuizzesController extends Controller
     public function show(Lessons $lesson)
     {
         if ($lesson->user_id !== auth()->user()->id || !auth()->user()) {
-            return back()->with('error', 'Unauthorized access to this lesson');
+            return back()->withErrors(['message' => 'Unauthorized access to this lesson']);
         }
 
         $quiz = $lesson->quizzes()->with('questions:id,quizzes_id,type,question_text,options')->firstOrFail();
@@ -68,7 +68,7 @@ class QuizzesController extends Controller
                 ]
             ]);
         } catch (\Exception $e) {
-            return back()->with('error', 'Failed to generate Google Forms script: ' . $e->getMessage());
+            return back()->withErrors(['message' => 'Failed to generate Google Forms script: ' . $e->getMessage()]);
         }
     }
 
@@ -86,7 +86,7 @@ class QuizzesController extends Controller
                 ->header('Content-Type', 'application/javascript')
                 ->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
         } catch (\Exception $e) {
-            return back()->with('error', 'Failed to download Google Forms script: ' . $e->getMessage());
+            return back()->withErrors(['message' => 'Failed to generate Google Forms script: ' . $e->getMessage()]);
         }
     }
 

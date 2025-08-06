@@ -36,7 +36,9 @@ const FileExtractionResultSchema = z.object({
 type FileExtractionResult = z.infer<typeof FileExtractionResultSchema>;
 
 export const useFileProcessor = () => {
-    const { postData, data, error, isLoading }: UsePost<FormData, FileExtractionResult> = usePost('http://127.0.0.1:8000/upload-document/');
+    const { postData, data, error, isLoading }: UsePost<FormData, FileExtractionResult> = usePost(
+        `${import.meta.env.VITE_FILE_PROCESSOR_URL}/upload-document/`,
+    );
     const [files, setFiles] = useState<File[]>([]);
     const [lessonContent, setLessonContent] = useState<string>();
     const [uploadError, setUploadError] = useState<string | null>();

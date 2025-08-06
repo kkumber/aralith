@@ -42,11 +42,11 @@ class LessonsController extends Controller
         $user = auth()->user();
 
         if (!$user) {
-            return back()->with('error', 'Unauthorized');
+            return back()->withErrors(['message' => 'Unauthorized']);
         }
 
         if ($user->id !== $lesson->user_id) {
-            return back()->with('error', 'Unauthorized access to this lesson');
+            return back()->withErrors(['message' => 'Unauthorized access to this lesson']);
         }
 
         $lesson->load('flashcard');

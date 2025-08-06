@@ -22,8 +22,8 @@ export default function AppLogoIcon(props: SVGAttributes<SVGElement>) {
             />
 
             {/* Snow caps or light lines on peaks (optional accents) */}
-            <path d="M190 240 L216 280 L190 Z" fill="white" />
-            <path d="M322 240 L296 280 L322 Z" fill="white" />
+            <path d="M190 240 L216 280 L190 280 Z" fill="white" />
+            <path d="M322 240 L296 280 L322 280 Z" fill="white" />
         </svg>
     );
 }

@@ -7,37 +7,42 @@ use App\Models\Quizzes;
 use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class LessonQuizService
 {
     public function createLessonSummaryFlashcardQuiz(array $lessonData, array $quizData, array $questionsData, array $flashcardsData, User $user)
     {
-        return DB::transaction(function () use ($lessonData, $quizData, $questionsData, $flashcardsData, $user) {
-            $lesson = $user->lessons()->create($lessonData);
-            $quiz = $user->quizzes()->create(['lessons_id' => $lesson->id, 'title' => $quizData['title'], 'config' => $quizData['config']]);
+        try {
+            return DB::transaction(function () use ($lessonData, $quizData, $questionsData, $flashcardsData, $user) {
+                $lesson = $user->lessons()->create($lessonData);
+                $quiz = $user->quizzes()->create(['lessons_id' => $lesson->id, 'title' => $quizData['title'], 'config' => $quizData['config']]);
 
-            // Convert each element from questionsData to associative array.
-            $questionArray = [];
-            foreach ($questionsData as $key => $value) {
-                $questionArray[$key] = (array) $value;
-            };
+                // Convert each element from questionsData to associative array.
+                $questionArray = [];
+                foreach ($questionsData as $key => $value) {
+                    $questionArray[$key] = (array) $value;
+                };
 
-            $flashcardsArray = [];
-            foreach ($flashcardsData as $key => $value) {
-                $flashcardsArray[$key] = (array) $value;
-            }
+                $flashcardsArray = [];
+                foreach ($flashcardsData as $key => $value) {
+                    $flashcardsArray[$key] = (array) $value;
+                }
 
-            $flashcards = $lesson->flashcard()->createMany($flashcardsArray);
+                $flashcards = $lesson->flashcard()->createMany($flashcardsArray);
 
-            $questions = $quiz->questions()->createMany($questionArray);
+                $questions = $quiz->questions()->createMany($questionArray);
 
-            return [
-                'lesson' => $lesson,
-                'quiz' => $quiz,
-                'questions' => $questions,
-                'flashcards' => $flashcards
-            ];
-        });
+                return [
+                    'lesson' => $lesson,
+                    'quiz' => $quiz,
+                    'questions' => $questions,
+                    'flashcards' => $flashcards
+                ];
+            });
+        } catch (\Throwable $e) {
+            return null;
+        }
     }
 
     public function bulkDestroyLessonQuiz(User $user, array $lessonIds)

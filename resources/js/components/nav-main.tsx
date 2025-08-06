@@ -18,17 +18,21 @@ export function NavMain({ items = [], recentItems }: { items: NavItem[]; recentI
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                 ))}
-                <SidebarGroupLabel className="mt-8">Latest Uploads</SidebarGroupLabel>
-                {recentItems?.map((item) => (
-                    <SidebarMenuItem key={item.title}>
-                        <SidebarMenuButton asChild isActive={item.href === page.url} tooltip={{ children: item.title }}>
-                            <Link href={item.href} prefetch>
-                                {item.icon && <item.icon />}
-                                <span>{item.title}</span>
-                            </Link>
-                        </SidebarMenuButton>
-                    </SidebarMenuItem>
-                ))}
+                {recentItems?.length && (
+                    <>
+                        <SidebarGroupLabel className="mt-8">Latest Uploads</SidebarGroupLabel>
+                        {recentItems?.map((item) => (
+                            <SidebarMenuItem key={item.title}>
+                                <SidebarMenuButton asChild isActive={item.href === page.url} tooltip={{ children: item.title }}>
+                                    <Link href={item.href} prefetch>
+                                        {item.icon && <item.icon />}
+                                        <span>{item.title}</span>
+                                    </Link>
+                                </SidebarMenuButton>
+                            </SidebarMenuItem>
+                        ))}
+                    </>
+                )}
             </SidebarMenu>
         </SidebarGroup>
     );

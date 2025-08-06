@@ -143,3 +143,13 @@ export interface UserAnswersResponse {
     updated_at: string;
     questions?: QuestionResponse
 }
+
+export interface Flash {
+    success?: string;
+    error?: string;
+}
+
+export interface ErrorResponse {
+    message?: string;
+    general?: string;
+}

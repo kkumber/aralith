@@ -6,6 +6,7 @@ use App\Http\Requests\StoreLessonQuizRequest;
 use App\Models\Lessons;
 use App\Services\AiService;
 use App\Services\LessonQuizService;
+use Dotenv\Exception\ValidationException;
 use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Support\Facades\Log;
@@ -24,31 +25,32 @@ class LessonQuizController extends Controller
             $user = auth()->user();
 
             if (!$user) {
-                return back()->with('error', 'Unauthorized');
+                throw ValidationException::withMessages([
+                    'message' => 'Unauthorized.'
+                ]);
             }
 
-            // Generate summary from lesson content
             $summary = json_decode($aiService->generateSummary($validated['lesson']['content']), true);
-
             if (empty($summary) || !is_array($summary)) {
-                return back()->with('error', 'Failed to generate summary from AI');
+                throw ValidationException::withMessages([
+                    'message' => 'Failed to generate summary from AI. Please try again.'
+                ]);
             }
 
-            // Generate flashcard from lesson content
-            $flashcards = json_decode($aiService->generateFlashcards($validated['lesson']['content']));
-
+            $flashcards = json_decode($aiService->generateFlashcards($validated['lesson']['content']), true);
             if (empty($flashcards) || !is_array($flashcards)) {
-                return back()->with('error', 'Failed to generate flashcards from AI');
+                throw ValidationException::withMessages([
+                    'message' => 'Failed to generate flashcards from AI. Please try again.'
+                ]);
             }
 
-            // Generate questions data first from AI
-            $questionsData = json_decode($aiService->generateQuestions($validated['quiz_config'], $validated['lesson']['content']));
-
+            $questionsData = json_decode($aiService->generateQuestions($validated['quiz_config'], $validated['lesson']['content']), true);
             if (empty($questionsData) || !is_array($questionsData)) {
-                return back()->with('error', 'Failed to generate questions from AI');
+                throw ValidationException::withMessages([
+                    'message' => 'Failed to generate questions from AI. Please try again.'
+                ]);
             }
 
-            // Save in db
             $result = $lessonQuizService->createLessonSummaryFlashcardQuiz(
                 array_merge($validated['lesson'], $summary),
                 $validated['quiz_config'],
@@ -57,15 +59,19 @@ class LessonQuizController extends Controller
                 $user
             );
 
+            if (empty($result)) {
+                throw ValidationException::withMessages([
+                    'message' => 'Failed to create lesson. Please try again.'
+                ]);
+            }
+
             return redirect()->route('lesson.show', $result['lesson']->id)
                 ->with('success', 'Lesson created successfully');
         } catch (\JsonException $e) {
-            return back()->with('error', 'Invalid response from AI service');
-        } catch (\Exception $e) {
-            return back()->with('error', 'Something went wrong. Please try again.');
+            return back()->withErrors(['message' => 'Invalid response from AI service']);
         } catch (\Throwable $e) {
             Log::error('Lesson quiz store error: ' . $e->getMessage());
-            return back()->with('error', 'Unexpected error occurred while processing. Please try again later.');
+            return back()->withErrors(['message' => 'Unexpected error occurred. Please try again later.']);
         }
     }
 }

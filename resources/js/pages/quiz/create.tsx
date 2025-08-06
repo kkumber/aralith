@@ -8,9 +8,10 @@ import useCreateQuiz from '@/hooks/useCreateQuiz';
 import useQuizConfig from '@/hooks/useQuizConfig';
 import AppLayout from '@/layouts/app-layout';
 import { retrieveFromSessionStorage } from '@/lib/utils';
-import { BreadcrumbItem } from '@/types';
-import { Head, router } from '@inertiajs/react';
+import { BreadcrumbItem, ErrorResponse } from '@/types';
+import { Head, router, usePage } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -28,10 +29,15 @@ const Create = () => {
     const [showModal, setShowModal] = useState<boolean>(false);
     const [lesson, setLesson] = useState<string>('');
     const { saveLessonQuiz, configErrors, isLoading } = useCreateQuiz();
+    const { error } = usePage<{ error: ErrorResponse }>().props;
 
     /* Check if there is lesson on mount, redirect to main if not found */
     useEffect(() => {
         const lesson = retrieveFromSessionStorage('lesson');
+
+        if (error) {
+            toast.error(error?.message || error?.general || 'Failed to generate quiz. Please try again.');
+        }
 
         if (!lesson) return setShowModal(true);
 

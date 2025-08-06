@@ -42,7 +42,10 @@ const AdvancedConfig = ({
                             <TooltipTrigger asChild>
                                 <Info size={15} />
                             </TooltipTrigger>
-                            <TooltipContent>The total number of questions divided by the number of question types.</TooltipContent>
+                            <TooltipContent>
+                                Aralith will try to generate the number of questions you requested, but the final count may be lower depending on the
+                                content.
+                            </TooltipContent>
                         </Tooltip>
                     </div>
 
