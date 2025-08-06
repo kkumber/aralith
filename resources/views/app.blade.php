@@ -32,9 +32,8 @@
 
         <title inertia>{{ config('app.name', 'Aralith') }}</title>
 
-        <link rel="icon" href="/favicon.ico" sizes="any">
+        <link rel="icon" href="/favicon.ico?v=2" sizes="any">
         <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-        <link rel="apple-touch-icon" href="/favicon.ico">
 
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />

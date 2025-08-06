@@ -19,6 +19,7 @@
     html, body {
     overflow-x: hidden;
     overflow-y: auto;
+    scroll-behavior: smooth;
   }
 
   /* Hide scrollbar for Chrome, Safari and Opera */

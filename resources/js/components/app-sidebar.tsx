@@ -2,9 +2,9 @@ import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
-import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/react';
-import { Book, Home, Info } from 'lucide-react';
+import { LessonResponse, type NavItem } from '@/types';
+import { Link, usePage } from '@inertiajs/react';
+import { Book, HelpCircle, Home, Info, Mail, Sparkles } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -22,13 +22,35 @@ const mainNavItems: NavItem[] = [
 
 const footerNavItems: NavItem[] = [
     {
+        title: 'Features',
+        href: `${route('home')}#features`,
+        icon: Sparkles,
+    },
+    {
         title: 'About Aralith',
-        href: '/',
+        href: `${route('home')}#about`,
         icon: Info,
+    },
+    {
+        title: 'FAQ',
+        href: `${route('home')}#faqs`,
+        icon: HelpCircle,
+    },
+    {
+        title: 'Contact the developer',
+        href: 'https://kkumber.vercel.app',
+        icon: Mail,
     },
 ];
 
 export function AppSidebar() {
+    const { recentLessons } = usePage<{ recentLessons: LessonResponse[] }>().props;
+
+    const recentNavItems: NavItem[] = recentLessons.map((lesson) => ({
+        title: lesson.title,
+        href: route('lesson.show', lesson.id),
+    }));
+
     return (
         <Sidebar collapsible="icon" variant="sidebar">
             <SidebarHeader>
@@ -44,7 +66,7 @@ export function AppSidebar() {
             </SidebarHeader>
 
             <SidebarContent>
-                <NavMain items={mainNavItems} />
+                <NavMain items={mainNavItems} recentItems={recentNavItems} />
             </SidebarContent>
 
             <SidebarFooter>
