@@ -57,12 +57,14 @@ Contact the maintainer for an `.env` file to properly configure the environment 
 
 ### 3. Please install the correct versions of php and node
 
+See the composer.json and package.json for more details
+
 ### 4. Backend Setup (Laravel)
 
 Install all backend dependencies
 
 ```bash
-    composer install
+composer install
 ```
 
 ### 5. Run Backend Commands
