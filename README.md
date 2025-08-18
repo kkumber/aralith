@@ -51,40 +51,32 @@ git clone https://github.com/kkumber/aralith.git
 cd aralith
 ```
 
-### 2. Backend Setup (Laravel)
-
-#### Windows
-
-Run as administrator:
-
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://php.new/install/windows/8.4'))
-```
-
-#### Linux
-
-```bash
-/bin/bash -c "$(curl -fsSL https://php.new/install/linux/8.4)"
-```
-
-#### macOS
-
-```bash
-/bin/bash -c "$(curl -fsSL https://php.new/install/mac/8.4)"
-```
-
-### 3. Request an Environment File
+### 2. Request an Environment File
 
 Contact the maintainer for an `.env` file to properly configure the environment variables.
 
-### 4. Run Backend Commands
+### 3. Please install the correct versions of php and node
+
+### 4. Backend Setup (Laravel)
+
+Install all backend dependencies
+
+```bash
+    composer install
+```
+
+### 5. Run Backend Commands
+
+Create a database in PostgreSQL named 'aralith' and migrate
 
 ```bash
 php artisan migrate
 php artisan serve
 ```
 
-### 5. Frontend Setup (React + Inertia)
+### 6. Frontend Setup (React + Inertia)
+
+Install frontend dependencies
 
 ```bash
 npm install
