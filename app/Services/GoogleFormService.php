@@ -35,39 +35,46 @@ class GoogleFormService
    */
   private function buildAppsScript(Lessons $lesson, $quizzes): string
   {
-    $lessonTitle = addslashes($lesson->title);
+    if (empty($lesson->title)) {
+      throw new \Exception('Lesson title cannot be empty');
+    }
+    $lessonTitle = json_encode($lesson->title, JSON_UNESCAPED_UNICODE);
+    $lessonTitle = trim($lessonTitle, '"');
+
     $quizData = $this->formatQuizData($quizzes);
+    if ($quizData === false) {
+      throw new \Exception('Failed to encode quiz data: ' . json_last_error_msg());
+    }
 
     $script = <<<'JAVASCRIPT'
 /**
  * Auto-generated Google Forms Quiz Creator
  * Lesson: LESSON_TITLE_PLACEHOLDER
  * Generated on: GENERATED_DATE_PLACEHOLDER
- * 
- * Instructions:
- * 1. Open Google Apps Script (script.google.com)
- * 2. Create a new project
- * 3. Replace the default code with this script
- * 4. Run the 'createQuizForms' function
- * 5. Check your Google Drive for the created forms or copy and paste the links
  */
 
 function createQuizForms() {
+  console.log('Starting Quiz Generation...');
+  console.log(`Lesson: "LESSON_TITLE_PLACEHOLDER"`);
+  console.log('');
+  
   const lessonData = QUIZ_DATA_PLACEHOLDER;
   
   lessonData.quizzes.forEach((quiz, index) => {
     try {
       createSingleQuiz(quiz, index + 1);
-      console.log(`Successfully created quiz: ${quiz.title}`);
+      console.log(`✅ Quiz "${quiz.title}" created successfully\n`);
     } catch (error) {
-      console.error(`Error creating quiz "${quiz.title}":`, error);
+      console.log(`❌ Error creating quiz "${quiz.title}": ${error.message}\n`);
     }
   });
   
-  console.log(`Successfully processed ${lessonData.quizzes.length} quiz(s) for lesson: LESSON_TITLE_PLACEHOLDER`);
+  console.log('Generation complete!');
 }
 
 function createSingleQuiz(quizData, quizNumber) {
+  console.log(`Creating Quiz "${quizData.title}"`);
+  
   // Create the form
   const form = FormApp.create(`${quizData.title} - Quiz ${quizNumber}`);
   
@@ -79,8 +86,7 @@ function createSingleQuiz(quizData, quizNumber) {
   form.setIsQuiz(true);
   
   // Set quiz settings for automatic grading
-  form.setLimitOneResponsePerUser(true); // Only one response per student
-  form.setRequireLogin(true); // Require Google account login to track users
+  form.setLimitOneResponsePerUser(true);
   
   // Configure to release grades immediately after submission
   form.setPublishingSummary(true);
@@ -89,6 +95,26 @@ function createSingleQuiz(quizData, quizNumber) {
   // Add student information section
   addStudentInfoSection(form);
   
+  // Check for manual grading questions and display their correct answers
+  const manualGradingQuestions = quizData.questions.filter(q => 
+    q.type === 'Fill in the blank' || 
+    q.type === 'Identification' || 
+    q.type === 'Short Answer'
+  );
+  
+  if (manualGradingQuestions.length > 0) {
+    console.log(`\n⚠️  MANUAL GRADING REQUIRED for ${manualGradingQuestions.length} question(s):`);
+    manualGradingQuestions.forEach((question, index) => {
+      const questionNum = quizData.questions.indexOf(question) + 1;
+      console.log(`   Q${questionNum} (${question.type}): ${question.question_text}`);
+      if (question.correct_answer && question.correct_answer.length > 0) {
+        const answers = Array.isArray(question.correct_answer) 
+          ? question.correct_answer.join(', ') 
+          : question.correct_answer;
+        console.log(`       Answer: ${answers}`);
+      }
+    });
+  }
   // Add quiz questions
   quizData.questions.forEach((question, questionIndex) => {
     addQuestion(form, question, questionIndex + 1);
@@ -97,19 +123,33 @@ function createSingleQuiz(quizData, quizNumber) {
   // Set up response handling
   setupResponseHandling(form, quizData);
   
-  // Configure automatic grade release
-  setupAutomaticGrading(form);
-  
-  Logger.log('Please make sure to save all of this URLS as you may never see them again.');
-  Logger.log(`Created quiz: ${quizData.title}`);
-  Logger.log(`Student URL: ${form.getPublishedUrl()}`);
-  Logger.log(`Teacher URL: ${form.getEditUrl()}`);
-  console.log('Please make sure to save all of this URLS as you may never see them again.');
-  console.log(`Created quiz: ${quizData.title}`);
+  console.log('\n📌 IMPORTANT URLS (Save these now):');
   console.log(`Student URL: ${form.getPublishedUrl()}`);
   console.log(`Teacher URL: ${form.getEditUrl()}`);
-  console.log('---');
+  
+  // Also log to Google Apps Script Logger for persistence
+  Logger.log(`Quiz: ${quizData.title}`);
+  Logger.log(`Student URL: ${form.getPublishedUrl()}`);
+  Logger.log(`Teacher URL: ${form.getEditUrl()}`);
 }
+
+// Helper functions for counting question types
+function countAutoGradedQuestions(questions) {
+  return questions.filter(q => 
+    q.type === 'Multiple Choice' || 
+    q.type === 'True/False' || 
+    q.type === 'Multiple Answers'
+  ).length;
+}
+
+function countManualGradingQuestions(questions) {
+  return questions.filter(q => 
+    q.type === 'Fill in the blank' || 
+    q.type === 'Identification' || 
+    q.type === 'Short Answer'
+  ).length;
+}
+
 
 function addStudentInfoSection(form) {
   // Add section break
@@ -304,7 +344,7 @@ function setupAutomaticGrading(form) {
     // Set up a trigger to automatically release grades when form is submitted
     ScriptApp.newTrigger('onFormSubmit')
       .timeBased()
-      .everyMinutes(1) // Check every minute for new submissions
+      .everyMinutes(1)
       .create();
       
     console.log('Automatic grading trigger set up successfully');
@@ -349,9 +389,11 @@ function setupResponseHandling(form, quizData) {
     const spreadsheet = SpreadsheetApp.create(`${quizData.title} - Responses`);
     form.setDestination(FormApp.DestinationType.SPREADSHEET, spreadsheet.getId());
     
+    console.log(`📊 Response spreadsheet created: ${spreadsheet.getUrl()}`);
     Logger.log(`Response spreadsheet: ${spreadsheet.getUrl()}`);
   } catch (error) {
-    console.error('Error setting up response handling:', error);
+    console.log(`❌ Error setting up response spreadsheet: ${error.message}`);
+    console.log('   Responses will still be collected in Google Forms');
   }
 }
 
@@ -384,8 +426,8 @@ JAVASCRIPT;
       'GENERATED_DATE_PLACEHOLDER',
       'QUIZ_DATA_PLACEHOLDER'
     ], [
-      $lessonTitle,
-      date('Y-m-d H:i:s'),
+      json_encode($lessonTitle, JSON_UNESCAPED_UNICODE),
+      json_encode(date('Y-m-d H:i:s')),
       $quizData
     ], $script);
 
@@ -426,7 +468,19 @@ JAVASCRIPT;
       $data['quizzes'][] = $quizData;
     }
 
-    return json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    $jsonData = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    if ($jsonData === false) {
+      throw new \Exception('Failed to encode quiz data to JSON: ' . json_last_error_msg());
+    }
+    return $jsonData;
+  }
+
+  // Remove or replace problematic characters
+  private function sanitizeForJavaScript($text): string
+  {
+    $text = preg_replace('/[\r\n\t]/', ' ', $text);
+    $text = preg_replace('/[^\p{L}\p{N}\s\-_()]/u', '', $text);
+    return trim($text);
   }
 
   /**
