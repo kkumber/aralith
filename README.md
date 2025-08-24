@@ -85,6 +85,8 @@ Make sure your pgsql configuration correctly corresponds to the Database configu
 php artisan migrate
 ```
 
+This will create the necessary tables within the database.
+
 > You need to **configure the .env file to match your pgsql configuration** or vice versa
 
 ### 6. React + Inertia Setup
