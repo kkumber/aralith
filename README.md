@@ -55,13 +55,17 @@ cd aralith
 
 Contact the maintainer for an `.env` file to properly configure the environment variables.
 
-### 3. Please install the correct versions of php and node
+### 3. Please install the correct versions of php (version 8+) and node (version 22+)
 
 See the composer.json and package.json for more details
 
 ### 4. Backend Setup (Laravel)
 
-Install all backend dependencies
+Install composer. See here for instructions
+
+<a href="https://getcomposer.org/download/">https://getcomposer.org/download/</a>
+
+After installing composer we can now install all backend dependencies
 
 ```bash
 composer install
@@ -73,7 +77,6 @@ Create a database in PostgreSQL named 'aralith' and migrate
 
 ```bash
 php artisan migrate
-php artisan serve
 ```
 
 ### 6. Frontend Setup (React + Inertia)
@@ -82,5 +85,14 @@ Install frontend dependencies
 
 ```bash
 npm install
+```
+
+### 7. Run both scripts via command line
+
+```bash
 npm run dev
+```
+
+```bash
+php artisan serve
 ```
