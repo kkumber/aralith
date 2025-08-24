@@ -39,6 +39,7 @@
 - `/app` - Controllers, Models, Services
 - `/database` - Migrations and Seeders
 - `/public` - Public Assets
+- `/tests` - Frontend and backend tests
 
 ---
 
@@ -73,11 +74,18 @@ composer install
 
 ### 5. Run Backend Commands
 
-Create a database in PostgreSQL named 'aralith' and migrate
+Make sure you have PostgreSQL installed in your system. Check the official page to see how to install on your specific operating system
+
+<a href="https://www.postgresql.org/download/">https://www.postgresql.org/download/</a>
+
+Create a database in PostgreSQL named 'aralith' and migrate.
+Make sure your pgsql configuration correctly corresponds to the Database configuration in the .env file
 
 ```bash
 php artisan migrate
 ```
+
+<i>Note: You need to configure the .env file to match your pgsql configuration or vice versa</i>
 
 ### 6. Frontend Setup (React + Inertia)
 
@@ -87,7 +95,7 @@ Install frontend dependencies
 npm install
 ```
 
-### 7. Run both scripts via command line
+### 7. Run both scripts via command line to serve locally
 
 ```bash
 npm run dev
