@@ -1,13 +1,13 @@
 # Aralith
 
-**Aralith** is an AI-powered educational tool designed to transform lesson materials into quizzes tailored to specific scopes. It supports the upload of PDFs, DOCX files, images, and plain text files, utilizing AI to extract key concepts for generating diverse question types, aiding students in efficient studying and assisting educators in quick preparation.
+**Aralith** is an AI-powered educational tool designed to transform lesson materials into quizzes tailored to specific scopes. It supports the upload of PDFs, DOCX files, PPTX, images, and plain text, utilizing AI to extract key concepts for generating diverse question types, aiding students in efficient studying and assisting educators in quick preparation.
 
 ---
 
 ## Features
 
 - User Authentication
-- Support for Uploading PDFs, DOCX, Images (OCR), and Plain Text
+- Support for Uploading PDFs, DOCX, PPTX, Images (OCR), and Plain Text
 - AI-Driven Content Extraction and Quiz Generation
 - Multiple Quiz Types
 - Quiz History Tracking
