@@ -43,7 +43,7 @@
 
 ---
 
-## Installation & Usage
+## Installation
 
 ### 1. Clone the Repository
 
@@ -54,15 +54,15 @@ cd aralith
 
 ### 2. Request an Environment File
 
-Contact the maintainer for an `.env` file to properly configure the environment variables.
+Contact the maintainer for an _.env_ file to properly configure the environment variables.
 
 ### 3. Please install the correct versions of php (version 8+) and node (version 22+)
 
 See the composer.json and package.json for more details
 
-### 4. Backend Setup (Laravel)
+### 4. Laravel Setup
 
-Install composer. See here for instructions
+Install composer. You can go to the official page for instructions:
 
 <a href="https://getcomposer.org/download/">https://getcomposer.org/download/</a>
 
@@ -72,22 +72,22 @@ After installing composer we can now install all backend dependencies
 composer install
 ```
 
-### 5. Run Backend Commands
+### 5. Database Setup
 
 Make sure you have PostgreSQL installed in your system. Check the official page to see how to install on your specific operating system
 
 <a href="https://www.postgresql.org/download/">https://www.postgresql.org/download/</a>
 
-Create a database in PostgreSQL named 'aralith' and migrate.
+Create a database in PostgreSQL named **aralith** and migrate.
 Make sure your pgsql configuration correctly corresponds to the Database configuration in the .env file
 
 ```bash
 php artisan migrate
 ```
 
-<i>Note: You need to configure the .env file to match your pgsql configuration or vice versa</i>
+> You need to **configure the .env file to match your pgsql configuration** or vice versa
 
-### 6. Frontend Setup (React + Inertia)
+### 6. React + Inertia Setup
 
 Install frontend dependencies
 
@@ -95,7 +95,9 @@ Install frontend dependencies
 npm install
 ```
 
-### 7. Run both scripts via command line to serve locally
+## Usage
+
+You can serve locally by running both scripts
 
 ```bash
 npm run dev
@@ -104,3 +106,11 @@ npm run dev
 ```bash
 php artisan serve
 ```
+
+The website is served via php artisan -> http://127.0.0.1:8000
+
+> If you are seeing errors, make sure that both commands are running
+
+## License
+
+This project is licensed under the MIT License – see the [LICENSE](LICENSE) file for details.
