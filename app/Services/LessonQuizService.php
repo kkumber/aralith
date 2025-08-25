@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\DB;
 use Throwable;
+use Illuminate\Support\Facades\Log;
 
 class LessonQuizService
 {
@@ -41,6 +42,10 @@ class LessonQuizService
                 ];
             });
         } catch (\Throwable $e) {
+            Log::error('Lesson Quiz Flashcard error:', [
+                'exception' => $e
+            ]);
+
             return null;
         }
     }
