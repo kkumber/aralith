@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Exception;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class AiService
 {
@@ -11,21 +12,61 @@ class AiService
     {
         $systemContent = config('ai.prompts.generate.questions');
         $userContent = $this->combineQuizLessonContent($quizData, $lessonData);
-        return $this->callAi($systemContent, $userContent);
+        $decoded = $this->parseAiResponse($this->callAi($systemContent, $userContent));
+        return $decoded;
     }
 
     public function generateFlashcards(string $lessonData)
     {
         $systemContent = config('ai.prompts.generate.flashcard');
         $userContent = $lessonData;
-        return $this->callAi($systemContent, $userContent);
+        $decoded = $this->parseAiResponse($this->callAi($systemContent, $userContent));
+        return $decoded;
     }
 
     public function generateSummary(string $lessonData)
     {
         $systemContent = config('ai.prompts.generate.summary');
         $userContent = $lessonData;
-        return $this->callAi($systemContent, $userContent);
+        $decoded = $this->parseAiResponse($this->callAi($systemContent, $userContent));
+        return $decoded;
+    }
+
+    function parseAiResponse($response)
+    {
+        try {
+            if (is_array($response) && isset($response)) {
+                return $response;
+            };
+    
+            if (is_string($response)) {
+                $decoded = json_decode($response, true);
+
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                  Log::error("Failed to parsed AI results", [
+                    'json_error' => json_last_error_msg(),
+                    'response' => $response
+                  ]);  
+                };
+                return $decoded;
+            };
+
+            // If response is neither array nor string, log it and return null
+            Log::error("Unexpected AI response type", [
+                'type' => gettype($response),
+                'response' => $response,
+                'user_id' => auth()->id()
+            ]);
+            
+            return null;
+        } catch (Exception $e) {
+            Log::error("Error parsing AI response", [
+                'error' => $e->getMessage(),
+                'response' => $response,
+                'user_id' => auth()->id()
+            ]);
+            return null;
+        }
     }
 
     public function callAi(string $systemContent, string $userContent)

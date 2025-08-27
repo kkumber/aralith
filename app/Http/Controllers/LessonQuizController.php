@@ -27,26 +27,28 @@ class LessonQuizController extends Controller
                 ]);
             }
 
-            $summary = json_decode($aiService->generateSummary($validated['lesson']['content']), true);
+            $summary = $aiService->generateSummary($validated['lesson']['content']);
             if (empty($summary) || !is_array($summary)) {
                 throw ValidationException::withMessages([
                     'message' => 'Failed to generate summary from AI. Please try again.'
                 ]);
             }
 
-            $flashcards = json_decode($aiService->generateFlashcards($validated['lesson']['content']), true);
+            $flashcards = $aiService->generateFlashcards($validated['lesson']['content']);
             if (empty($flashcards) || !is_array($flashcards)) {
                 throw ValidationException::withMessages([
                     'message' => 'Failed to generate flashcards from AI. Please try again.'
                 ]);
             }
 
-            $questionsData = json_decode($aiService->generateQuestions($validated['quiz_config'], $validated['lesson']['content']), true);
+            $questionsData = $aiService->generateQuestions($validated['quiz_config'], $validated['lesson']['content']);
             if (empty($questionsData) || !is_array($questionsData)) {
                 throw ValidationException::withMessages([
                     'message' => 'Failed to generate questions from AI. Please try again.'
                 ]);
             }
+
+            dd($questionsData, $flashcards, $summary);
 
             $result = $lessonQuizService->createLessonSummaryFlashcardQuiz(
                 array_merge($validated['lesson'], $summary),
