@@ -3,15 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreLessonQuizRequest;
-use App\Models\Lessons;
 use App\Services\AiService;
 use App\Services\LessonQuizService;
-use Dotenv\Exception\ValidationException;
-use Illuminate\Http\Request;
-use Exception;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
-use Inertia\Inertia;
+use Illuminate\Validation\ValidationException;
 
 
 class LessonQuizController extends Controller
