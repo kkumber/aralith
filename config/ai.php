@@ -13,7 +13,10 @@ return [
         'api_url' => env('GROQ_API_URL'),
         'api_key' => env('GROQ_API_KEY'),
         'models' => [
-            'kimi-k2' => 'moonshotai/kimi-k2-instruct' // chose this because of high rpm and supports structured outputs
+            'kimi-k2' => 'moonshotai/kimi-k2-instruct', // chose this because of high rpm and supports structured outputs
+            'meta-llama' => 'meta-llama/llama-guard-4-12b',
+            'qwen3' => 'qwen/qwen3-32b',
+            'openai' => 'openai/gpt-oss-20b',
         ]
     ],
     'prompts' => [

@@ -48,8 +48,6 @@ class LessonQuizController extends Controller
                 ]);
             }
 
-            dd($questionsData, $flashcards, $summary);
-
             $result = $lessonQuizService->createLessonSummaryFlashcardQuiz(
                 array_merge($validated['lesson'], $summary),
                 $validated['quiz_config'],
@@ -74,7 +72,9 @@ class LessonQuizController extends Controller
             Log::error('Lesson quiz store error: ',  [
                 'exception' => $e
             ]);
-            return back()->withErrors(['message' => 'We had trouble creating your quiz. Please try again later.']);
+            return back()->withErrors([
+                'message' => 'We couldn’t finish setting up your quiz this time. Please try again, and if the issue continues, contact support.'
+            ]);
         }
     }
 }
