@@ -17,6 +17,7 @@ return [
             'meta-llama' => 'meta-llama/llama-guard-4-12b',
             'qwen3' => 'qwen/qwen3-32b',
             'openai' => 'openai/gpt-oss-20b',
+            'gemma2' => 'gemma2-9b-it'
         ]
     ],
     'prompts' => [
@@ -72,6 +73,9 @@ return [
             - Identification: [] options, 1 correct (string)
             - Multiple Answers: 5 options, 2-3 correct (array). Example correct answers ["Apple", "Dog"]
 
+            IMPORTANT: Use EXACTLY these type values: "Multiple Choice", "True/False", "Fill in the blank", "Identification", "Multiple Answers"
+            IMPORTANT: MAKE SURE THAT ALL questions HAVE correct answers
+
             DIFFICULTY:
             - Easy: basic recall
             - Medium: application/analysis  
@@ -94,7 +98,7 @@ return [
             }
             ]
 
-            Generate questions now. Make sure to **only** return the success JSON format.',
+            Generate questions now. Make sure to **only** return the success JSON format and all the questions have correct_answer.',
 
             /* Summarize */
             'summary' => 'Analyze the provided lesson content and create a comprehensive summary. Return your response as a JSON object in this exact format: {"summary": "..."}

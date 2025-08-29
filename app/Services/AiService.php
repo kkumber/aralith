@@ -5,6 +5,7 @@ namespace App\Services;
 use Exception;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Client\PendingRequest;
 
 class AiService
 {
@@ -72,11 +73,30 @@ class AiService
     public function callAi(string $systemContent, string $userContent)
     {
         try {
+            $aiCycleCounter = 0;
+            $aiKeys = array_keys(config('ai.groq.models'));
+
+            // Reset aiCycleCounter if it exceeds the number of models
+            if ($aiCycleCounter >= count($aiKeys)) {
+                $aiCycleCounter = 0;
+            };
+
+            $aiModel = config('ai.groq.models.' . $aiKeys[$aiCycleCounter]);
+
             $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . config('ai.groq.api_key'),
                 'Content-Type' => 'application/json'
-            ])->post(config('ai.groq.api_url'), [
-                'model' => config('ai.groq.models.kimi-k2'),
+            ])->retry(3, function ($retryCount) {
+                return 200 * ($retryCount ** 2); // wait 200ms, 400ms, 800ms
+            }, function (Exception $exception, PendingRequest $request) use ($aiCycleCounter) {
+                // Change the ai model before retry if the exception is due to a 429 (rate limit)
+                if ($exception->getCode() == 429) {
+                    $aiCycleCounter++;
+                };
+
+                return true; // always retry
+            })->post(config('ai.groq.api_url'), [
+                'model' => $aiModel,
                 'messages' => [
                     [
                         'role' => 'system',
@@ -89,7 +109,7 @@ class AiService
                 ],
             ])->throw();
 
-            return $response->json()['choices'][0]['message']['content'];
+            return $response->json()['choices'][0]['message']['content'] ?? null;
         } catch (Exception $e) {
             return ['success' => false, 'error' => 'Error: ' . $e->getMessage()];
         };
