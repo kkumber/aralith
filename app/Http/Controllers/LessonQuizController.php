@@ -27,6 +27,7 @@ class LessonQuizController extends Controller
                 ]);
             }
 
+            // Generate Summary
             $summary = $aiService->generateSummary($validated['lesson']['content']);
             if (empty($summary) || !is_array($summary)) {
                 throw ValidationException::withMessages([
@@ -34,6 +35,7 @@ class LessonQuizController extends Controller
                 ]);
             }
 
+            // Generate Flashcards
             $flashcards = $aiService->generateFlashcards($validated['lesson']['content']);
             if (empty($flashcards) || !is_array($flashcards)) {
                 throw ValidationException::withMessages([
@@ -41,6 +43,7 @@ class LessonQuizController extends Controller
                 ]);
             }
 
+            // Generate Questions
             $questionsData = $aiService->generateQuestions($validated['quiz_config'], $validated['lesson']['content']);
             if (empty($questionsData) || !is_array($questionsData)) {
                 throw ValidationException::withMessages([
@@ -48,6 +51,7 @@ class LessonQuizController extends Controller
                 ]);
             }
 
+            // Combine them all and save them into DB using transaction to avoid orphans
             $result = $lessonQuizService->createLessonSummaryFlashcardQuiz(
                 array_merge($validated['lesson'], $summary),
                 $validated['quiz_config'],

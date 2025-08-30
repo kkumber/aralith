@@ -9,6 +9,11 @@ use Illuminate\Http\Client\PendingRequest;
 
 class AiService
 {
+
+    /**
+     * YES I KNOW I COULD HAVEEEEEEE MADE THESE 3 INTO JUST 1 REUSEABLE FUNCTION BUT NO
+     * 
+     */
     public function generateQuestions(array $quizData, string $lessonData)
     {
         $systemContent = config('ai.prompts.generate.questions');
