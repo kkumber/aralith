@@ -103,7 +103,7 @@ class DocxService
                 throw new \Exception('Failed to create DOCX file');
             }
 
-            $filename = 'quiz_' . preg_replace('/[^A-Za-z0-9_\-]/', '_', $quiz->title) . '.docx';
+            $filename = preg_replace('/[^A-Za-z0-9_\-]/', '_', $quiz->title) . '_Quiz' . '.docx';
 
             return response()->download($tempFile, $filename, [
                 'Content-Type' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
