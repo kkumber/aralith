@@ -86,7 +86,7 @@ class AiService
             $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . config('ai.groq.api_key'),
                 'Content-Type' => 'application/json'
-            ])->retry(3, function ($retryCount) {
+            ])->timeout(60)->retry(3, function ($retryCount) {
                 return 200 * ($retryCount ** 2); // wait 200ms, 400ms, 800ms
             }, function (Exception $exception, PendingRequest $request) use ($aiCycleCounter) {
                 // Change the ai model before retry if the exception is due to a 429 (rate limit)
