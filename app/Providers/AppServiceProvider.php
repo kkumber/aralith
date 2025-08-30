@@ -27,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
             'csrf_token' => fn() => csrf_token(),
 
             'recentLessons' => function () {
-                if (Auth::check()) {
+                if (Auth::check() && 'recently_deleted') {
                     return Cache::remember(
                         'recent_lessons_user_' . Auth::id(),
                         now()->addMinutes(1),

@@ -113,8 +113,8 @@ class AiService
                     ]
                 ],
             ])->throw();
-
-            return $response->json()['choices'][0]['message']['content'] ?? null;
+            $AiResponse = $response->json()['choices'][0]['message']['content'];
+            return $AiResponse ?? null;
         } catch (Exception $e) {
             return ['success' => false, 'error' => 'Error: ' . $e->getMessage()];
         };

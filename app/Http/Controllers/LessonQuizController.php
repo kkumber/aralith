@@ -51,10 +51,7 @@ class LessonQuizController extends Controller
                 ]);
             }
 
-<<<<<<< HEAD
-=======
             // Combine them all and save them into DB using transaction to avoid orphans
->>>>>>> 144bea350277e77bd0d4052efca8e03b72692814
             $result = $lessonQuizService->createLessonSummaryFlashcardQuiz(
                 array_merge($validated['lesson'], $summary),
                 $validated['quiz_config'],
@@ -65,11 +62,11 @@ class LessonQuizController extends Controller
 
             if (empty($result)) {
                 throw ValidationException::withMessages([
-                    'message' => 'Failed to create lesson. Please try again.'
+                    'message' => 'Failed to save lesson. Please try again.'
                 ]);
             }
 
-            Cache::forget('recent_lessons_user_' . auth()->id());
+            Cache::pull('recent_lessons_user_' . auth()->id());
 
             return redirect()->route('lesson.show', $result['lesson']->id)
                 ->with('success', 'Lesson created successfully');

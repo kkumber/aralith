@@ -22,11 +22,6 @@ const useLessonDelete = () => {
     const handleDeleteItems = () => {
         if (!selected.length) return;
 
-        /* 
-            PROBLEM:
-            BULK DELETES ONLY DELETES ONE ITEM WHEN 2 ARE SELECTED?
-            ONE ITEM IN LESSON_IDS ARE TREATED AS INT NOT ARRAY. NEEDS ARRAY.
-        */
         router.post(
             route('lesson.bulkDestroy'),
             { lesson_ids: selected },
@@ -36,6 +31,7 @@ const useLessonDelete = () => {
                     toast.success('Lessons deleted successfully.', {
                         description: getCurrentTimeCustom(),
                     });
+                    router.reload({ only: ['lessons'] });
                     setSelected([]);
                 },
                 onError: (errors) => {
@@ -57,6 +53,7 @@ const useLessonDelete = () => {
                 toast.success('Lesson deleted successfully.', {
                     description: getCurrentTimeCustom(),
                 });
+                router.reload({ only: ['lessons'] });
                 setSelected([]);
             },
             onError: (errors) => {

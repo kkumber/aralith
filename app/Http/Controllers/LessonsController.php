@@ -62,6 +62,7 @@ class LessonsController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     * @param  \App\Models\Lessons  $lesson
      */
     public function destroy(Lessons $lesson)
     {
@@ -69,13 +70,19 @@ class LessonsController extends Controller
 
         try {
             $lesson->delete();
-            Cache::forget('recent_lessons_user_' . auth()->id());
-            return back();
+            Cache::pull('recent_lessons_user_' . auth()->id());
+            return redirect()->route('lesson.index');
         } catch (\Exception $e) {
             return back();
         }
     }
 
+    /**
+     * Destroy multiple records at once
+     * @param Request $request
+     * @param LessonQuizService $lessonQuizService
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function bulkDestroy(Request $request, LessonQuizService $lessonQuizService)
     {
         try {
@@ -85,8 +92,8 @@ class LessonsController extends Controller
             ]);
 
             $deleted = $lessonQuizService->bulkDestroyLessonQuiz(auth()->user(), $validated['lesson_ids']);
-            Cache::forget('recent_lessons_user_' . auth()->id());
-            return back();
+            Cache::pull('recent_lessons_user_' . auth()->id());
+            return redirect()->route('lesson.index');
         } catch (AuthorizationException $e) {
             abort(403, $e->getMessage());
         } catch (\Exception $e) {
