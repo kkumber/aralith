@@ -48,8 +48,6 @@ class LessonQuizController extends Controller
                 ]);
             }
 
-            dd($questionsData, $flashcards, $summary);
-
             $result = $lessonQuizService->createLessonSummaryFlashcardQuiz(
                 array_merge($validated['lesson'], $summary),
                 $validated['quiz_config'],
