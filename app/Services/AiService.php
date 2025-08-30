@@ -5,9 +5,15 @@ namespace App\Services;
 use Exception;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Client\PendingRequest;
 
 class AiService
 {
+
+    /**
+     * YES I KNOW I COULD HAVEEEEEEE MADE THESE 3 INTO JUST 1 REUSEABLE FUNCTION BUT NO
+     * 
+     */
     public function generateQuestions(array $quizData, string $lessonData)
     {
         $systemContent = config('ai.prompts.generate.questions');
@@ -38,15 +44,15 @@ class AiService
             if (is_array($response) && isset($response)) {
                 return $response;
             };
-    
+
             if (is_string($response)) {
                 $decoded = json_decode($response, true);
 
                 if (json_last_error() !== JSON_ERROR_NONE) {
-                  Log::error("Failed to parsed AI results", [
-                    'json_error' => json_last_error_msg(),
-                    'response' => $response
-                  ]);  
+                    Log::error("Failed to parsed AI results", [
+                        'json_error' => json_last_error_msg(),
+                        'response' => $response
+                    ]);
                 };
                 return $decoded;
             };
@@ -57,7 +63,7 @@ class AiService
                 'response' => $response,
                 'user_id' => auth()->id()
             ]);
-            
+
             return null;
         } catch (Exception $e) {
             Log::error("Error parsing AI response", [
@@ -72,11 +78,30 @@ class AiService
     public function callAi(string $systemContent, string $userContent)
     {
         try {
+            $aiCycleCounter = 0;
+            $aiKeys = array_keys(config('ai.groq.models'));
+
+            // Reset aiCycleCounter if it exceeds the number of models
+            if ($aiCycleCounter >= count($aiKeys)) {
+                $aiCycleCounter = 0;
+            };
+
+            $aiModel = config('ai.groq.models.' . $aiKeys[$aiCycleCounter]);
+
             $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . config('ai.groq.api_key'),
                 'Content-Type' => 'application/json'
-            ])->post(config('ai.groq.api_url'), [
-                'model' => config('ai.groq.models.kimi-k2'),
+            ])->timeout(60)->retry(3, function ($retryCount) {
+                return 200 * ($retryCount ** 2); // wait 200ms, 400ms, 800ms
+            }, function (Exception $exception, PendingRequest $request) use ($aiCycleCounter) {
+                // Change the ai model before retry if the exception is due to a 429 (rate limit)
+                if ($exception->getCode() == 429) {
+                    $aiCycleCounter++;
+                };
+
+                return true; // always retry
+            })->post(config('ai.groq.api_url'), [
+                'model' => $aiModel,
                 'messages' => [
                     [
                         'role' => 'system',
@@ -87,30 +112,9 @@ class AiService
                         'content' => $userContent
                     ]
                 ],
-                /* 'response_format' => [
-                    'type' => 'json_schema',
-                    'json_schema' => [
-                        'name' => 'questions',
-                        'schema' => [
-                            'type' => 'array',
-                            'items' => [
-                                'type' => 'object',
-                                'properties' => [
-                                    'type' => ['type' => 'string', 'enum' => ['Multiple Choice', 'True/False', 'Fill in the blank', 'Identification', 'Multiple Answers']],
-                                    'question_text' => ['type' => 'string'],
-                                    'explanation' => ['type' => 'string'],
-                                    'options' => ['type' => 'array', 'items' => ['type' => 'string']],
-                                    'correct_answer' => ['type' => 'string']
-                                ],
-                                'required' => ['type', 'question_text', 'correct_answer'],
-                                'additionalProperties' => false,
-                            ]
-                        ]
-                    ]
-                ] */
             ])->throw();
 
-            return $response->json()['choices'][0]['message']['content'];
+            return $response->json()['choices'][0]['message']['content'] ?? null;
         } catch (Exception $e) {
             return ['success' => false, 'error' => 'Error: ' . $e->getMessage()];
         };

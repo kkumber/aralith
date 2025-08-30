@@ -25,7 +25,7 @@ const Show = () => {
         },
         {
             title: 'Quiz Attempt',
-            href: route('quiz.show', { lesson: quiz.lessons_id }),
+            href: route('quiz.show', { lesson: quiz.id }),
         },
     ];
 
@@ -40,7 +40,7 @@ const Show = () => {
     };
 
     const handleSubmit = () => {
-        router.post(route('quizAttempt.store', { quiz: quiz.lessons_id }), {
+        router.post(route('quizAttempt.store', { quiz: quiz.id }), {
             answers,
         });
     };

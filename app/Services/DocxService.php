@@ -103,7 +103,7 @@ class DocxService
                 throw new \Exception('Failed to create DOCX file');
             }
 
-            $filename = 'quiz_' . preg_replace('/[^A-Za-z0-9_\-]/', '_', $quiz->title) . '.docx';
+            $filename = preg_replace('/[^A-Za-z0-9_\-]/', '_', $quiz->title) . '_Quiz' . '.docx';
 
             return response()->download($tempFile, $filename, [
                 'Content-Type' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
@@ -206,6 +206,10 @@ class DocxService
         }
     }
 
+    /**
+     * Answer Key Page
+     * 
+     */
     private function addAnswerKeySection($section, $quiz)
     {
         $titleStyle = ['name' => 'Arial', 'size' => 16, 'bold' => true];
@@ -222,9 +226,7 @@ class DocxService
             $questionText = "{$questionNumber}. [{$question->type}]";
             $section->addText($questionText, $questionStyle);
 
-            $correctAnswer = is_string($question->correct_answer)
-                ? json_decode($question->correct_answer, true)
-                : $question->correct_answer;
+            $correctAnswer = $question->correct_answer;
 
             if (!empty($correctAnswer)) {
                 $answerText = $this->formatAnswerForKey($question->type, $correctAnswer);

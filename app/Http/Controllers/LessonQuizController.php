@@ -27,6 +27,7 @@ class LessonQuizController extends Controller
                 ]);
             }
 
+            // Generate Summary
             $summary = $aiService->generateSummary($validated['lesson']['content']);
             if (empty($summary) || !is_array($summary)) {
                 throw ValidationException::withMessages([
@@ -34,6 +35,7 @@ class LessonQuizController extends Controller
                 ]);
             }
 
+            // Generate Flashcards
             $flashcards = $aiService->generateFlashcards($validated['lesson']['content']);
             if (empty($flashcards) || !is_array($flashcards)) {
                 throw ValidationException::withMessages([
@@ -41,6 +43,7 @@ class LessonQuizController extends Controller
                 ]);
             }
 
+            // Generate Questions
             $questionsData = $aiService->generateQuestions($validated['quiz_config'], $validated['lesson']['content']);
             if (empty($questionsData) || !is_array($questionsData)) {
                 throw ValidationException::withMessages([
@@ -48,6 +51,10 @@ class LessonQuizController extends Controller
                 ]);
             }
 
+<<<<<<< HEAD
+=======
+            // Combine them all and save them into DB using transaction to avoid orphans
+>>>>>>> 144bea350277e77bd0d4052efca8e03b72692814
             $result = $lessonQuizService->createLessonSummaryFlashcardQuiz(
                 array_merge($validated['lesson'], $summary),
                 $validated['quiz_config'],
@@ -72,7 +79,9 @@ class LessonQuizController extends Controller
             Log::error('Lesson quiz store error: ',  [
                 'exception' => $e
             ]);
-            return back()->withErrors(['message' => 'We had trouble creating your quiz. Please try again later.']);
+            return back()->withErrors([
+                'message' => 'We couldn’t finish setting up your quiz this time. Please try again, and if the issue continues, contact support.'
+            ]);
         }
     }
 }
