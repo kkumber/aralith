@@ -31,7 +31,7 @@ class LessonsController extends Controller
     public function index()
     {
         $userId = auth()->user()->id;
-        $lessons = Lessons::where('user_id', $userId)->latest()->paginate(50);
+        $lessons = Lessons::where('user_id', $userId)->latest()->paginate(10)->withQueryString();
         return Inertia::render('history', ['lessons' => $lessons]);
     }
 
@@ -110,7 +110,8 @@ class LessonsController extends Controller
         $lessons = Lessons::where('user_id', $userId)
             ->where('title', 'like', '%' . $searchedItem . '%')
             ->latest()
-            ->paginate(10);
+            ->paginate(10)
+            ->withQueryString();
 
         return Inertia::render('history', [
             'lessons' => $lessons,

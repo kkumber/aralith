@@ -31,8 +31,9 @@ const useLessonDelete = () => {
                     toast.success('Lessons deleted successfully.', {
                         description: getCurrentTimeCustom(),
                     });
-                    router.reload({ only: ['lessons'] });
                     setSelected([]);
+                    router.reload({ only: ['lessons'] });
+                    router.clearHistory();
                 },
                 onError: (errors) => {
                     toast.error(errors?.message || errors?.general || 'Failed to delete lessons. Please try again.');
@@ -53,8 +54,9 @@ const useLessonDelete = () => {
                 toast.success('Lesson deleted successfully.', {
                     description: getCurrentTimeCustom(),
                 });
-                router.reload({ only: ['lessons'] });
                 setSelected([]);
+                router.reload({ only: ['lessons'] });
+                router.clearHistory();
             },
             onError: (errors) => {
                 toast.error(errors?.message || errors?.general || 'Failed to delete lesson. Please try again.');

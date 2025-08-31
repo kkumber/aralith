@@ -11,7 +11,7 @@ export function NavMain({ items = [], recentItems }: { items: NavItem[]; recentI
                 {items.map((item) => (
                     <SidebarMenuItem key={item.title}>
                         <SidebarMenuButton asChild isActive={item.href === page.url} tooltip={{ children: item.title }}>
-                            <Link href={item.href} prefetch preserveState={false}>
+                            <Link href={item.href} prefetch preserveState={false} preserveScroll={false}>
                                 {item.icon && <item.icon />}
                                 <span>{item.title}</span>
                             </Link>

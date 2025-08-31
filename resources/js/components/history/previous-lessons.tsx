@@ -64,7 +64,6 @@ const PreviousLessons = ({ lessons, selected, handleSelected, handleDeleteItems,
                                             className={`data-[state=checked]:bg-primary-green data-[state=checked]:border-primary-green relative transform transition-all duration-200 ease-out hover:scale-110 active:scale-95 data-[state=checked]:text-white data-[state=unchecked]:bg-[#fafafa] data-[state=unchecked]:dark:bg-[#0a0a0a] ${
                                                 selected.includes(lesson.id) ? 'shadow-primary-green/25 shadow-lg' : 'shadow-sm hover:shadow-md'
                                             }`}
-                                            onCheckedChange={() => handleSelected(lesson.id)}
                                         />
                                     </div>
                                 </div>
