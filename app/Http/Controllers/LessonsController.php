@@ -108,7 +108,7 @@ class LessonsController extends Controller
 
         // Select * from Lessons WHERE user_id = $userId AND title LIKE '%searchedItem%'
         $lessons = Lessons::where('user_id', $userId)
-            ->where('title', 'like', '%' . $searchedItem . '%')
+            ->where('title', 'ilike', '%' . $searchedItem . '%')
             ->latest()
             ->paginate(10)
             ->withQueryString();
