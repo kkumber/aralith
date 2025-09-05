@@ -115,6 +115,7 @@ class LessonsController extends Controller
 
         return Inertia::render('history', [
             'lessons' => $lessons,
+            'result_found' => $lessons->total()
         ]);
     }
 }

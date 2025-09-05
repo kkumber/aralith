@@ -150,6 +150,5 @@ export interface Flash {
 }
 
 export interface ErrorResponse {
-    message?: string;
-    general?: string;
+    [key: string?] : string;
 }

@@ -1,6 +1,7 @@
 import LessonSearch from '@/components/history/lesson-search';
 import LessonSelectionControls from '@/components/history/lesson-selection-controls';
 import NoLessonMessage from '@/components/history/no-lesson-message';
+import NoSearchResult from '@/components/history/no-search-result';
 import PreviousLessons from '@/components/history/previous-lessons';
 import { Button } from '@/components/ui/button';
 import useLessonDelete from '@/hooks/useLessonDelete';
@@ -17,8 +18,9 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 const History = () => {
-    const { lessons } = usePage<{
+    const { lessons, result_found } = usePage<{
         lessons: PaginatedResponse<LessonResponse>;
+        result_found: number;
     }>().props;
 
     const { selected, setSelection, handleSelected, handleDeleteItems, handleConfirmDialog } = useLessonDelete();
@@ -60,7 +62,9 @@ const History = () => {
                 />
 
                 {/* Show previous lessons or no lesson message based on data */}
-                {lessons && lessons.data.length ? (
+                {result_found === 0 ? (
+                    <NoSearchResult />
+                ) : lessons && lessons.data.length > 0 ? (
                     <PreviousLessons
                         lessons={lessons.data}
                         selected={selected}
