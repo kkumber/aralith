@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Client\PendingRequest;
+use Illuminate\Support\Facades\Cache;
 
 class AiService
 {
@@ -78,27 +79,30 @@ class AiService
     public function callAi(string $systemContent, string $userContent)
     {
         try {
-            $aiCycleCounter = 0;
+            $aICycleCacheKey = 'ai_model_index_cycle';
+
+            // Get current model index from cache (default to 0 if not set)
+            $aIModelIndex = Cache::get($aICycleCacheKey, 0);
+
             $aiKeys = array_keys(config('ai.groq.models'));
-
-            // Reset aiCycleCounter if it exceeds the number of models
-            if ($aiCycleCounter >= count($aiKeys)) {
-                $aiCycleCounter = 0;
-            };
-
-            $aiModel = config('ai.groq.models.' . $aiKeys[$aiCycleCounter]);
+            $aiModel = config('ai.groq.models.' . $aiKeys[$aIModelIndex]);
 
             $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . config('ai.groq.api_key'),
                 'Content-Type' => 'application/json'
             ])->timeout(60)->retry(3, function ($retryCount) {
                 return 200 * ($retryCount ** 2); // wait 200ms, 400ms, 800ms
-            }, function (Exception $exception, PendingRequest $request) use ($aiCycleCounter) {
+            }, function (Exception $exception, PendingRequest $request) use ($aiKeys, $aICycleCacheKey) {
                 // Change the ai model before retry if the exception is due to a 429 (rate limit)
                 if ($exception->getCode() == 429) {
-                    $aiCycleCounter++;
-                };
+                    $currentModelIndex = Cache::get($aICycleCacheKey, 0);
+                    $nextModelIndex = ($currentModelIndex + 1) % count($aiKeys);
 
+                    // Update cache with next model index
+                    Cache::forever($aICycleCacheKey, $nextModelIndex);
+
+                    return true;
+                }
                 return true; // always retry
             })->post(config('ai.groq.api_url'), [
                 'model' => $aiModel,
@@ -113,11 +117,12 @@ class AiService
                     ]
                 ],
             ])->throw();
+
             $AiResponse = $response->json()['choices'][0]['message']['content'];
             return $AiResponse ?? null;
         } catch (Exception $e) {
             return ['success' => false, 'error' => 'Error: ' . $e->getMessage()];
-        };
+        }
     }
 
     public function combineQuizLessonContent(array $quizData, string $lessonData): string
