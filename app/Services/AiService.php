@@ -117,9 +117,12 @@ class AiService
                     ]
                 ],
             ])->throw();
+            $jsonData = $response->json();
+            $AiModel = $jsonData['model'];
+            $AiContent = $jsonData['choices'][0]['message']['content'];
 
-            $AiResponse = $response->json()['choices'][0]['message']['content'];
-            return $AiResponse ?? null;
+            Log::info('AI Response: ', ['ai_model' => $AiModel, 'ai_response' => $AiContent]);
+            return $AiContent ?? null;
         } catch (Exception $e) {
             return ['success' => false, 'error' => 'Error: ' . $e->getMessage()];
         }
