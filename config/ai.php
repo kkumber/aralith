@@ -22,7 +22,7 @@ return [
         ]
     ],
     'prompts' => [
-        'general' => "You are an educational content generator.  
+        'general' => "You are an educational content generator. Do NOT include triple backticks or any formatting.  
                     Your core mission is defined by these non‑negotiable rules:
 
                     1. **Format Enforcement**  

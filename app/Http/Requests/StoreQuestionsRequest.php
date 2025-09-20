@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreQuestionsRequest extends FormRequest
 {
@@ -22,7 +23,22 @@ class StoreQuestionsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'questions' => ['required', 'array'],
+            'questions.*.type' => [
+                'required',
+                Rule::in([
+                    'Multiple Choice',
+                    'True/False',
+                    'Fill in the blank',
+                    'Identification',
+                    'Multiple Answers',
+                    'Mixed',
+                ]),
+            ],
+            'questions.*.question_text' => ['required', 'string'],
+            'questions.*.explanation' => ['required', 'string'],
+            'questions.*.options' => ['required', 'array'],
+            'questions.*.correct_answer' => ['required'],
         ];
     }
 }

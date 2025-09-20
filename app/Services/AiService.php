@@ -7,36 +7,99 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class AiService
 {
+    protected function validateQuestions(): array
+    {
+        return [
+            'questions' => ['required', 'array'],
+            'questions.*.type' => ['required', Rule::in([
+                'Multiple Choice', 'True/False', 'Fill in the blank',
+                'Identification', 'Multiple Answers', 'Mixed',
+            ])],
+            'questions.*.question_text' => ['required', 'string'],
+            'questions.*.explanation'   => ['required', 'string'],
+            'questions.*.options'       => ['required', 'array'],
+            'questions.*.correct_answer'=> ['required'],
+        ];
+    }
 
-    /**
-     * YES I KNOW I COULD HAVEEEEEEE MADE THESE 3 INTO JUST 1 REUSEABLE FUNCTION BUT NO
-     * 
-     */
+    protected function validateSummary(): array
+    {
+        return [
+            'summary' => ['required', 'string']
+        ];
+    }
+
+    protected function validateFlashcards(): array 
+    {
+        return [
+            '*' => 'array',
+            '*.question' => ['required', 'string'],
+            '*.answer' => ['required', 'string']
+        ];
+    }
+
     public function generateQuestions(array $quizData, string $lessonData)
     {
         $systemContent = config('ai.prompts.generate.questions');
         $userContent = $this->combineQuizLessonContent($quizData, $lessonData);
-        $decoded = $this->parseAiResponse($this->callAi($systemContent, $userContent));
-        return $decoded;
+
+        // Use loop to retry if some values are missing
+        for ($i = 0; $i < 3; $i++) {
+            $decoded = $this->parseAiResponse($this->callAi($systemContent, $userContent));
+            $validator = Validator::make($decoded, $this->validateQuestions());
+    
+            if ($validator->passes()) {
+                return $decoded;
+            }
+        }
+        Log::error('AI failed to generate valid questions after retries', [
+                'quizData' => $quizData,
+            ]);
+
+        return null;
     }
 
     public function generateFlashcards(string $lessonData)
     {
         $systemContent = config('ai.prompts.generate.flashcard');
         $userContent = $lessonData;
-        $decoded = $this->parseAiResponse($this->callAi($systemContent, $userContent));
-        return $decoded;
+
+        // Use loop to retry if some values are missing
+        for ($i = 0; $i < 3; $i++) {
+            $decoded = $this->parseAiResponse($this->callAi($systemContent, $userContent));
+            $validator = Validator::make($decoded, $this->validateFlashcards());
+    
+            if ($validator->passes()) {
+                return $decoded;
+            }
+        }
+        Log::error('Failed to generate valid flashcards after 3 retry');
+
+        return null;
     }
 
     public function generateSummary(string $lessonData)
     {
         $systemContent = config('ai.prompts.generate.summary');
         $userContent = $lessonData;
-        $decoded = $this->parseAiResponse($this->callAi($systemContent, $userContent));
-        return $decoded;
+
+        // Use loop to retry if some values are missing
+        for ($i = 0; $i < 3; $i++) {
+            $decoded = $this->parseAiResponse($this->callAi($systemContent, $userContent));
+            $validator = Validator::make($decoded, $this->validateSummary());
+    
+            if ($validator->passes()) {
+                return $decoded;
+            }
+        }
+        Log::error('Failed to generate valid summary after 3 retry');
+
+        return null;
     }
 
     public function parseAiResponse($response)
@@ -113,7 +176,7 @@ class AiService
                 'Content-Type' => 'application/json'
             ])->timeout(60)->retry(3, function ($retryCount) {
                 return 200 * ($retryCount ** 2); // wait 200ms, 400ms, 800ms
-            }, function (Exception $exception, PendingRequest $request) use ($aiKeys, $aICycleCacheKey) {
+            }, function (Exception $exception, PendingRequest $request) use ($aiKeys, $aICycleCacheKey, $systemContent, $userContent) {
                 Log::warning("Retry attempt due to exception", [
                     'code' => $exception->getCode(),
                     'message' => $exception->getMessage(),
@@ -126,6 +189,27 @@ class AiService
 
                     // Update cache with next model index
                     Cache::forever($aICycleCacheKey, $nextModelIndex);
+
+                    // uncomment with token if we want to rotate the api key used as well. Must add it into the ai.config file
+                    // $request->withToken()
+
+                    // Get new model
+                    $newModel = config('ai.groq.models.' . $aiKeys[$nextModelIndex]);
+
+                    // Overwrite request body with new Model
+                    $request->withBody(json_encode([
+                        'model' => $newModel,
+                        'messages' => [
+                            [
+                                'role' => 'system',
+                                'content' => config('ai.prompts.general') . $systemContent
+                            ],
+                            [
+                                'role' => 'user',
+                                'content' => $userContent
+                            ]
+                        ]]), 'application/json');
+
 
                    Log::info("Rate limit hit. Switching AI model index from {$currentModelIndex} to {$nextModelIndex}");
                 }
