@@ -66,15 +66,15 @@ class LessonQuizController extends Controller
                 ]);
             }
 
-            Cache::pull('recent_lessons_user_' . auth()->id());
+            Cache::pull('recent_lessons_user_' . $user->id);
 
             return redirect()->route('lesson.show', $result['lesson']->id)
                 ->with('success', 'Lesson created successfully');
         } catch (\Throwable $e) {
             Log::error('Lesson quiz store error: ',  [
                 'type' => get_class($e),
-                'message' => $e->getMessage($e),
-                'user_id' => $user->id()
+                'message' => $e->getMessage(),
+                'user_id' => $user->id
             ]);
             return back()->withErrors([
                 'message' => 'We couldn’t finish setting up your quiz this time. Please try again, and if the issue continues, contact support.'

@@ -70,7 +70,7 @@ class LessonsController extends Controller
 
         try {
             $lesson->delete();
-            Cache::pull('recent_lessons_user_' . auth()->id());
+            Cache::pull('recent_lessons_user_' . auth()->id);
             return redirect()->route('lesson.index');
         } catch (\Exception $e) {
             return back();

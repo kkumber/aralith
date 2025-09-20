@@ -39,42 +39,63 @@ class AiService
         return $decoded;
     }
 
-    function parseAiResponse($response)
+    public function parseAiResponse($response)
     {
+        $userId = auth()->id();
         try {
-            if (is_array($response) && isset($response)) {
+            // Already a PHP array
+            if (is_array($response)) {
                 return $response;
-            };
+            }
 
+            // If it's a string, try decoding
             if (is_string($response)) {
                 $decoded = json_decode($response, true);
 
-                if (json_last_error() !== JSON_ERROR_NONE) {
-                    Log::error("Failed to parsed AI results", [
-                        'json_error' => json_last_error_msg(),
-                        'response' => $response
-                    ]);
-                };
-                return $decoded;
-            };
+                // If first decode was successful
+                if (json_last_error() === JSON_ERROR_NONE) {
+                    // If decoded result is still a string, try again (double-encoded case)
+                    if (is_string($decoded)) {
+                        $secondDecode = json_decode($decoded, true);
+                        if (json_last_error() === JSON_ERROR_NONE && is_array($secondDecode)) {
+                            return $secondDecode;
+                        }
+                    }
 
-            // If response is neither array nor string, log it and return null
+                    // If decoded result is already an array
+                    if (is_array($decoded)) {
+                        return $decoded;
+                    }
+                }
+
+                // Log if decoding failed
+                Log::error("Failed to parse AI results", [
+                    'json_error' => json_last_error_msg(),
+                    'response'   => $response,
+                    'user_id'    => $userId
+                ]);
+
+                return null;
+            }
+
+            // If response is neither array nor string
             Log::error("Unexpected AI response type", [
-                'type' => gettype($response),
+                'type'     => gettype($response),
                 'response' => $response,
-                'user_id' => auth()->id()
+                'user_id'  => $userId
             ]);
 
             return null;
         } catch (Exception $e) {
             Log::error("Error parsing AI response", [
-                'error' => $e->getMessage(),
+                'error'    => $e->getMessage(),
                 'response' => $response,
-                'user_id' => auth()->id()
+                'user_id'  => $userId
             ]);
             return null;
         }
     }
+
 
     public function callAi(string $systemContent, string $userContent)
     {
@@ -93,6 +114,11 @@ class AiService
             ])->timeout(60)->retry(3, function ($retryCount) {
                 return 200 * ($retryCount ** 2); // wait 200ms, 400ms, 800ms
             }, function (Exception $exception, PendingRequest $request) use ($aiKeys, $aICycleCacheKey) {
+                Log::warning("Retry attempt due to exception", [
+                    'code' => $exception->getCode(),
+                    'message' => $exception->getMessage(),
+                ]);
+
                 // Change the ai model before retry if the exception is due to a 429 (rate limit)
                 if ($exception->getCode() == 429) {
                     $currentModelIndex = Cache::get($aICycleCacheKey, 0);
@@ -101,7 +127,7 @@ class AiService
                     // Update cache with next model index
                     Cache::forever($aICycleCacheKey, $nextModelIndex);
 
-                    return true;
+                   Log::info("Rate limit hit. Switching AI model index from {$currentModelIndex} to {$nextModelIndex}");
                 }
                 return true; // always retry
             })->post(config('ai.groq.api_url'), [
