@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
+use function Pest\Laravel\json;
+
 class AiService
 {
     protected function validateQuestions(): array
@@ -53,6 +55,11 @@ class AiService
             $decoded = $this->parseAiResponse($this->callAi($systemContent, $userContent));
             $validator = Validator::make($decoded, $this->validateQuestions());
     
+            if ($validator->fails()) {
+                $errors = $validator->errors()->toArray();
+                Log::error('Validation Error', ['validation_error', $errors]);
+            };
+            
             if ($validator->passes()) {
                 return $decoded;
             }
@@ -73,6 +80,11 @@ class AiService
         for ($i = 0; $i < 3; $i++) {
             $decoded = $this->parseAiResponse($this->callAi($systemContent, $userContent));
             $validator = Validator::make($decoded, $this->validateFlashcards());
+
+            if ($validator->fails()) {
+                $errors = $validator->errors()->toArray();
+                Log::error('Validation Error', ['validation_error', $errors]);
+            };
     
             if ($validator->passes()) {
                 return $decoded;
@@ -93,6 +105,11 @@ class AiService
             $decoded = $this->parseAiResponse($this->callAi($systemContent, $userContent));
             $validator = Validator::make($decoded, $this->validateSummary());
     
+            if ($validator->fails()) {
+                $errors = $validator->errors()->toArray();
+                Log::error('Validation Error', ['validation_error', $errors]);
+            };
+
             if ($validator->passes()) {
                 return $decoded;
             }
@@ -105,15 +122,19 @@ class AiService
     public function parseAiResponse($response)
     {
         $userId = auth()->id();
+
+        // Clean markdowns first or literal characters
+        $cleanString = str_replace(["\r\n", "\r", "\n", '\\n', '```json'], ' ', $response);
+
         try {
             // Already a PHP array
-            if (is_array($response)) {
-                return $response;
+            if (is_array($cleanString)) {
+                return $cleanString;
             }
 
             // If it's a string, try decoding
-            if (is_string($response)) {
-                $decoded = json_decode($response, true);
+            if (is_string($cleanString)) {
+                $decoded = json_decode($cleanString, true);
 
                 // If first decode was successful
                 if (json_last_error() === JSON_ERROR_NONE) {
@@ -131,21 +152,21 @@ class AiService
                     }
                 }
 
-                // Log if decoding failed
-                Log::error("Failed to parse AI results", [
-                    'json_error' => json_last_error_msg(),
-                    'response'   => $response,
-                    'user_id'    => $userId
-                ]);
-
-                return null;
+                if (json_last_error() === JSON_ERROR_SYNTAX) {
+                    $encoded = json_encode($cleanString, JSON_UNESCAPED_SLASHES);
+                    $decodeAfterEncode = json_decode($encoded, true);
+                    Log::info('Decoded after encode', ['encoded' => $encoded, 'decode_after_encode' => $decodeAfterEncode]);
+                    return $decodeAfterEncode;
+                }
             }
 
-            // If response is neither array nor string
-            Log::error("Unexpected AI response type", [
-                'type'     => gettype($response),
-                'response' => $response,
-                'user_id'  => $userId
+            // Log if decoding failed
+            Log::error("Failed to parse AI results", [
+                'json_error' => json_last_error_msg(),
+                'response'   => $response,
+                'encoded' => $encoded ?? '',
+                'clean_string' => $cleanString,
+                'user_id'    => $userId
             ]);
 
             return null;
@@ -153,6 +174,8 @@ class AiService
             Log::error("Error parsing AI response", [
                 'error'    => $e->getMessage(),
                 'response' => $response,
+                'encoded' => $encoded ?? '',
+                'clean_string' => $cleanString,
                 'user_id'  => $userId
             ]);
             return null;
