@@ -123,50 +123,45 @@ class AiService
     {
         $userId = auth()->id();
 
-        // Clean markdowns first or literal characters
-        $cleanString = str_replace(["\r\n", "\r", "\n", '\\n', '```json'], ' ', $response);
-
         try {
-            // Already a PHP array
-            if (is_array($cleanString)) {
-                return $cleanString;
+            if (is_array($response)) {
+                return $response;
             }
 
-            // If it's a string, try decoding
-            if (is_string($cleanString)) {
-                $decoded = json_decode($cleanString, true);
+            // First Decode
+            $decoded = json_decode($response, true); 
 
-                // If first decode was successful
-                if (json_last_error() === JSON_ERROR_NONE) {
-                    // If decoded result is still a string, try again (double-encoded case)
-                    if (is_string($decoded)) {
-                        $secondDecode = json_decode($decoded, true);
-                        if (json_last_error() === JSON_ERROR_NONE && is_array($secondDecode)) {
-                            return $secondDecode;
-                        }
-                    }
-
-                    // If decoded result is already an array
-                    if (is_array($decoded)) {
-                        return $decoded;
-                    }
+            // If first decode was successful
+            if (json_last_error() === JSON_ERROR_NONE) {
+                // If decoded result is already an array
+                Log::info('First decoding...', ['first_decode' => $decoded]);
+                if (is_array($decoded)) {
+                    return $decoded;
                 }
+                // If decoded result is still a string, try again (double-encoded case)
+                $secondDecode = json_decode($decoded, true);
 
-                if (json_last_error() === JSON_ERROR_SYNTAX) {
-                    $encoded = json_encode($cleanString, JSON_UNESCAPED_SLASHES);
-                    $decodeAfterEncode = json_decode($encoded, true);
-                    Log::info('Decoded after encode', ['encoded' => $encoded, 'decode_after_encode' => $decodeAfterEncode]);
-                    return $decodeAfterEncode;
-                }
+                Log::info('Second decoding...', ['second_decode' => $secondDecode]);
+
+                if (json_last_error() === JSON_ERROR_NONE && is_array($secondDecode)) {
+                    return $secondDecode;
+                }                
             }
 
+            // Case 3: decode failed, maybe double quotes wrapping JSON
+            $secondTry = json_decode(trim($response, "\""), true);
+
+            Log::info('Second Try', ['second_try' => $secondTry]);
+            if (json_last_error() === JSON_ERROR_NONE && is_array($secondTry)) {
+                return $secondTry;
+            }
+            
             // Log if decoding failed
             Log::error("Failed to parse AI results", [
-                'json_error' => json_last_error_msg(),
-                'response'   => $response,
-                'encoded' => $encoded ?? '',
-                'clean_string' => $cleanString,
-                'user_id'    => $userId
+                'response' => $response,
+                'decoded' => $decoded,
+                'second_decode' => $secondDecode ?? '',
+                'second_try' => $secondTry ?? ''
             ]);
 
             return null;
@@ -174,8 +169,6 @@ class AiService
             Log::error("Error parsing AI response", [
                 'error'    => $e->getMessage(),
                 'response' => $response,
-                'encoded' => $encoded ?? '',
-                'clean_string' => $cleanString,
                 'user_id'  => $userId
             ]);
             return null;
@@ -197,8 +190,10 @@ class AiService
             $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . config('ai.groq.api_key'),
                 'Content-Type' => 'application/json'
+
             ])->timeout(60)->retry(3, function ($retryCount) {
                 return 200 * ($retryCount ** 2); // wait 200ms, 400ms, 800ms
+
             }, function (Exception $exception, PendingRequest $request) use ($aiKeys, $aICycleCacheKey, $systemContent, $userContent) {
                 Log::warning("Retry attempt due to exception", [
                     'code' => $exception->getCode(),
