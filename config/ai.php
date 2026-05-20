@@ -3,22 +3,22 @@
 
 return [
     'openrouter' => [
-        'api_url' => env('OPENROUTER_API_KEY'),
-        'api_key' => env('OPENROUTER_API_URL'),
+        'api_url' => env('OPENROUTER_API_URL'),
+        'api_key' => env('OPENROUTER_API_KEY'),
         'models' => [
             'deepseek' => 'deepseek-r1',
+            'gemma' => 'google/gemma-4-31b-it',
         ],
     ],
     'groq' => [
         'api_url' => env('GROQ_API_URL'),
         'api_key' => env('GROQ_API_KEY'),
         'models' => [
-            'kimi-k2' => 'moonshotai/kimi-k2-instruct-0905',
-            // 'qwen3' => 'qwen/qwen3-32b',
-            // 'openai' => 'openai/gpt-oss-20b',
-            // // 'gemma2' => 'gemma2-9b-it',
-            // 'llama-instant' => 'llama-3.1-8b-instant',
-            // 'llama-versatile' => 'llama-3.3-70b-versatile',
+            'qwen3' => 'qwen/qwen3-32b',
+            'openai' => 'openai/gpt-oss-120b',
+            'gemma2' => 'gemma2-9b-it',
+            'llama-instant' => 'llama-3.1-8b-instant',
+            'llama-versatile' => 'llama-3.3-70b-versatile',
         ]
     ],
     'prompts' => [
@@ -41,15 +41,25 @@ return [
 
         'generate' => [
             /* Flashcard */
-            'flashcard' => 'Create flashcards from the provided lesson content. Return ONLY a valid JSON array in this exact format: [{"question": "...", "answer": "..."}]
+            'flashcard' => 'Create flashcards from the provided lesson content. 
+                Return ONLY a valid JSON array. Each object MUST use exactly these two keys: "question" and "answer".
 
-            Requirements:
-            - Generate 10-20 flashcards covering key concepts, definitions, facts, and processes from the lesson
-            - Include various question types: definitions, factual recall, explanations, applications, comparisons
-            - Questions must be clear and focused on one concept each
-            - Answers must be accurate and complete based solely on the lesson content
-            - Use only information provided in the lesson data - do not add external knowledge
-            - Ensure proper JSON syntax with no additional text or formatting',
+                Example format:
+                [
+                {"question": "What is X?", "answer": "X is..."},
+                {"question": "Define Y.", "answer": "Y means..."}
+                ]
+
+                Requirements:
+                - Maximum 20 flashcards
+                - Use ONLY the keys "question" and "answer" — no other key names
+                - Cover key concepts, definitions, facts, and processes from the lesson
+                - Questions must be clear and focused on one concept each
+                - Answers must be accurate and complete based solely on the lesson content
+                - Do not add new keys or properties, and do not include any null values
+                - No external knowledge, no extra text, no markdown formatting
+                - The response must match the example format exactly, with all questions and answers as string values in a JSON array. Do not include any additional text or formatting outside of the JSON array.
+                - Do not add any new keys or properties, and do not include any null values, the response must be simply an array of objects with "question" and "answer" keys only and nothing else.',
 
             /* Questions */
             'questions' => 'You are QuizMasterAI, a professional quiz maker that only answers in JSON with the specific schema given that transforms lesson content into quiz questions based on the quiz configuration:

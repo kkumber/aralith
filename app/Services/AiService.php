@@ -50,24 +50,28 @@ class AiService
         $systemContent = config('ai.prompts.generate.questions');
         $userContent = $this->combineQuizLessonContent($quizData, $lessonData);
 
-        // Use loop to retry if some values are missing
         for ($i = 0; $i < 3; $i++) {
             $decoded = $this->parseAiResponse($this->callAi($systemContent, $userContent));
-            $validator = Validator::make($decoded, $this->validateQuestions());
-    
-            if ($validator->fails()) {
-                $errors = $validator->errors()->toArray();
-                Log::error('Validation Error', ['validation_error', $errors]);
-            };
-            
-            if ($validator->passes()) {
-                return $decoded;
-            }
-        }
-        Log::error('AI failed to generate valid questions after retries', [
-                'quizData' => $quizData,
-            ]);
 
+            if (is_null($decoded)) continue;
+
+            // Unwrap {"questions": [...]} if present
+            $questions = $decoded['questions'] ?? $decoded;
+
+            $validator = Validator::make(
+                ['questions' => $questions],  // always wrap for validation
+                $this->validateQuestions()
+            );
+
+            if ($validator->fails()) {
+                Log::error('Validation Error', ['validation_error', $validator->errors()->toArray()]);
+                continue;
+            }
+
+            return $questions; // return the flat array
+        }
+
+        Log::error('AI failed to generate valid questions after retries', ['quizData' => $quizData]);
         return null;
     }
 
@@ -128,43 +132,39 @@ class AiService
                 return $response;
             }
 
-            // First Decode
-            $decoded = json_decode($response, true); 
-
-            // If first decode was successful
-            if (json_last_error() === JSON_ERROR_NONE) {
-                // If decoded result is already an array
-                Log::info('First decoding...', ['first_decode' => $decoded]);
-                if (is_array($decoded)) {
-                    return $decoded;
-                }
-                // If decoded result is still a string, try again (double-encoded case)
-                $secondDecode = json_decode($decoded, true);
-
-                Log::info('Second decoding...', ['second_decode' => $secondDecode]);
-
-                if (json_last_error() === JSON_ERROR_NONE && is_array($secondDecode)) {
-                    return $secondDecode;
-                }                
+            // Unwrap double-encoded string if needed
+            $raw = $response;
+            if (str_starts_with(trim($raw), '"') && str_ends_with(trim($raw), '"')) {
+                $raw = json_decode($raw, true) ?? $raw;
             }
 
-            // Case 3: decode failed, maybe double quotes wrapping JSON
-            $secondTry = json_decode(trim($response, "\""), true);
+            // Extract JSON array or object if buried in extra text
+            $raw = $this->extractJson($raw);
 
-            Log::info('Second Try', ['second_try' => $secondTry]);
-            if (json_last_error() === JSON_ERROR_NONE && is_array($secondTry)) {
-                return $secondTry;
+            $decoded = json_decode($raw, true);
+
+            if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                Log::info('Parsed successfully', ['count' => count($decoded)]);
+                return $decoded;
             }
-            
-            // Log if decoding failed
+
+            // Attempt to repair common AI JSON mistakes
+            $repaired = $this->repairJson($raw);
+            $decoded = json_decode($repaired, true);
+
+            if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                Log::info('Parsed after repair', ['count' => count($decoded)]);
+                return $decoded;
+            }
+
             Log::error("Failed to parse AI results", [
                 'response' => $response,
-                'decoded' => $decoded,
-                'second_decode' => $secondDecode ?? '',
-                'second_try' => $secondTry ?? ''
+                'repaired' => $repaired,
+                'json_error' => json_last_error_msg(),
             ]);
 
             return null;
+
         } catch (Exception $e) {
             Log::error("Error parsing AI response", [
                 'error'    => $e->getMessage(),
@@ -175,17 +175,70 @@ class AiService
         }
     }
 
+    /**
+     * Extract the first complete JSON array or object from a string
+     * that may have surrounding text or markdown fences.
+     */
+    private function extractJson(string $text): string
+    {
+        // Strip markdown code fences
+        $text = preg_replace('/^```(?:json)?\s*/m', '', $text);
+        $text = preg_replace('/\s*```$/m', '', $text);
+        $text = trim($text);
+
+        // Find the first [ or { and its matching closing bracket
+        $start = min(
+            ($p = strpos($text, '[')) !== false ? $p : PHP_INT_MAX,
+            ($p = strpos($text, '{')) !== false ? $p : PHP_INT_MAX,
+        );
+
+        if ($start === PHP_INT_MAX) {
+            return $text;
+        }
+
+        $openChar  = $text[$start];
+        $closeChar = $openChar === '[' ? ']' : '}';
+        $depth     = 0;
+        $inString  = false;
+        $escape    = false;
+        $end       = $start;
+
+        for ($i = $start; $i < strlen($text); $i++) {
+            $char = $text[$i];
+
+            if ($escape) { $escape = false; continue; }
+            if ($char === '\\' && $inString) { $escape = true; continue; }
+            if ($char === '"') { $inString = !$inString; continue; }
+            if ($inString) continue;
+
+            if ($char === $openChar)  $depth++;
+            if ($char === $closeChar) { $depth--; if ($depth === 0) { $end = $i; break; } }
+        }
+
+        return substr($text, $start, $end - $start + 1);
+    }
+
+    /**
+     * Fix the specific "missing opening brace" bug AI models sometimes produce.
+     * Turns },<whitespace>"key": into },{"key":
+     */
+    private function repairJson(string $json): string
+    {
+        // Fix missing { after a closing object inside an array
+        // Pattern: },  "question": → }, {"question":
+        $json = preg_replace('/\},(\s*)"(question|answer|type|options|correct_answer|explanation)":/', '},{$1"$2":', $json);
+
+        // Fix trailing commas before ] or }
+        $json = preg_replace('/,(\s*[\]}])/', '$1', $json);
+
+        return $json;
+    }
+
 
     public function callAi(string $systemContent, string $userContent)
     {
         try {
-            $aICycleCacheKey = 'ai_model_index_cycle';
 
-            // Get current model index from cache (default to 0 if not set)
-            $aIModelIndex = Cache::get($aICycleCacheKey, 0);
-
-            $aiKeys = array_keys(config('ai.groq.models'));
-            $aiModel = config('ai.groq.models.' . $aiKeys[$aIModelIndex]);
 
             $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . config('ai.groq.api_key'),
@@ -194,46 +247,15 @@ class AiService
             ])->timeout(60)->retry(3, function ($retryCount) {
                 return 200 * ($retryCount ** 2); // wait 200ms, 400ms, 800ms
 
-            }, function (Exception $exception, PendingRequest $request) use ($aiKeys, $aICycleCacheKey, $systemContent, $userContent) {
+            }, function (Exception $exception, PendingRequest $request) use ($systemContent, $userContent) {
                 Log::warning("Retry attempt due to exception", [
                     'code' => $exception->getCode(),
                     'message' => $exception->getMessage(),
                 ]);
 
-                // Change the ai model before retry if the exception is due to a 429 (rate limit)
-                if ($exception->getCode() == 429) {
-                    $currentModelIndex = Cache::get($aICycleCacheKey, 0);
-                    $nextModelIndex = ($currentModelIndex + 1) % count($aiKeys);
-
-                    // Update cache with next model index
-                    Cache::forever($aICycleCacheKey, $nextModelIndex);
-
-                    // uncomment with token if we want to rotate the api key used as well. Must add it into the ai.config file
-                    // $request->withToken()
-
-                    // Get new model
-                    $newModel = config('ai.groq.models.' . $aiKeys[$nextModelIndex]);
-
-                    // Overwrite request body with new Model
-                    $request->withBody(json_encode([
-                        'model' => $newModel,
-                        'messages' => [
-                            [
-                                'role' => 'system',
-                                'content' => config('ai.prompts.general') . $systemContent
-                            ],
-                            [
-                                'role' => 'user',
-                                'content' => $userContent
-                            ]
-                        ]]), 'application/json');
-
-
-                   Log::info("Rate limit hit. Switching AI model index from {$currentModelIndex} to {$nextModelIndex}");
-                }
                 return true; // always retry
             })->post(config('ai.groq.api_url'), [
-                'model' => $aiModel,
+                'model' => config('ai.groq.models.openai'),
                 'messages' => [
                     [
                         'role' => 'system',
