@@ -3,6 +3,10 @@ services:
     image: somethinghere
     ports:
       - "8000:8000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/vendor
   
   database:
     image: postgres:18.4

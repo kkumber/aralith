@@ -5,7 +5,6 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 EXPOSE 3000
-CMD ["npm", "run", "dev"]
 
 
 # PHP development environment
@@ -43,7 +42,7 @@ RUN echo "upload_max_filesize=10M" > /usr/local/etc/php/conf.d/uploads.ini && \
 EXPOSE 8000
 
 # Start the Laravel development server
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000", "&&", "npm", "run", "dev"]
 
 
 

@@ -1,0 +1,40 @@
+# Git
+.git
+.gitignore
+
+# Docker & CI
+Dockerfile
+docker-compose.yml
+.github
+
+# Dependencies
+node_modules
+vendor
+
+# Environment & Secrets
+.env
+.env.*
+!.env.example
+
+# Development/IDE Configs
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# OS junk files
+.DS_Store
+Thumbs.db
+
+# Laravel specific caches and logs
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+storage/logs/*
+bootstrap/cache/*
+
+# Logs
+*.log
