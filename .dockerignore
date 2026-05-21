@@ -3,8 +3,14 @@
 .gitignore
 
 # Docker & CI
-Dockerfile
+Dockerfile.*
+compose.*.yaml
 docker-compose.yml
+*dockerfile*
+*Dockerfile*
+*compose*.yaml
+*compose*.yml
+
 .github
 
 # Dependencies
