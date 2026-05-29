@@ -19,12 +19,21 @@ services:
     env_file:
       - .env
 
+  microservice:
+    image: crunchypandesal/text-extractor:dev
+    ports:
+      - "9000:9000"
+    env_file:
+      - .env
+
+
   database:
     image: postgres:18.4
     environment:
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_DATABASE}
+      DB_HOST: database
     ports:
       - "5432:5432"
     volumes:

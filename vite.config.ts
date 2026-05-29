@@ -27,4 +27,10 @@ export default defineConfig({
         environment: 'jsdom',
         setupFiles: './tests/Frontend/setup.js',
     },
+    server: {
+        host: '0.0.0.0',
+        hmr: {
+            host: 'localhost',
+        },
+    }
 });
