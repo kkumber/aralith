@@ -44,3 +44,5 @@ bootstrap/cache/*
 
 # Logs
 *.log
+
+public/build
