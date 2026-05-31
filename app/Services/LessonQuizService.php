@@ -27,7 +27,7 @@ class LessonQuizService
                 $flashcardsArray[$key] = (array) $value;
             };
 
-            return DB::transaction(function () use ($lessonData, $quizData, $questionsData, $flashcardsData, $user) {
+            return DB::transaction(function () use ($lessonData, $quizData, $questionArray, $flashcardsArray, $user) {
                 $lesson = $user->lessons()->create($lessonData);
                 $quiz = $user->quizzes()->create(['lessons_id' => $lesson->id, 'title' => $quizData['title'], 'config' => $quizData['config']]);
 

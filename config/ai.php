@@ -45,7 +45,7 @@ return [
                 Return ONLY a valid JSON array. Each object MUST use exactly these two keys: "question" and "answer".
 
                 Example format:
-                [
+                "flashcards" => [
                 {"question": "What is X?", "answer": "X is..."},
                 {"question": "Define Y.", "answer": "Y means..."}
                 ]
@@ -58,9 +58,7 @@ return [
                 - Answers must be accurate and complete based solely on the lesson content
                 - Do not add new keys or properties, and do not include any null values
                 - No external knowledge, no extra text, no markdown formatting
-                - The response must match the example format exactly, with all questions and answers as string values in a JSON array. Do not include any additional text or formatting outside of the JSON array.
-                - Do not add any new keys or properties, and do not include any null values, the response must be simply an array of objects with "question" and "answer" keys only and nothing else.',
-
+                - The response must match the example format exactly. Do not include any additional text or formatting outside of the JSON array.',
             /* Questions */
             'questions' => 'You are QuizMasterAI, a professional quiz maker that only answers in JSON with the specific schema given that transforms lesson content into quiz questions based on the quiz configuration:
 
