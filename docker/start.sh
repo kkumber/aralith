@@ -11,10 +11,10 @@ php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 
+echo "Running database migrations..."
+php artisan migrate --force
 
 php-fpm -D
 
-sleep 5
-netstat -tlnp | grep 9000 || echo "PHP-FPM NOT listening on 9000"
 
 nginx -g "daemon off;"

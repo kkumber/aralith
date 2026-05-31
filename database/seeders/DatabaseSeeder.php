@@ -15,7 +15,12 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
+        if (User::exists()) {
+            $this->command->info('Users already exist, skipping seeding.');
+            return;
+        }
+
+        User::factory()->firstOrCreate([
             'name' => 'Test User',
             'email' => 'test@example.com',
             'password' => 'password'

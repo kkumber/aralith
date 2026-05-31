@@ -40,24 +40,30 @@ class UserQuizAttemptService
 
     public function saveUserAnswersAndAttempt(int $quizId, int $score, array $isCorrectData, User $user, array $questionsData, array $answersData)
     {
-        return DB::transaction(function () use ($quizId, $score, $isCorrectData, $user, $questionsData, $answersData) {
-            $userId = $user->id;
+        $userId = $user->id;
+
+        $userAnswersArray = [];
+        foreach ($questionsData as $key => $value) {
+            $userAnswersArray[] = [
+                'questions_id' => $key,
+                'answer_text' => isset($answersData[$key])
+                    ? (is_array($answersData[$key]) ? implode(', ', $answersData[$key]) : $answersData[$key])
+                    : 'N/A',
+                'is_correct' => $isCorrectData[$key] ?? false,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        };
+
+        return DB::transaction(function () use ($quizId, $score, $isCorrectData, $userId, $questionsData, $answersData, $userAnswersArray) {
             $quizAttempt = QuizAttempts::create([
                 'user_id' => $userId,
                 'quizzes_id' => $quizId,
                 'score' => $score,
             ]);
 
-            $userAnswers = [];
-            foreach ($questionsData as $key => $value) {
-                $userAnswers[] = $quizAttempt->userAnswers()->create([
-                    'questions_id' => $key,
-                    'answer_text' => isset($answersData[$key])
-                        ? (is_array($answersData[$key]) ? implode(', ', $answersData[$key]) : $answersData[$key])
-                        : 'N/A',
-                    'is_correct' => $isCorrectData[$key] ?? false,
-                ]);
-            };
+
+            $userAnswers = $quizAttempt->userAnswers()->createMany($userAnswersArray);
 
             return [
                 'quizAttempt' => $quizAttempt,
