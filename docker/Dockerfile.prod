@@ -2,8 +2,11 @@ FROM node:22-alpine AS node-builder
 
 WORKDIR /app
 
+ARG VITE_FILE_PROCESSOR_URL
+ENV VITE_FILE_PROCESSOR_URL=${VITE_FILE_PROCESSOR_URL}
+
 COPY package*.json vite.config.ts tsconfig.json ./
-COPY resources/ ./resources/
+COPY resources ./resources
 
 RUN npm ci
 
