@@ -30,7 +30,7 @@ RUN composer install --no-interaction --no-plugins --no-scripts
 COPY . .
 
 
-RUN echo "upload_max_file_size=10M" > /usr/local/etc/php/conf.d/upload.ini && \
+RUN echo "upload_max_filesize=10M" > /usr/local/etc/php/conf.d/upload.ini && \
     echo "post_max_size=10M" >> /usr/local/etc/php/conf.d/upload.ini && \
     echo "memory_limit=128M" >> /usr/local/etc/php/conf.d/upload.ini && \
     echo "max_execution_time=300" >> /usr/local/etc/php/conf.d/upload.ini
