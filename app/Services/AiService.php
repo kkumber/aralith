@@ -127,7 +127,7 @@ class AiService
             ])],
             'questions.*.question_text'  => ['required', 'string'],
             'questions.*.explanation'    => ['required', 'string'],
-            'questions.*.options'        => ['required', 'array'],
+            'questions.*.options'        => ['present', 'array'],
             'questions.*.correct_answer' => ['required'],
         ];
     }
@@ -304,8 +304,8 @@ class AiService
                 'Content-Type'  => 'application/json',
             ])
             ->timeout(60)
-            ->retry(3, function ($retryCount) {
-                return 200 * ($retryCount ** 2); // 200 ms, 800 ms, 1800 ms
+            ->retry(2, function ($retryCount) {
+                return 5000 * ($retryCount ** 2); // 5s, 20s backoff
             }, function (Exception $exception, PendingRequest $request) {
                 Log::warning('Groq retry due to exception', [
                     'code'    => $exception->getCode(),

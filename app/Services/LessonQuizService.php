@@ -44,7 +44,9 @@ class LessonQuizService
             });
         } catch (\Throwable $e) {
             Log::error('Lesson Quiz Flashcard error:', [
-                'exception' => $e->getMessage()
+                'exception' => $e->getMessage(),
+                'previous'  => $e->getPrevious()?->getMessage(),
+                'trace'     => $e->getTraceAsString(),
             ]);
 
             return null;

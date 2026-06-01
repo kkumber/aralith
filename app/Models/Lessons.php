@@ -16,6 +16,7 @@ class Lessons extends Model
         'title',
         'content',
         'summary',
+        'user_id',
     ];
 
     public function user(): BelongsTo
