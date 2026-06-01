@@ -16,6 +16,7 @@ class Quizzes extends Model
         'lessons_id',
         'title',
         'config',
+        'user_id',
     ];
 
     protected $casts = [
