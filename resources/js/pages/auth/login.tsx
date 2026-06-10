@@ -35,6 +35,14 @@ export default function Login({ status, canResetPassword }: LoginProps) {
         });
     };
 
+    const signInAsDemoUser = () => {
+        setData({
+            email: 'test@example.com',
+            password: 'demoaccount123',
+            remember: false
+        });
+    };
+
     return (
         <AuthLayout title="Log in to your account" description="Enter your email and password below to log in">
             <Head title="Log in" />
@@ -105,6 +113,12 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                     <TextLink href={route('register')} tabIndex={5}>
                         Sign up
                     </TextLink>
+                </div>
+
+                <div className="text-muted-foreground text-center text-sm">
+                    <Button variant="link" onClick={signInAsDemoUser}>
+                        Sign in as Guest
+                    </Button>
                 </div>
             </form>
 
