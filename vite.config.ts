@@ -4,7 +4,7 @@ import laravel from 'laravel-vite-plugin';
 import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
     plugins: [
         laravel({
             input: ['resources/css/app.css', 'resources/js/app.tsx'],
@@ -27,10 +27,13 @@ export default defineConfig({
         environment: 'jsdom',
         setupFiles: './tests/Frontend/setup.js',
     },
-    server: {
-        host: '0.0.0.0',
-        hmr: {
-            host: 'localhost',
-        },
-    }
-});
+    // Conditionally include server settings ONLY for 'serve' (local dev npm run dev)
+    ...(command === 'serve' ? {
+        server: {
+            host: '0.0.0.0',
+            hmr: {
+                host: 'localhost',
+            },
+        }
+    } : {})
+}));

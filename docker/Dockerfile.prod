@@ -44,10 +44,11 @@ COPY composer.json composer.lock ./
 
 RUN composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
 
+COPY . .
+
 # Copy built assets from node-builder stage
 COPY --from=node-builder /app/public/build /var/www/html/public/build
 
-COPY . .
 
 RUN php artisan package:discover --ansi
 
